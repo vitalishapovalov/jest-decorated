@@ -1,0 +1,13 @@
+__tests__
+.rpt2_cache
+coverage
+src
+node_modules
+tsconfig.json
+jest.setup.ts
+rollup.config.ts
+*.log
+docs
+tslint.ts
+.idea
+.travis.yml

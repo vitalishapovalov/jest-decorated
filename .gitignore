@@ -1,0 +1,16 @@
+# OS
+.DS_Store
+
+# IDE
+.idea
+*.xml
+
+# JS
+dist
+node_modules
+
+# Rollup
+.rpt2_cache
+
+# Tests
+coverage
