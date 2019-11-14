@@ -26,12 +26,22 @@ export default class DescribeManager {
         return describeManager;
     }
 
+    private readonly extensions: Map<PropertyKey, any> = new Map();
+
     private constructor(
         private readonly clazz: Class,
         private readonly clazzInstance: object = new clazz(),
         private readonly hooksManager: HooksManager = new HooksManager(clazzInstance),
         private readonly testsManager: TestsManager = new TestsManager(clazzInstance)
     ) {}
+
+    public getExtension<T = any>(name: PropertyKey): T {
+        return this.extensions.get(name);
+    }
+
+    public registerExtension(name: PropertyKey, extension: any): void {
+        this.extensions.set(name, extension);
+    }
 
     public getClassInstance(): object {
         return this.clazzInstance;
