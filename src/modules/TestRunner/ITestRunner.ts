@@ -2,9 +2,9 @@ import DescribeManager from "../DescribeManager";
 
 export default interface ITestRunner {
 
-    beforeTestsJestRegistration(): void;
+    beforeTestsJestRegistration(describeManager: DescribeManager): void;
 
     registerTestsInJest(describeManager: DescribeManager): void;
 
-    afterTestsJestRegistration(): void;
+    afterTestsJestRegistration(describeManager: DescribeManager): void;
 }

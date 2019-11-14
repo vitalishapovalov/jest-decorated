@@ -16,7 +16,7 @@ export default class TestRunner implements ITestRunner {
             : description;
     }
 
-    public beforeTestsJestRegistration(): void {
+    public beforeTestsJestRegistration(describeManager: DescribeManager): void {
     }
 
     public registerTestsInJest(describeManager: DescribeManager): void {
@@ -25,7 +25,7 @@ export default class TestRunner implements ITestRunner {
         }
     }
 
-    public afterTestsJestRegistration(): void {
+    public afterTestsJestRegistration(describeManager: DescribeManager): void {
     }
 
     protected registerTestInJest(testEntity: Test, describeManager: DescribeManager): void {
