@@ -58,9 +58,9 @@ export default class DescribeManager {
     public registerDescribeInJest(describeName?: string): void {
         describe(describeName, () => {
             this.hooksManager.registerHooksInJest();
-            DescribeManager.testRunner.beforeTestsJestRegistration();
+            DescribeManager.testRunner.beforeTestsJestRegistration(this);
             DescribeManager.testRunner.registerTestsInJest(this);
-            DescribeManager.testRunner.afterTestsJestRegistration();
+            DescribeManager.testRunner.afterTestsJestRegistration(this);
         });
     }
 }
