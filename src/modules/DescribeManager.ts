@@ -1,7 +1,15 @@
-import { Class, ITestRunner, IHooksManager, ITestsManager, IDescribeManager } from "@jest-decorated/shared";
+import {
+    Class,
+    ITestRunner,
+    IHooksManager,
+    ITestsManager,
+    IDescribeManager,
+    IImportsManager,
+} from "@jest-decorated/shared";
 import HooksManager from "./HooksManager";
 import TestsManager from "./TestsManager";
 import DefaultTestRunner from "./DefaultTestRunner";
+import ImportsManager from "./ImportsManager";
 
 export default class DescribeManager implements IDescribeManager {
 
@@ -22,7 +30,8 @@ export default class DescribeManager implements IDescribeManager {
         private readonly clazz: Class,
         private readonly clazzInstance: object = new clazz(),
         private readonly hooksManager: IHooksManager = new HooksManager(clazzInstance),
-        private readonly testsManager: ITestsManager = new TestsManager(clazzInstance)
+        private readonly testsManager: ITestsManager = new TestsManager(clazzInstance),
+        private readonly importsManager: IImportsManager = new ImportsManager(clazz)
     ) {}
 
     public getClass(): Class {
@@ -49,12 +58,16 @@ export default class DescribeManager implements IDescribeManager {
         this.testRunner = testRunner;
     }
 
-    public registerDescribeInJest(describeName: string): void {
-        beforeAll(async () => await this.testRunner.beforeTestsJestRegistration(this));
-        afterAll(async () => await this.testRunner.afterTestsJestRegistration(this));
+    public getImportsManager(): IImportsManager {
+        return this.importsManager;
+    }
+
+    public async registerDescribeInJest(describeName: string): Promise<void> {
         describe(describeName, () => {
             this.hooksManager.registerHooksInJest();
+            this.testRunner.beforeTestsJestRegistration(this);
             this.testRunner.registerTestsInJest(this);
+            this.testRunner.afterTestsJestRegistration(this);
         });
     }
 }

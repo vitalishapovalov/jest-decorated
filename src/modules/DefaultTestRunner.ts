@@ -13,7 +13,8 @@ export default class DefaultTestRunner implements ITestRunner {
             : description;
     }
 
-    public async beforeTestsJestRegistration(describeManager: IDescribeManager): Promise<void> {
+    public beforeTestsJestRegistration(describeManager: IDescribeManager): void {
+        describeManager.getImportsManager().registerLazyModulesInClass();
     }
 
     public registerTestsInJest(describeManager: IDescribeManager): void {
@@ -22,7 +23,7 @@ export default class DefaultTestRunner implements ITestRunner {
         }
     }
 
-    public async afterTestsJestRegistration(describeManager: IDescribeManager): Promise<void> {
+    public afterTestsJestRegistration(describeManager: IDescribeManager): void {
     }
 
     protected registerTestInJest(testEntity: TestEntity, describeManager: IDescribeManager): void {

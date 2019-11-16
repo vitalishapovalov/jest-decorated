@@ -67,7 +67,7 @@ export default class TestsManager implements ITestsManager {
     private async processAsync<T = any>(data: T, processors: Function[]): Promise<T> {
         let dataResult: T = data;
         for (const preProcessor of processors) {
-            dataResult = await preProcessor(dataResult);
+            dataResult = await preProcessor.call(this.clazzInstance, dataResult);
         }
         return dataResult;
     }
