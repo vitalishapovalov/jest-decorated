@@ -1,6 +1,6 @@
-import { Hook } from "../types";
+import { IHooksManager, Hook } from "@jest-decorated/shared";
 
-export default class HooksManager {
+export default class HooksManager implements IHooksManager {
 
     private readonly hooks: Map<Hook, PropertyKey[]> = new Map()
         .set(Hook.BEFORE_ALL, [])

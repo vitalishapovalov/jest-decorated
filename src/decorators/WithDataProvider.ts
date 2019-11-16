@@ -1,6 +1,6 @@
 import { isArray } from "@js-utilities/typecheck";
+import { Class } from "@jest-decorated/shared";
 
-import { Class } from "../types";
 import DescribeManager from "../modules/DescribeManager";
 
 export function WithDataProvider(dataProviders: PropertyKey | PropertyKey[]) {

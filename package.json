@@ -27,7 +27,7 @@
   "types": "dist/types/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c rollup.config.ts --name log",
+    "build": "rollup -c rollup.config.ts --name jest-decorated/core",
     "test": "jest --coverage",
     "lint": "tslint -c tslint.ts 'src/**/*.ts'",
     "clean": "rm -rf dist && rm -rf .rpt2_cache && rm -rf coverage && rm -rf ./node_modules",
@@ -49,6 +49,7 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
+    "@jest-decorated/shared": "file:../jest-decorated-shared",
     "@js-utilities/typecheck": "^0.1.4",
     "reflect-metadata": "^0.1.13"
   },

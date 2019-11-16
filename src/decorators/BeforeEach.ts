@@ -1,4 +1,5 @@
-import { Class, Hook } from "../types";
+import { Class, Hook } from "@jest-decorated/shared";
+
 import DescribeManager from "../modules/DescribeManager";
 
 export function BeforeEach(canBeUsedInFuture?: string) {

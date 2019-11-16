@@ -1,9 +1,7 @@
 import { isUndefined } from "@js-utilities/typecheck";
+import { Class, TestEntity, toString } from "@jest-decorated/shared";
 
-import { Class } from "../types";
-import { toString } from "../utils";
 import DescribeManager from "../modules/DescribeManager";
-import TestEntity from "../modules/Test"; // tslint:disable-line
 
 export function Test(testName?: string | ((...args: any[]) => string)) {
     return function TestDecoratorFn(proto: object, methodName: PropertyKey) {

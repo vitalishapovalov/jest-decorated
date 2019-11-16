@@ -1,21 +1,11 @@
-import { Class } from "../types";
+import { Class, ITestRunner, IHooksManager, ITestsManager, IDescribeManager } from "@jest-decorated/shared";
 import HooksManager from "./HooksManager";
 import TestsManager from "./TestsManager";
-import { ITestRunner, TestRunner } from "./TestRunner";
+import DefaultTestRunner from "./DefaultTestRunner";
 
-export default class DescribeManager {
+export default class DescribeManager implements IDescribeManager {
 
     private static readonly DESCRIBE_MANAGER: symbol = Symbol();
-
-    private static testRunner: ITestRunner = new TestRunner();
-
-    public static getTestRunner(): ITestRunner {
-        return this.testRunner;
-    }
-
-    public static setTestRunner(testRunner: ITestRunner): void {
-        this.testRunner = testRunner;
-    }
 
     public static getDescribeManager(clazz?: Class, autoCreate: boolean = true): DescribeManager {
         let describeManager: DescribeManager = Reflect.getOwnMetadata(this.DESCRIBE_MANAGER, clazz);
@@ -26,41 +16,45 @@ export default class DescribeManager {
         return describeManager;
     }
 
-    private readonly extensions: Map<PropertyKey, any> = new Map();
+    private testRunner: ITestRunner = new DefaultTestRunner();
 
     private constructor(
         private readonly clazz: Class,
         private readonly clazzInstance: object = new clazz(),
-        private readonly hooksManager: HooksManager = new HooksManager(clazzInstance),
-        private readonly testsManager: TestsManager = new TestsManager(clazzInstance)
+        private readonly hooksManager: IHooksManager = new HooksManager(clazzInstance),
+        private readonly testsManager: ITestsManager = new TestsManager(clazzInstance)
     ) {}
 
-    public getExtension<T = any>(name: PropertyKey): T {
-        return this.extensions.get(name);
-    }
-
-    public registerExtension(name: PropertyKey, extension: any): void {
-        this.extensions.set(name, extension);
+    public getClass(): Class {
+        return this.clazz;
     }
 
     public getClassInstance(): object {
         return this.clazzInstance;
     }
 
-    public getHooksManager(): HooksManager {
+    public getHooksManager(): IHooksManager {
         return this.hooksManager;
     }
 
-    public getTestsManager(): TestsManager {
+    public getTestsManager(): ITestsManager {
         return this.testsManager;
     }
 
-    public registerDescribeInJest(describeName?: string): void {
+    public getTestRunner(): ITestRunner {
+        return this.testRunner;
+    }
+
+    public setTestRunner(testRunner: ITestRunner): void {
+        this.testRunner = testRunner;
+    }
+
+    public registerDescribeInJest(describeName: string): void {
+        beforeAll(async () => await this.testRunner.beforeTestsJestRegistration(this));
+        afterAll(async () => await this.testRunner.afterTestsJestRegistration(this));
         describe(describeName, () => {
             this.hooksManager.registerHooksInJest();
-            DescribeManager.testRunner.beforeTestsJestRegistration(this);
-            DescribeManager.testRunner.registerTestsInJest(this);
-            DescribeManager.testRunner.afterTestsJestRegistration(this);
+            this.testRunner.registerTestsInJest(this);
         });
     }
 }

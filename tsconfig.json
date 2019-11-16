@@ -3,14 +3,14 @@
     "moduleResolution": "node",
     "target": "es6",
     "module":"es2015",
-    "lib": ["es2015", "es2016", "es2017", "dom"],
+    "lib": ["es2015", "es2016", "es2017"],
     "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "declarationDir": "dist/types",
-    "typeRoots": ["node_modules/@types", "../../node_modules/@types"]
+    "typeRoots": ["node_modules/@types"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

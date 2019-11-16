@@ -4,5 +4,6 @@ export * from "./BeforeAll";
 export * from "./BeforeEach";
 export * from "./DataProvider";
 export * from "./Describe";
+export * from "./RunWith";
 export * from "./Test";
 export * from "./WithDataProvider";
