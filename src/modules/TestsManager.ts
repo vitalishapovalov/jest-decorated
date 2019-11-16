@@ -1,6 +1,48 @@
 import { ITestsManager, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
+import { isObject } from "@js-utilities/typecheck";
 
 export default class TestsManager implements ITestsManager {
+
+    private static readonly NOT = "not" as const;
+
+    private static readonly MATCHERS: readonly string[] = [
+        "toBe",
+        "toHaveBeenCalled",
+        "toHaveBeenCalledTimes",
+        "toHaveBeenCalledWith",
+        "toHaveBeenLastCalledWith",
+        "toHaveBeenNthCalledWith",
+        "toHaveReturned",
+        "toHaveReturnedTimes",
+        "toHaveReturnedWith",
+        "toHaveLastReturnedWith",
+        "toHaveNthReturnedWith",
+        "toHaveLength",
+        "toHaveProperty",
+        "toBeCloseTo",
+        "toBeDefined",
+        "toBeFalsy",
+        "toBeGreaterThan",
+        "toBeGreaterThanOrEqual",
+        "toBeLessThan",
+        "toBeLessThanOrEqual",
+        "toBeInstanceOf",
+        "toBeNull",
+        "toBeTruthy",
+        "toBeUndefined",
+        "toBeNaN",
+        "toContain",
+        "toContainEqual",
+        "toEqual",
+        "toMatch",
+        "toMatchObject",
+        "toMatchSnapshot",
+        "toMatchInlineSnapshot",
+        "toStrictEqual",
+        "toThrow",
+        "toThrowErrorMatchingSnapshot",
+        "toThrowErrorMatchingInlineSnapshot",
+    ];
 
     private readonly preProcessors: PreProcessor[] = [];
 
@@ -12,6 +54,7 @@ export default class TestsManager implements ITestsManager {
 
     public constructor(private readonly clazzInstance: object) {
         this.registerPromisePreProcessor();
+        this.registerExpectPostProcessor();
     }
 
     public registerTest(testEntity: TestEntity): void {
@@ -54,7 +97,7 @@ export default class TestsManager implements ITestsManager {
         return this.processAsync(data, this.postProcessors);
     }
 
-    private registerPromisePreProcessor() {
+    private registerPromisePreProcessor(): void {
         this.registerPreProcessor(async (data: PreProcessorData) => {
             const resolvedArguments: any[] = [];
             for await (const arg of data.args) {
@@ -62,6 +105,27 @@ export default class TestsManager implements ITestsManager {
             }
             return { ...data, args: resolvedArguments } as PreProcessorData;
         });
+    }
+
+    private registerExpectPostProcessor(): void {
+        this.registerPostProcessor(async (testResult: any) => {
+            if (!isObject(testResult)) return;
+            this.runMatchers(testResult);
+        });
+    }
+
+    private runMatchers(testResult: object, not: boolean = false): void {
+        for (const matcher of Object.keys(testResult)) {
+            if (TestsManager.NOT === matcher && isObject(testResult[matcher])) {
+                this.runMatchers(testResult[matcher], true);
+                continue;
+            }
+            if (!TestsManager.MATCHERS.includes(matcher)) {
+                continue;
+            }
+            const [expectVal, ...matcherValues] = testResult[matcher];
+            (not ? expect(expectVal).not : expect(expectVal))[matcher](...matcherValues);
+        }
     }
 
     private async processAsync<T = any>(data: T, processors: Function[]): Promise<T> {

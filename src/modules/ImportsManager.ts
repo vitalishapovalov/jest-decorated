@@ -14,7 +14,7 @@ export default class ImportsManager implements IImportsManager {
         return importedModule;
     }
 
-    public readonly modules: Map<string, () => any> = new Map();
+    private readonly modules: Map<string, () => any> = new Map();
 
     private readonly resolvedModules: Map<string, any> = new Map();
 
