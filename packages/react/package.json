@@ -1,0 +1,57 @@
+{
+  "name": "@jest-decorated/react",
+  "version": "0.0.1",
+  "description": "Decorators for writing jest-based tests for react components.",
+  "license": "MIT",
+  "author": {
+    "name": "Vitalii Shapovalov",
+    "email": "<shapovalov.vitali.v@gmail.com>"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vitalishapovalov/jest-decorated.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "jest",
+    "react",
+    "decorators",
+    "typescript",
+    "react testing",
+    "jest-decorated",
+    "jest decorators",
+    "jest typescript"
+  ],
+  "main": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/types/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "rollup -c rollup.config.ts --name typecheck",
+    "test": "jest --coverage",
+    "lint": "tslint -c tslint.ts 'src/**/*.ts'"
+  },
+  "dependencies": {
+    "@jest-decorated/shared": "file:../shared",
+    "@js-utilities/typecheck": "^0.1.4",
+    "@types/enzyme": "^3.10.3"
+  },
+  "jest": {
+    "transform": {
+      ".ts": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "testRegex": "/__tests__/.*.spec.(ts|js)$",
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/__tests__/",
+      "/dist/"
+    ]
+  }
+}

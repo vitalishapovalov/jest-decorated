@@ -1,71 +1,46 @@
 {
-  "name": "@jest-decorated/core",
-  "version": "0.0.1",
-  "description": "Decorators for writing jest-based tests.",
+  "name": "jest-decorated",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Decorators library for writing jest-based tests",
   "license": "MIT",
   "author": {
     "name": "Vitalii Shapovalov",
     "email": "<shapovalov.vitali.v@gmail.com>"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vitalishapovalov/jest-decorated.git"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "jest",
-    "decorators",
-    "typescript",
-    "jest-decorated",
-    "jest decorators",
-    "jest typescript"
-  ],
-  "main": "dist/index.umd.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/types/index.d.ts",
-  "sideEffects": false,
   "scripts": {
-    "build": "rollup -c rollup.config.ts --name jest-decorated/core",
-    "test": "jest --coverage",
-    "lint": "tslint -c tslint.ts 'src/**/*.ts'",
-    "clean": "rm -rf dist && rm -rf .rpt2_cache && rm -rf coverage && rm -rf ./node_modules",
-    "prepublishOnly": "npm run lint && npm run test && npm run clean && npm i && npm run build"
+    "clean": "lerna clean --yes && lerna exec -- rm -rf .rpt2_cache && lerna exec -- rm -rf coverage && rm -rf ./node_modules",
+    "bootstrap": "lerna bootstrap --hoist",
+    "test": "lerna run test",
+    "build": "lerna run build",
+    "lint": "lerna run lint",
+    "cleanBuild": "npm run clean && npm run bootstrap && npm run build",
+    "prepublishOnly": "npm run cleanBuild && npm run lint && npm run test"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.22",
+    "@types/jest": "^24.0.15",
     "@types/node": "^12.0.12",
     "jest": "^24.8.0",
+    "lerna": "3.15.0",
     "rollup": "^1.19.1",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.3",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-terser": "^5.0.0",
-    "rollup-plugin-typescript2": "^0.24.0",
+    "rollup-plugin-typescript2": "^0.22.0",
     "ts-jest": "^24.0.2",
     "tslint": "^5.18.0",
     "tslint-config-airbnb": "^5.11.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.5.2"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "lerna"
+    ]
   },
   "dependencies": {
-    "@jest-decorated/shared": "file:../jest-decorated-shared",
-    "@js-utilities/typecheck": "^0.1.4"
-  },
-  "jest": {
-    "transform": {
-      ".ts": "ts-jest"
-    },
-    "testEnvironment": "node",
-    "testRegex": "/__tests__/.*.spec.(ts|js)$",
-    "moduleFileExtensions": [
-      "js",
-      "ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/__tests__/",
-      "/dist/"
-    ]
+    "@jest-decorated/shared": "file:packages/shared",
+    "@jest-decorated/core": "file:packages/core",
+    "@jest-decorated/react": "file:packages/react"
   }
 }
