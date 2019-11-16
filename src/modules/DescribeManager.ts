@@ -5,13 +5,13 @@ import DefaultTestRunner from "./DefaultTestRunner";
 
 export default class DescribeManager implements IDescribeManager {
 
-    private static readonly DESCRIBE_MANAGER: symbol = Symbol();
+    private static readonly DESCRIBE_REGISTRY: WeakMap<Class, IDescribeManager> = new WeakMap();
 
-    public static getDescribeManager(clazz?: Class, autoCreate: boolean = true): DescribeManager {
-        let describeManager: DescribeManager = Reflect.getOwnMetadata(this.DESCRIBE_MANAGER, clazz);
+    public static getDescribeManager(clazz?: Class, autoCreate: boolean = true): IDescribeManager {
+        let describeManager: IDescribeManager = DescribeManager.DESCRIBE_REGISTRY.get(clazz);
         if (!describeManager && autoCreate) {
             describeManager = new this(clazz);
-            Reflect.defineMetadata(this.DESCRIBE_MANAGER, describeManager, clazz);
+            DescribeManager.DESCRIBE_REGISTRY.set(clazz, describeManager);
         }
         return describeManager;
     }

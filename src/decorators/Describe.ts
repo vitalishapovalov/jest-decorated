@@ -8,7 +8,7 @@ export function Describe(describeName?: string) {
         const describeManager = DescribeManager.getDescribeManager(clazz, false);
 
         if (!describeManager?.getTestsManager().getTests().length) {
-            throw new EvalError("Your @Describe suite most contain at least one @Test or @It");
+            throw new SyntaxError("Your @Describe suite most contain at least one @Test or @It");
         }
 
         const resolvedName = isUndefined(describeName) ? clazz.name : describeName;

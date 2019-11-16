@@ -50,8 +50,7 @@
   },
   "dependencies": {
     "@jest-decorated/shared": "file:../jest-decorated-shared",
-    "@js-utilities/typecheck": "^0.1.4",
-    "reflect-metadata": "^0.1.13"
+    "@js-utilities/typecheck": "^0.1.4"
   },
   "jest": {
     "transform": {
