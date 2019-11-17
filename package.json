@@ -15,7 +15,7 @@
     "build": "lerna run build",
     "lint": "lerna run lint",
     "cleanBuild": "npm run clean && npm run bootstrap && npm run build",
-    "prepublishOnly": "npm run cleanBuild && npm run lint && npm run test"
+    "prepublishOnly": "npm run build && npm run lint && npm run test"
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",
