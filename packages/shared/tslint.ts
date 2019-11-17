@@ -1,1 +1,1 @@
-module.exports = require("../../tslint.common.js");
+module.exports = require("../../tslint.common.ts");

@@ -5,7 +5,7 @@ export interface ITestsManager {
 
     registerTest(testEntity: TestEntity): void;
 
-    registerDataProvider(dataProviderName: PropertyKey, data: any[]): void;
+    registerDataProvider(dataProviderName: PropertyKey, data: any[] | (() => any[])): void;
 
     getTest(testName: PropertyKey): TestEntity;
 
@@ -13,7 +13,7 @@ export interface ITestsManager {
 
     getDataProvider(name: PropertyKey): any[];
 
-    getDataProviders(): Map<PropertyKey, any[]>;
+    getDataProviders(): PropertyKey[];
 
     registerPreProcessor(preProcessor: PreProcessor): void;
 

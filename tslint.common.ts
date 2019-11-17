@@ -7,7 +7,7 @@ module.exports = {
         "prefer-template": [false],
         "function-name": [true, {
             "method-regex": "^\\*?\\[?[a-z][\\w\\d\\.]*\\]?$",
-            "private-method-regex": "^\\*?\\[?[a-z][\\w\\d\\.]*\\]?$",
+            "private-method-regex": "^\\*?\\[?[a-zA-Z][\\w\\d\\.]*\\]?$",
             "protected-method-regex": "^\\*?\\[?[a-z][\\w\\d\\.]*\\]?$",
             "static-method-regex": "^\\*?\\[?[a-zA-Z][\\w\\d\\.]*\\]?$",
             "function-regex": "^\\*?\\[?[a-zA-Z][\\w\\d\\.]*\\]?$"

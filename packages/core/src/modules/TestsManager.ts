@@ -1,5 +1,5 @@
 import { ITestsManager, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
-import { isObject } from "@js-utilities/typecheck";
+import { isObject, isCallable } from "@js-utilities/typecheck";
 
 export default class TestsManager implements ITestsManager {
 
@@ -50,7 +50,7 @@ export default class TestsManager implements ITestsManager {
 
     private readonly tests: TestEntity[] = [];
 
-    private readonly dataProviders: Map<PropertyKey, any[]> = new Map();
+    private readonly dataProviders: Map<PropertyKey, any[] | (() => any[])> = new Map();
 
     public constructor(private readonly clazzInstance: object) {
         this.registerPromisePreProcessor();
@@ -61,7 +61,7 @@ export default class TestsManager implements ITestsManager {
         this.tests.push(testEntity);
     }
 
-    public registerDataProvider(dataProviderName: PropertyKey, data: any[]): void {
+    public registerDataProvider(dataProviderName: PropertyKey, data: () => any[]): void {
         this.dataProviders.set(dataProviderName, data);
     }
 
@@ -74,11 +74,12 @@ export default class TestsManager implements ITestsManager {
     }
 
     public getDataProvider(name: PropertyKey): any[] {
-        return this.dataProviders.get(name);
+        const data = this.dataProviders.get(name);
+        return isCallable(data) ? data() : data;
     }
 
-    public getDataProviders(): Map<PropertyKey, any[]> {
-        return new Map<PropertyKey, any[]>(this.dataProviders);
+    public getDataProviders(): PropertyKey[] {
+        return [...this.dataProviders.keys()];
     }
 
     public registerPreProcessor(preProcessor: PreProcessor): void {

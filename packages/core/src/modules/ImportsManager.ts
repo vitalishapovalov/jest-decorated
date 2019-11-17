@@ -29,7 +29,7 @@ export default class ImportsManager implements IImportsManager {
             Object.defineProperty(this.clazz.prototype, name, {
                 get(): any {
                     return resolvedModuleFn();
-                }
+                },
             });
         }
     }
@@ -42,7 +42,7 @@ export default class ImportsManager implements IImportsManager {
                 ? getter(importedModule)
                 : isString(getter)
                     ? importedModule[getter]
-                    : getter.reduce((obj, key) => obj[key], importedModule)
+                    : getter.reduce((obj, key) => obj[key], importedModule);
         }
         return ImportsManager.DEFAULT_GETTER(importedModule);
     }
@@ -51,11 +51,10 @@ export default class ImportsManager implements IImportsManager {
         const registeredModule = this.getModulePathRegisteredName(lazyModule.path);
         if (registeredModule) {
             return this.resolvedModules.get(registeredModule);
-        } else {
-            const importedModule = require(resolveModulePath(lazyModule.path));
-            this.resolvedModules.set(lazyModule.path, importedModule);
-            return importedModule;
         }
+        const importedModule = require(resolveModulePath(lazyModule.path));
+        this.resolvedModules.set(lazyModule.path, importedModule);
+        return importedModule;
     }
 
     private getModulePathRegisteredName(modulePath: string): string {

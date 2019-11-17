@@ -1,13 +1,6 @@
 import { ReactWrapper } from "enzyme";
 import { isArray } from "@js-utilities/typecheck";
-import {
-    IDescribeManager,
-    ITestRunner,
-    ITestsManager,
-    TestEntity,
-    PreProcessorData,
-    PreProcessor,
-} from "@jest-decorated/shared";
+import { IDescribeManager, ITestRunner, PreProcessorData, PreProcessor } from "@jest-decorated/shared";
 
 import ReactExtension from "./ReactExtension";
 
@@ -36,51 +29,63 @@ export default class ReactTestRunner implements ITestRunner {
 
         if (!reactExtension.getComponentManager().isComponentProviderRegistered()) return;
 
-        const dataProviderFn = this.createDataProviderFn(describeManager);
-
-        testsManager.registerDataProvider(ReactTestRunner.REACT_DATA_PROVIDER, dataProviderFn(undefined));
-
         testsManager.registerPreProcessor(this.registerWithStatePreprocessor(describeManager));
 
+        // update existent data providers with react component
+        const dataProviderFn = this.createDataProviderFn(describeManager);
+        for (const providerName of testsManager.getDataProviders()) {
+            const providerData = testsManager.getDataProvider(providerName);
+            const a = dataProviderFn(providerData, isArray(providerData) && isArray(providerData[0]));
+            testsManager.registerDataProvider(providerName, a[0]);
+        }
+
+        // register new data providers
+        testsManager.registerDataProvider(
+            ReactTestRunner.REACT_DATA_PROVIDER,
+            dataProviderFn(undefined)
+        );
         for (const testEntity of testsManager.getTests()) {
             const propsDataProvider = reactExtension.getWithProps(testEntity.name as string);
+            const hasDataProviders = Boolean(testEntity.dataProviders.length);
+            if (hasDataProviders) {
+                // if entity has data providers, means that @WithDataProvider already been declared
+                // currently, only @WithDataProvider or @WithProps is supported
+                if (propsDataProvider) {
+                    throw new SyntaxError("Currently, only @WithDataProvider or @WithProps is supported per test at one time");
+                }
+                continue;
+            }
             if (!propsDataProvider) {
                 testEntity.registerDataProvider(ReactTestRunner.REACT_DATA_PROVIDER);
             } else {
-                this.registerDataProvider(propsDataProvider, testEntity, testsManager, dataProviderFn);
+                const dataProviderName = Symbol();
+                testsManager.registerDataProvider(dataProviderName, dataProviderFn(propsDataProvider));
+                testEntity.registerDataProvider(dataProviderName);
             }
         }
     }
 
-    private createDataProviderFn(describeManager: IDescribeManager): (arg: object | object[]) => any[][] {
+    private createDataProviderFn(
+        describeManager: IDescribeManager
+    ): (arg: object | object[], flatProps?: boolean) => any[][] {
         const reactExtension = ReactExtension.getReactExtension(describeManager.getClass());
         const clazzInstance = describeManager.getClassInstance();
         const componentManager = reactExtension.getComponentManager();
         const componentProvider = componentManager.getComponentProvider();
 
-        const createComponentPromise = (props: object = {}) => new Promise(resolve =>
+        const componentPromiseFn = (props: object = {}) => new Promise(resolve =>
             componentManager
                 .importOrGetComponent()
                 .then(importedComponent => resolve(clazzInstance[componentProvider.name]
                     .call(clazzInstance, importedComponent, props))));
 
-        return (dataProvider: object | object[]) => Boolean(componentProvider.source)
+        return (dataProvider: object | object[], flatProps?: boolean) => Boolean(componentProvider.source)
             ? [isArray(dataProvider)
-                ? dataProvider.map(dataProviderEntry =>
-                    [createComponentPromise(dataProviderEntry), dataProviderEntry])
-                : [createComponentPromise(dataProvider), dataProvider]]
+                ? dataProvider.map(dataProviderEntry => [
+                        componentPromiseFn(dataProviderEntry),
+                        ...(isArray(dataProviderEntry) && flatProps ? dataProviderEntry : [dataProviderEntry])])
+                : [componentPromiseFn(dataProvider), dataProvider]]
             : [isArray(dataProvider) ? dataProvider : [dataProvider]];
-    }
-
-    private registerDataProvider(
-        dataProvider: object | object[],
-        testEntity: TestEntity,
-        testsManager: ITestsManager,
-        dataProviderFn: (...args: any[]) => any[][],
-        dataProviderName: string | symbol = Symbol()
-    ): void {
-        testsManager.registerDataProvider(dataProviderName, dataProviderFn(dataProvider));
-        testEntity.registerDataProvider(dataProviderName);
     }
 
     private registerWithStatePreprocessor(describeManager: IDescribeManager): PreProcessor {

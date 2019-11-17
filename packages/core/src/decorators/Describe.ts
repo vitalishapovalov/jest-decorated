@@ -1,7 +1,7 @@
 import { isUndefined } from "@js-utilities/typecheck";
 import { Class } from "@jest-decorated/shared";
 
-import DescribeManager from "../modules/DescribeManager"
+import DescribeManager from "../modules/DescribeManager";
 
 export function Describe(describeName?: string) {
     return function DescribeDecoratorFn(clazz: Class) {

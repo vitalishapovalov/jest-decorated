@@ -14,5 +14,5 @@ export function LazyImport(path: string, getter?: ((importedModule: any) => any)
         return describeManager
             .getImportsManager()
             .registerLazyModule({ name, path, getter });
-    }
+    };
 }

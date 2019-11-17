@@ -27,7 +27,7 @@
   "types": "dist/types/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c rollup.config.ts --name typecheck",
+    "build": "rollup -c rollup.config.ts --name jest-decorated/shared",
     "test": "jest --coverage",
     "lint": "tslint -c tslint.ts 'src/**/*.ts'"
   },

@@ -8,12 +8,12 @@ export function DataProvider(dataProviderName?: PropertyKey) {
         const describeManager = DescribeManager.getDescribeManager(proto.constructor as Class);
         const classInstance = describeManager.getClassInstance();
         const resolvedName = isUndefined(dataProviderName) ? propName : dataProviderName;
-        const resolvedData: any[] = isCallable(classInstance[propName])
+        const resolveData: () => any[] = () => isCallable(classInstance[propName])
             ? classInstance[propName].call(classInstance)
             : classInstance[propName];
 
         describeManager
             .getTestsManager()
-            .registerDataProvider(resolvedName, resolvedData);
+            .registerDataProvider(resolvedName, resolveData);
     };
 }

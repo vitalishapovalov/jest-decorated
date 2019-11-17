@@ -27,12 +27,12 @@
   "types": "dist/types/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c rollup.config.ts --name typecheck",
+    "build": "rollup -c rollup.config.ts --name jest-decorated/core",
     "test": "jest --coverage",
     "lint": "tslint -c tslint.ts 'src/**/*.ts'"
   },
   "dependencies": {
-    "@jest-decorated/shared": "file:../shared",
+    "@jest-decorated/shared": "^0.0.1",
     "@js-utilities/typecheck": "^0.1.4"
   },
   "jest": {
