@@ -5,11 +5,13 @@ import {
     ITestsManager,
     IDescribeManager,
     IImportsManager,
+    IMocksManager,
 } from "@jest-decorated/shared";
 import HooksManager from "./HooksManager";
 import TestsManager from "./TestsManager";
 import DefaultTestRunner from "./DefaultTestRunner";
 import ImportsManager from "./ImportsManager";
+import MocksManager from "./MocksManager";
 
 export default class DescribeManager implements IDescribeManager {
 
@@ -31,7 +33,8 @@ export default class DescribeManager implements IDescribeManager {
         private readonly clazzInstance: object = new clazz(),
         private readonly hooksManager: IHooksManager = new HooksManager(clazzInstance),
         private readonly testsManager: ITestsManager = new TestsManager(clazzInstance),
-        private readonly importsManager: IImportsManager = new ImportsManager(clazz)
+        private readonly importsManager: IImportsManager = new ImportsManager(clazz),
+        private readonly mocksManager: IMocksManager = new MocksManager(clazz, clazzInstance)
     ) {}
 
     public getClass(): Class {
@@ -60,6 +63,10 @@ export default class DescribeManager implements IDescribeManager {
 
     public getImportsManager(): IImportsManager {
         return this.importsManager;
+    }
+
+    public getMocksManager(): IMocksManager {
+        return this.mocksManager;
     }
 
     public async registerDescribeInJest(describeName: string): Promise<void> {

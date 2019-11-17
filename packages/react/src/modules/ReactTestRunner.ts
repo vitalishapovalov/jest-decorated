@@ -31,12 +31,12 @@ export default class ReactTestRunner implements ITestRunner {
 
         testsManager.registerPreProcessor(this.registerWithStatePreprocessor(describeManager));
 
-        // update existent data providers with react component
+        // update existing data providers, add react component
         const dataProviderFn = this.createDataProviderFn(describeManager);
         for (const providerName of testsManager.getDataProviders()) {
             const providerData = testsManager.getDataProvider(providerName);
-            const a = dataProviderFn(providerData, isArray(providerData) && isArray(providerData[0]));
-            testsManager.registerDataProvider(providerName, a[0]);
+            const [data] = dataProviderFn(providerData, isArray(providerData) && isArray(providerData[0]));
+            testsManager.registerDataProvider(providerName, data);
         }
 
         // register new data providers

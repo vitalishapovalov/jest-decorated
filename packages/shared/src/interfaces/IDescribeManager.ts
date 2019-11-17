@@ -3,6 +3,7 @@ import { IHooksManager } from "./IHooksManager";
 import { ITestsManager } from "./ITestsManager";
 import { ITestRunner } from "./ITestRunner";
 import { IImportsManager } from "./IImportsManager";
+import { IMocksManager } from "./IMocksManager";
 
 export interface IDescribeManager {
 
@@ -17,6 +18,8 @@ export interface IDescribeManager {
     getTestRunner(): ITestRunner;
 
     getImportsManager(): IImportsManager;
+
+    getMocksManager(): IMocksManager;
 
     setTestRunner(testRunner: ITestRunner): void;
 

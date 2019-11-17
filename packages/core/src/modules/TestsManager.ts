@@ -1,5 +1,5 @@
-import { ITestsManager, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
 import { isObject, isCallable } from "@js-utilities/typecheck";
+import { ITestsManager, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
 
 export default class TestsManager implements ITestsManager {
 

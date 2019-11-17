@@ -1,4 +1,4 @@
-import { resolveModulePath } from "@jest-decorated/shared";
+import { resolveModule } from "@jest-decorated/shared";
 
 import { ComponentProvider } from "../types";
 
@@ -25,7 +25,7 @@ export default class ComponentManager {
     public importOrGetComponent<T>(): Promise<T> {
         if (!this.importedComponent) {
             return this.importedComponent = new Promise<T>((resolve) => {
-                const component = require(resolveModulePath(this.componentProvider.source));
+                const component = resolveModule(this.componentProvider.source);
                 resolve(component);
             });
         }

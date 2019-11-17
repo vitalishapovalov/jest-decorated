@@ -1,5 +1,5 @@
-import { Class } from "@jest-decorated/shared";
 import { isArray, isCallable, isString } from "@js-utilities/typecheck";
+import { Class } from "@jest-decorated/shared";
 
 import DescribeManager from "../modules/DescribeManager";
 

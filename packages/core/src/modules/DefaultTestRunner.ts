@@ -15,6 +15,7 @@ export default class DefaultTestRunner implements ITestRunner {
 
     public beforeTestsJestRegistration(describeManager: IDescribeManager): void {
         describeManager.getImportsManager().registerLazyModulesInClass();
+        describeManager.getMocksManager().registerMockFnsAndSpiesInClass();
     }
 
     public registerTestsInJest(describeManager: IDescribeManager): void {

@@ -1,5 +1,5 @@
-import { Class, IImportsManager, LazyModule, resolveModulePath } from "@jest-decorated/shared";
 import { isCallable, isString } from "@js-utilities/typecheck";
+import { Class, IImportsManager, LazyModule, resolveModule } from "@jest-decorated/shared";
 
 export default class ImportsManager implements IImportsManager {
 
@@ -52,7 +52,7 @@ export default class ImportsManager implements IImportsManager {
         if (registeredModule) {
             return this.resolvedModules.get(registeredModule);
         }
-        const importedModule = require(resolveModulePath(lazyModule.path));
+        const importedModule = resolveModule(lazyModule.path);
         this.resolvedModules.set(lazyModule.path, importedModule);
         return importedModule;
     }
