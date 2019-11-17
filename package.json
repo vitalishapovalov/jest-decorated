@@ -9,13 +9,13 @@
     "email": "<shapovalov.vitali.v@gmail.com>"
   },
   "scripts": {
-    "clean": "lerna clean --yes && lerna exec -- rm -rf .rpt2_cache && lerna exec -- rm -rf coverage && rm -rf ./node_modules",
+    "clean": "lerna clean --yes && lerna exec -- rm -rf ./.rpt2_cache && lerna exec -- rm -rf ./coverage && rm -rf ./node_modules",
     "bootstrap": "lerna bootstrap --hoist",
     "test": "lerna run test",
     "build": "lerna run build",
     "lint": "lerna run lint",
     "cleanBuild": "npm run clean && npm run bootstrap && npm run build",
-    "prepublishOnly": "npm run cleanBuild && npm run lint && npm run test"
+    "prepublishOnly": "npm run build && npm run lint && npm run test"
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",

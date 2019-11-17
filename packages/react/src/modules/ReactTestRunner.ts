@@ -82,8 +82,8 @@ export default class ReactTestRunner implements ITestRunner {
         return (dataProvider: object | object[], flatProps?: boolean) => Boolean(componentProvider.source)
             ? [isArray(dataProvider)
                 ? dataProvider.map(dataProviderEntry => [
-                        componentPromiseFn(dataProviderEntry),
-                        ...(isArray(dataProviderEntry) && flatProps ? dataProviderEntry : [dataProviderEntry])])
+                    componentPromiseFn(dataProviderEntry),
+                    ...(isArray(dataProviderEntry) && flatProps ? dataProviderEntry : [dataProviderEntry])])
                 : [componentPromiseFn(dataProvider), dataProvider]]
             : [isArray(dataProvider) ? dataProvider : [dataProvider]];
     }
