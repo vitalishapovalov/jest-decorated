@@ -1,6 +1,13 @@
 import { ReactWrapper } from "enzyme";
 import { isArray } from "@js-utilities/typecheck";
-import { IDescribeManager, ITestRunner, PreProcessorData, PreProcessor } from "@jest-decorated/shared";
+import {
+    IDescribeManager,
+    ITestRunner,
+    PreProcessorData,
+    PreProcessor,
+    TestEntity,
+    ITestsManager
+} from "@jest-decorated/shared";
 
 import ReactExtension from "./ReactExtension";
 
@@ -44,7 +51,7 @@ export default class ReactTestRunner implements ITestRunner {
             if (parentDescribeManager) {
                 const parentReactExtension = ReactExtension
                     .getReactExtension(parentDescribeManager.getClass());
-                // parent has component provider
+                // parent has component provider, use it
                 if (parentReactExtension.getComponentManager().isComponentProviderRegistered()) {
                     reactExtension.getComponentManager().registerComponentProvider(
                         parentReactExtension.getComponentManager().componentProvider.name,
@@ -52,7 +59,7 @@ export default class ReactTestRunner implements ITestRunner {
                     );
                 }
             } else {
-                // no data provider at all
+                // no component provider at all
                 return;
             }
         }
@@ -60,40 +67,61 @@ export default class ReactTestRunner implements ITestRunner {
         testsManager.registerPreProcessor(this.registerWithStatePreprocessor(describeManager));
 
         // update existing data providers, add react component
-        const dataProviderFn = this.createDataProviderFn(describeManager);
-        for (const providerName of testsManager.getDataProviders()) {
-            const providerData = testsManager.getDataProvider(providerName);
-            const [data] = dataProviderFn(providerData, isArray(providerData) && isArray(providerData[0]));
-            testsManager.registerDataProvider(providerName, data);
+        // if parent exists, and it's parent's runner is ReactTestRunner
+        // then component provider already been registered
+        const componentDataProviderFn = this.createComponentDataProviderFn(describeManager);
+        if (
+            !parentDescribeManager
+            || !(parentDescribeManager.getTestRunner() instanceof ReactTestRunner)
+        ) {
+            for (const providerName of testsManager.getDataProviders()) {
+                const providerData = testsManager.getDataProvider(providerName);
+                const [data] = componentDataProviderFn(providerData, isArray(providerData) && isArray(providerData[0]));
+                testsManager.registerDataProvider(providerName, data);
+            }
         }
 
         // register new data providers
         testsManager.registerDataProvider(
             ReactTestRunner.REACT_DATA_PROVIDER,
-            dataProviderFn(undefined)
+            componentDataProviderFn(undefined)
         );
         for (const testEntity of testsManager.getTests()) {
-            const propsDataProvider = reactExtension.getWithProps(testEntity.name as string);
-            const hasDataProviders = Boolean(testEntity.dataProviders.length);
-            if (hasDataProviders) {
-                // if entity has data providers, means that @WithDataProvider already been declared
-                // currently, only @WithDataProvider or @WithProps is supported
-                if (propsDataProvider) {
-                    throw new SyntaxError("Currently, only @WithDataProvider or @WithProps is supported per test at one time");
-                }
-                continue;
-            }
-            if (!propsDataProvider) {
-                testEntity.registerDataProvider(ReactTestRunner.REACT_DATA_PROVIDER);
-            } else {
-                const dataProviderName = Symbol();
-                testsManager.registerDataProvider(dataProviderName, dataProviderFn(propsDataProvider));
-                testEntity.registerDataProvider(dataProviderName);
-            }
+            this.registerComponentProviderOnTestEntity(
+                testEntity,
+                reactExtension,
+                testsManager,
+                componentDataProviderFn
+            );
         }
     }
 
-    private createDataProviderFn(
+    private registerComponentProviderOnTestEntity(
+        testEntity: TestEntity,
+        reactExtension: ReactExtension,
+        testsManager: ITestsManager,
+        componentDataProviderFn: (arg: object | object[], flatProps?: boolean) => any[][]
+    ): void {
+        const propsDataProvider = reactExtension.getWithProps(testEntity.name as string);
+        const hasDataProviders = Boolean(testEntity.dataProviders.length);
+        if (hasDataProviders) {
+            // if entity has data providers, means that @WithDataProvider already been declared
+            // currently, only @WithDataProvider or @WithProps is supported
+            if (propsDataProvider) {
+                throw new SyntaxError("Currently, only @WithDataProvider or @WithProps is supported per test at one time");
+            }
+            return;
+        }
+        if (!propsDataProvider) {
+            testEntity.registerDataProvider(ReactTestRunner.REACT_DATA_PROVIDER);
+        } else {
+            const dataProviderName = Symbol();
+            testsManager.registerDataProvider(dataProviderName, componentDataProviderFn(propsDataProvider));
+            testEntity.registerDataProvider(dataProviderName);
+        }
+    }
+
+    private createComponentDataProviderFn(
         describeManager: IDescribeManager
     ): (arg: object | object[], flatProps?: boolean) => any[][] {
         const reactExtension = ReactExtension.getReactExtension(describeManager.getClass());
