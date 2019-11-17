@@ -4,7 +4,7 @@ import { ComponentProvider } from "../types";
 
 export default class ComponentManager {
 
-    private readonly componentProvider: Partial<ComponentProvider> = {};
+    public readonly componentProvider: Partial<ComponentProvider> = {};
 
     private importedComponent: any = null;
 

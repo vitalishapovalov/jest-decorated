@@ -28,6 +28,8 @@ export default class DescribeManager implements IDescribeManager {
 
     private testRunner: ITestRunner = new DefaultTestRunner();
 
+    private describeName: string;
+
     private constructor(
         private readonly clazz: Class,
         private readonly clazzInstance: object = new clazz(),
@@ -36,6 +38,14 @@ export default class DescribeManager implements IDescribeManager {
         private readonly importsManager: IImportsManager = new ImportsManager(clazz),
         private readonly mocksManager: IMocksManager = new MocksManager(clazz, clazzInstance)
     ) {}
+
+    public getDescribeName(): string {
+        return this.describeName;
+    }
+
+    public setDescribeName(describeName: string): void {
+        this.describeName = describeName;
+    }
 
     public getClass(): Class {
         return this.clazz;
@@ -69,12 +79,22 @@ export default class DescribeManager implements IDescribeManager {
         return this.mocksManager;
     }
 
-    public async registerDescribeInJest(describeName: string): Promise<void> {
-        describe(describeName, () => {
+    public registerDescribeInJest(parentDescribeManager?: IDescribeManager): void {
+        if (parentDescribeManager) {
+            this.updateDescribe(parentDescribeManager);
+        }
+        describe(this.describeName, () => {
             this.hooksManager.registerHooksInJest();
-            this.testRunner.beforeTestsJestRegistration(this);
-            this.testRunner.registerTestsInJest(this);
-            this.testRunner.afterTestsJestRegistration(this);
+            this.testRunner.beforeTestsJestRegistration(this, parentDescribeManager);
+            this.testRunner.registerTestsInJest(this, parentDescribeManager);
+            this.testRunner.afterTestsJestRegistration(this, parentDescribeManager);
         });
+    }
+
+    private updateDescribe(describeManager?: IDescribeManager): void {
+        this.mocksManager.update(describeManager.getMocksManager());
+        this.hooksManager.update(describeManager.getHooksManager());
+        this.testsManager.updateDataProviders(describeManager.getTestsManager());
+        this.setTestRunner(describeManager.getTestRunner());
     }
 }

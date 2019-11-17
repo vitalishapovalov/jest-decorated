@@ -10,24 +10,52 @@ export default class ReactTestRunner implements ITestRunner {
 
     public constructor(private readonly defaultTestsRunner: ITestRunner) {}
 
-    public beforeTestsJestRegistration(describeManager: IDescribeManager): void {
+    public beforeTestsJestRegistration(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void {
         this.defaultTestsRunner.beforeTestsJestRegistration(describeManager);
     }
 
-    public registerTestsInJest(describeManager: IDescribeManager): void {
-        this.registerComponentDataProvider(describeManager);
-        this.defaultTestsRunner.registerTestsInJest(describeManager);
+    public registerTestsInJest(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void {
+        this.registerComponentDataProvider(describeManager, parentDescribeManager);
+        this.defaultTestsRunner.registerTestsInJest(describeManager, parentDescribeManager);
     }
 
-    public afterTestsJestRegistration(describeManager: IDescribeManager): void {
-        this.defaultTestsRunner.afterTestsJestRegistration(describeManager);
+    public afterTestsJestRegistration(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void {
+        this.defaultTestsRunner.afterTestsJestRegistration(describeManager, parentDescribeManager);
     }
 
-    private registerComponentDataProvider(describeManager: IDescribeManager): void {
+    private registerComponentDataProvider(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void {
         const reactExtension = ReactExtension.getReactExtension(describeManager.getClass());
         const testsManager = describeManager.getTestsManager();
 
-        if (!reactExtension.getComponentManager().isComponentProviderRegistered()) return;
+        // resolve component provider
+        if (!reactExtension.getComponentManager().isComponentProviderRegistered()) {
+            if (parentDescribeManager) {
+                const parentReactExtension = ReactExtension
+                    .getReactExtension(parentDescribeManager.getClass());
+                // parent has component provider
+                if (parentReactExtension.getComponentManager().isComponentProviderRegistered()) {
+                    reactExtension.getComponentManager().registerComponentProvider(
+                        parentReactExtension.getComponentManager().componentProvider.name,
+                        parentReactExtension.getComponentManager().componentProvider.source
+                    );
+                }
+            } else {
+                // no data provider at all
+                return;
+            }
+        }
 
         testsManager.registerPreProcessor(this.registerWithStatePreprocessor(describeManager));
 

@@ -7,6 +7,10 @@ import { IMocksManager } from "./IMocksManager";
 
 export interface IDescribeManager {
 
+    getDescribeName(): string;
+
+    setDescribeName(describeName: string): void;
+
     getClass(): Class;
 
     getClassInstance(): object;
@@ -23,5 +27,5 @@ export interface IDescribeManager {
 
     setTestRunner(testRunner: ITestRunner): void;
 
-    registerDescribeInJest(describeName: string): void;
+    registerDescribeInJest(parentDescribeManager?: IDescribeManager): void;
 }

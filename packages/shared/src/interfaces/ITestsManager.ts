@@ -3,6 +3,8 @@ import { TestEntity } from "../entities";
 
 export interface ITestsManager {
 
+    updateDataProviders(testsManager: ITestsManager): void;
+
     registerTest(testEntity: TestEntity): void;
 
     registerDataProvider(dataProviderName: PropertyKey, data: any[] | (() => any[])): void;

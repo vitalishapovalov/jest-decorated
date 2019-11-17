@@ -13,19 +13,27 @@ export default class DefaultTestRunner implements ITestRunner {
             : description;
     }
 
-    public beforeTestsJestRegistration(describeManager: IDescribeManager): void {
+    public beforeTestsJestRegistration(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void {
         describeManager.getImportsManager().registerLazyModulesInClass();
         describeManager.getMocksManager().registerMockFnsAndSpiesInClass();
     }
 
-    public registerTestsInJest(describeManager: IDescribeManager): void {
+    public registerTestsInJest(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void {
         for (const testEntity of describeManager.getTestsManager().getTests()) {
             this.registerTestInJest(testEntity, describeManager);
         }
     }
 
-    public afterTestsJestRegistration(describeManager: IDescribeManager): void {
-    }
+    public afterTestsJestRegistration(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void {}
 
     protected registerTestInJest(testEntity: TestEntity, describeManager: IDescribeManager): void {
         const clazzInstance = describeManager.getClassInstance();

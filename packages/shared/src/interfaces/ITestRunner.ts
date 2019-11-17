@@ -6,9 +6,18 @@ export interface ITestRunnerConstructor {
 
 export interface ITestRunner {
 
-    beforeTestsJestRegistration(describeManager: IDescribeManager): void;
+    beforeTestsJestRegistration(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void;
 
-    registerTestsInJest(describeManager: IDescribeManager): void;
+    registerTestsInJest(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void;
 
-    afterTestsJestRegistration(describeManager: IDescribeManager): void;
+    afterTestsJestRegistration(
+        describeManager: IDescribeManager,
+        parentDescribeManager?: IDescribeManager
+    ): void;
 }

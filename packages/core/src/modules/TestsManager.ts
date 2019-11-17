@@ -57,6 +57,12 @@ export default class TestsManager implements ITestsManager {
         this.registerExpectPostProcessor();
     }
 
+    public updateDataProviders(testsManager: ITestsManager): void {
+        for (const dataProvider of testsManager.getDataProviders()) {
+            this.registerDataProvider(dataProvider, () => testsManager.getDataProvider(dataProvider));
+        }
+    }
+
     public registerTest(testEntity: TestEntity): void {
         this.tests.push(testEntity);
     }

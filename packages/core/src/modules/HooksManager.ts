@@ -2,13 +2,19 @@ import { IHooksManager, Hook } from "@jest-decorated/shared";
 
 export default class HooksManager implements IHooksManager {
 
-    private readonly hooks: Map<Hook, PropertyKey[]> = new Map()
+    public readonly hooks: Map<Hook, PropertyKey[]> = new Map()
         .set(Hook.BEFORE_ALL, [])
         .set(Hook.BEFORE_EACH, [])
         .set(Hook.AFTER_ALL, [])
         .set(Hook.AFTER_EACH, []);
 
     public constructor(private readonly clazzInstance: object) {}
+
+    public update(hooksManager: IHooksManager): void {
+        for (const [hook, names] of hooksManager.hooks) {
+            names.forEach(name => this.registerHook(hook, name));
+        }
+    }
 
     public registerHook(hook: Hook, name: PropertyKey): void {
         this.hooks.get(hook).push(name);

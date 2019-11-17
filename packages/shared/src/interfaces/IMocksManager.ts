@@ -2,6 +2,8 @@ import { MockFn, Spy } from "../types";
 
 export interface IMocksManager {
 
+    getMocks(): readonly (Map<string, MockFn | Spy>)[];
+
     registerMockFn(
         name: MockFn["name"],
         impl?: MockFn["impl"]
@@ -15,4 +17,6 @@ export interface IMocksManager {
     ): void;
 
     registerMockFnsAndSpiesInClass(): void;
+
+    update(mocksManager: IMocksManager): void;
 }

@@ -12,6 +12,10 @@ export default class MocksManager implements IMocksManager {
 
     private spies: Map<string, Spy> = new Map();
 
+    public getMocks(): readonly (Map<string, MockFn | Spy>)[] {
+        return [this.mockFns, this.spies];
+    }
+
     public registerMockFn(
         name: MockFn["name"],
         impl?: MockFn["impl"]
@@ -26,6 +30,21 @@ export default class MocksManager implements IMocksManager {
         accessType?: Spy["accessType"]
     ): void {
         this.spies.set(name, { name, obj, prop, accessType });
+    }
+
+    public update(mocksManager: IMocksManager): void {
+        for (const [mockFns, spies] of mocksManager.getMocks()) {
+            if (mockFns) {
+                for (const config of mockFns.values()) {
+                    this.mockFns.set((config as MockFn).name, config as MockFn);
+                }
+            }
+            if (spies) {
+                for (const config of spies.values()) {
+                    this.spies.set((config as Spy).name, config as Spy);
+                }
+            }
+        }
     }
 
     public registerMockFnsAndSpiesInClass(): void {

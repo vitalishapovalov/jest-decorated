@@ -6,9 +6,9 @@ export default class ReactExtension {
 
     private static readonly REACT_EXT_REGISTRY: WeakMap<Class, ReactExtension> = new WeakMap();
 
-    public static getReactExtension(clazz?: Class): ReactExtension {
+    public static getReactExtension(clazz?: Class, autoCreate: boolean = true): ReactExtension {
         let reactExtension = ReactExtension.REACT_EXT_REGISTRY.get(clazz);
-        if (!reactExtension) {
+        if (!reactExtension && autoCreate) {
             reactExtension = new this(clazz);
             ReactExtension.REACT_EXT_REGISTRY.set(clazz, reactExtension);
         }
