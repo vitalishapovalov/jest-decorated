@@ -1,9 +1,9 @@
-import { PostProcessor, PreProcessor, PreProcessorData } from "../types";
-import { TestEntity } from "../entities";
+import { PostProcessor, PreProcessor, PreProcessorData } from "@shared/types";
+import { TestEntity } from "@shared/entities";
 
-export interface ITestsManager {
+export interface ITestsService {
 
-    updateDataProviders(testsManager: ITestsManager): void;
+    mergeInDataProviders(testsService: ITestsService): void;
 
     registerTest(testEntity: TestEntity): void;
 

@@ -1,7 +1,7 @@
 import { isCallable } from "@js-utilities/typecheck";
-import { IDescribeManager, ITestRunner, TestEntity } from "@jest-decorated/shared";
+import { IDescribeRunner, ITestRunner, TestEntity } from "@jest-decorated/shared";
 
-export default class DefaultTestRunner implements ITestRunner {
+export class TestRunner implements ITestRunner {
 
     public static resolveDescription(
         description: string | ((...args: any[]) => string),
@@ -14,34 +14,34 @@ export default class DefaultTestRunner implements ITestRunner {
     }
 
     public beforeTestsJestRegistration(
-        describeManager: IDescribeManager,
-        parentDescribeManager?: IDescribeManager
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
     ): void {
-        describeManager.getImportsManager().registerLazyModulesInClass();
-        describeManager.getMocksManager().registerMockFnsAndSpiesInClass();
+        describeRunner.getImportsService().registerLazyModulesInClass();
+        describeRunner.getMocksService().registerMockFnsAndSpiesInClass();
     }
 
     public registerTestsInJest(
-        describeManager: IDescribeManager,
-        parentDescribeManager?: IDescribeManager
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
     ): void {
-        for (const testEntity of describeManager.getTestsManager().getTests()) {
-            this.registerTestInJest(testEntity, describeManager);
+        for (const testEntity of describeRunner.getTestsService().getTests()) {
+            this.registerTestInJest(testEntity, describeRunner);
         }
     }
 
     public afterTestsJestRegistration(
-        describeManager: IDescribeManager,
-        parentDescribeManager?: IDescribeManager
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
     ): void {}
 
-    protected registerTestInJest(testEntity: TestEntity, describeManager: IDescribeManager): void {
-        const clazzInstance = describeManager.getClassInstance();
-        const testsManager = describeManager.getTestsManager();
+    protected registerTestInJest(testEntity: TestEntity, describeRunner: IDescribeRunner): void {
+        const clazzInstance = describeRunner.getClassInstance();
+        const testsService = describeRunner.getTestsService();
         const registerTest = (args: any[] = [], providerName?: PropertyKey) => test(
-            DefaultTestRunner.resolveDescription(testEntity.description, args, providerName),
+            TestRunner.resolveDescription(testEntity.description, args, providerName),
             async () => {
-                const preProcessorResult = await testsManager.runPreProcessors({
+                const preProcessorResult = await testsService.runPreProcessors({
                     clazzInstance,
                     testEntity,
                     args,
@@ -49,24 +49,24 @@ export default class DefaultTestRunner implements ITestRunner {
                 const testResult = await preProcessorResult
                     .clazzInstance[preProcessorResult.testEntity.name]
                     .apply(preProcessorResult.clazzInstance, preProcessorResult.args);
-                await testsManager.runPostProcessors(testResult);
+                await testsService.runPostProcessors(testResult);
             }
         );
         if (!testEntity.dataProviders.length) {
             registerTest();
         } else {
-            this.registerDataProvidersTest(testEntity, describeManager, registerTest);
+            this.registerDataProvidersTest(testEntity, describeRunner, registerTest);
         }
     }
 
     protected registerDataProvidersTest(
         testEntity: TestEntity,
-        describeManager: IDescribeManager,
+        describeRunner: IDescribeRunner,
         registerFn: (args: any[], providerName?: PropertyKey) => any
     ) {
-        const testsManager = describeManager.getTestsManager();
+        const testsService = describeRunner.getTestsService();
         const dataProvidersData = testEntity.dataProviders
-            .map<any[][]>(testsManager.getDataProvider.bind(testsManager));
+            .map<any[][]>(testsService.getDataProvider.bind(testsService));
         testEntity.dataProviders
             .reduce<Map<PropertyKey, any[][]>>(
                 (map, name, i) => {

@@ -1,7 +1,7 @@
 import { isObject, isCallable } from "@js-utilities/typecheck";
-import { ITestsManager, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
+import { ITestsService, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
 
-export default class TestsManager implements ITestsManager {
+export class TestsService implements ITestsService {
 
     private static readonly NOT = "not" as const;
 
@@ -57,9 +57,9 @@ export default class TestsManager implements ITestsManager {
         this.registerExpectPostProcessor();
     }
 
-    public updateDataProviders(testsManager: ITestsManager): void {
-        for (const dataProvider of testsManager.getDataProviders()) {
-            this.registerDataProvider(dataProvider, () => testsManager.getDataProvider(dataProvider));
+    public mergeInDataProviders(testsService: ITestsService): void {
+        for (const dataProvider of testsService.getDataProviders()) {
+            this.registerDataProvider(dataProvider, () => testsService.getDataProvider(dataProvider));
         }
     }
 
@@ -117,17 +117,17 @@ export default class TestsManager implements ITestsManager {
     private registerExpectPostProcessor(): void {
         this.registerPostProcessor(async (testResult: any) => {
             if (!isObject(testResult)) return;
-            this.runMatchers(testResult);
+            this.invokeMatchers(testResult);
         });
     }
 
-    private runMatchers(testResult: object, not: boolean = false): void {
+    private invokeMatchers(testResult: object, not: boolean = false): void {
         for (const matcher of Object.keys(testResult)) {
-            if (TestsManager.NOT === matcher && isObject(testResult[matcher])) {
-                this.runMatchers(testResult[matcher], true);
+            if (TestsService.NOT === matcher && isObject(testResult[matcher])) {
+                this.invokeMatchers(testResult[matcher], true);
                 continue;
             }
-            if (!TestsManager.MATCHERS.includes(matcher)) {
+            if (!TestsService.MATCHERS.includes(matcher)) {
                 continue;
             }
             const [expectVal, ...matcherValues] = testResult[matcher];

@@ -1,14 +1,14 @@
-import { Hook } from "../types";
+import { Hook } from "@shared/types";
 
-export interface IHooksManager {
+export interface IHooksService {
 
     readonly hooks: Map<Hook, PropertyKey[]>;
 
     registerHook(hook: Hook, name: PropertyKey): void;
 
+    mergeInAll(hooksService: IHooksService): void;
+
     registerHooksInJest(): void;
 
     registerHookInJest(hook: Hook, name: PropertyKey): void;
-
-    update(hooksManager: IHooksManager): void;
 }

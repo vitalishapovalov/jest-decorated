@@ -1,6 +1,6 @@
-import { LazyModule } from "../types";
+import { LazyModule } from "@shared/types";
 
-export interface IImportsManager {
+export interface IImportsService {
 
     registerLazyModule(lazyModule: LazyModule): void;
 

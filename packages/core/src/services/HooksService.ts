@@ -1,6 +1,6 @@
-import { IHooksManager, Hook } from "@jest-decorated/shared";
+import { IHooksService, Hook } from "@jest-decorated/shared";
 
-export default class HooksManager implements IHooksManager {
+export class HooksService implements IHooksService {
 
     public readonly hooks: Map<Hook, PropertyKey[]> = new Map()
         .set(Hook.BEFORE_ALL, [])
@@ -10,8 +10,8 @@ export default class HooksManager implements IHooksManager {
 
     public constructor(private readonly clazzInstance: object) {}
 
-    public update(hooksManager: IHooksManager): void {
-        for (const [hook, names] of hooksManager.hooks) {
+    public mergeInAll(hooksService: IHooksService): void {
+        for (const [hook, names] of hooksService.hooks) {
             names.forEach(name => this.registerHook(hook, name));
         }
     }

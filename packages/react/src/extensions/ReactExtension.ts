@@ -1,8 +1,8 @@
 import { Class } from "@jest-decorated/shared";
 
-import ComponentManager from "./ComponentManager";
+import { ComponentService } from "../services";
 
-export default class ReactExtension {
+export class ReactExtension {
 
     private static readonly REACT_EXT_REGISTRY: WeakMap<Class, ReactExtension> = new WeakMap();
 
@@ -20,11 +20,11 @@ export default class ReactExtension {
 
     private constructor(
         private readonly clazz: Class,
-        private readonly componentManager: ComponentManager = new ComponentManager()
+        private readonly componentService: ComponentService = new ComponentService()
     ) {}
 
-    public getComponentManager(): ComponentManager {
-        return this.componentManager;
+    public getComponentService(): ComponentService {
+        return this.componentService;
     }
 
     public registerWithProps(methodName: string, data: object | object[]): void {

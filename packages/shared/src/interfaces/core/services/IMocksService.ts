@@ -1,6 +1,8 @@
-import { Mock, MockFn, Spy } from "../types";
+import { Mock, MockFn, Spy } from "@shared/types";
 
-export interface IMocksManager {
+export interface IMocksService {
+
+    mergeInAll(mocksService: IMocksService): void;
 
     getMocks(): {
         mocks: Map<string, Mock>;
@@ -28,6 +30,4 @@ export interface IMocksManager {
     ): void;
 
     registerMockFnsAndSpiesInClass(): void;
-
-    update(mocksManager: IMocksManager): void;
 }

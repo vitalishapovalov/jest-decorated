@@ -1,4 +1,4 @@
-export default class TestEntity {
+export class TestEntity {
 
     private readonly metadata: Map<PropertyKey, any> = new Map();
 

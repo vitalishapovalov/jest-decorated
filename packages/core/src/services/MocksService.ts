@@ -1,7 +1,7 @@
 import { isCallable } from "@js-utilities/typecheck";
-import { IMocksManager, Class, Mock, MockFn, Spy, resolveModule } from "@jest-decorated/shared";
+import { IMocksService, Class, Mock, MockFn, Spy, resolveModule } from "@jest-decorated/shared";
 
-export default class MocksManager implements IMocksManager {
+export class MocksService implements IMocksService {
 
     public constructor(
         private readonly clazz: Class,
@@ -69,8 +69,8 @@ export default class MocksManager implements IMocksManager {
         });
     }
 
-    public update(mocksManager: IMocksManager): void {
-        const { mocks, mockFns, spies } = mocksManager.getMocks();
+    public mergeInAll(mocksService: IMocksService): void {
+        const { mocks, mockFns, spies } = mocksService.getMocks();
         if (mocks) {
             for (const mock of mocks.values()) {
                 const mockAsMock = mock as Mock;

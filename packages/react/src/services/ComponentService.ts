@@ -1,8 +1,6 @@
-import { resolveModule } from "@jest-decorated/shared";
+import { ComponentProvider, resolveModule } from "@jest-decorated/shared";
 
-import { ComponentProvider } from "../types";
-
-export default class ComponentManager {
+export class ComponentService {
 
     public readonly componentProvider: Partial<ComponentProvider> = {};
 

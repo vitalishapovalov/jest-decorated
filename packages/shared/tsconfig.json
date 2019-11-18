@@ -10,7 +10,15 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "declarationDir": "dist/types",
-    "typeRoots": ["node_modules/@types", "../../node_modules/@types"]
+    "typeRoots": ["node_modules/@types", "../../node_modules/@types"],
+    "baseUrl": "src",
+    "paths": {
+      "@shared/entities": ["entities/index"],
+      "@shared/interfaces": ["interfaces/index"],
+      "@shared/types": ["types/index"],
+      "@shared/utils": ["utils/index"]
+
+    }
   },
   "include": [
     "src"

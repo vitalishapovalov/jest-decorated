@@ -1,7 +1,7 @@
 import { isCallable, isString } from "@js-utilities/typecheck";
-import { Class, IImportsManager, LazyModule, resolveModule } from "@jest-decorated/shared";
+import { Class, IImportsService, LazyModule, resolveModule } from "@jest-decorated/shared";
 
-export default class ImportsManager implements IImportsManager {
+export class ImportsService implements IImportsService {
 
     private static DEFAULT_GETTER(importedModule: any): any {
         if (
@@ -44,7 +44,7 @@ export default class ImportsManager implements IImportsManager {
                     ? importedModule[getter]
                     : getter.reduce((obj, key) => obj[key], importedModule);
         }
-        return ImportsManager.DEFAULT_GETTER(importedModule);
+        return ImportsService.DEFAULT_GETTER(importedModule);
     }
 
     private importOrGetModule(lazyModule: LazyModule): any {

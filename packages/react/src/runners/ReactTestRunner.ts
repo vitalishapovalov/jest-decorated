@@ -1,61 +1,61 @@
 import { ReactWrapper } from "enzyme";
 import { isArray } from "@js-utilities/typecheck";
 import {
-    IDescribeManager,
+    IDescribeRunner,
     ITestRunner,
     PreProcessorData,
     PreProcessor,
     TestEntity,
-    ITestsManager
+    ITestsService
 } from "@jest-decorated/shared";
 
-import ReactExtension from "./ReactExtension";
+import { ReactExtension } from "../extensions";
 
-export default class ReactTestRunner implements ITestRunner {
+export class ReactTestRunner implements ITestRunner {
 
     private static readonly REACT_DATA_PROVIDER = Symbol();
 
     public constructor(private readonly defaultTestsRunner: ITestRunner) {}
 
     public beforeTestsJestRegistration(
-        describeManager: IDescribeManager,
-        parentDescribeManager?: IDescribeManager
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
     ): void {
-        this.defaultTestsRunner.beforeTestsJestRegistration(describeManager);
+        this.defaultTestsRunner.beforeTestsJestRegistration(describeRunner);
     }
 
     public registerTestsInJest(
-        describeManager: IDescribeManager,
-        parentDescribeManager?: IDescribeManager
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
     ): void {
-        this.registerComponentDataProvider(describeManager, parentDescribeManager);
-        this.defaultTestsRunner.registerTestsInJest(describeManager, parentDescribeManager);
+        this.registerComponentDataProvider(describeRunner, parentDescribeRunner);
+        this.defaultTestsRunner.registerTestsInJest(describeRunner, parentDescribeRunner);
     }
 
     public afterTestsJestRegistration(
-        describeManager: IDescribeManager,
-        parentDescribeManager?: IDescribeManager
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
     ): void {
-        this.defaultTestsRunner.afterTestsJestRegistration(describeManager, parentDescribeManager);
+        this.defaultTestsRunner.afterTestsJestRegistration(describeRunner, parentDescribeRunner);
     }
 
     private registerComponentDataProvider(
-        describeManager: IDescribeManager,
-        parentDescribeManager?: IDescribeManager
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
     ): void {
-        const reactExtension = ReactExtension.getReactExtension(describeManager.getClass());
-        const testsManager = describeManager.getTestsManager();
+        const reactExtension = ReactExtension.getReactExtension(describeRunner.getClass());
+        const testsService = describeRunner.getTestsService();
 
         // resolve component provider
-        if (!reactExtension.getComponentManager().isComponentProviderRegistered()) {
-            if (parentDescribeManager) {
+        if (!reactExtension.getComponentService().isComponentProviderRegistered()) {
+            if (parentDescribeRunner) {
                 const parentReactExtension = ReactExtension
-                    .getReactExtension(parentDescribeManager.getClass());
+                    .getReactExtension(parentDescribeRunner.getClass());
                 // parent has component provider, use it
-                if (parentReactExtension.getComponentManager().isComponentProviderRegistered()) {
-                    reactExtension.getComponentManager().registerComponentProvider(
-                        parentReactExtension.getComponentManager().componentProvider.name,
-                        parentReactExtension.getComponentManager().componentProvider.source
+                if (parentReactExtension.getComponentService().isComponentProviderRegistered()) {
+                    reactExtension.getComponentService().registerComponentProvider(
+                        parentReactExtension.getComponentService().componentProvider.name,
+                        parentReactExtension.getComponentService().componentProvider.source
                     );
                 }
             } else {
@@ -64,33 +64,36 @@ export default class ReactTestRunner implements ITestRunner {
             }
         }
 
-        testsManager.registerPreProcessor(this.registerWithStatePreprocessor(describeManager));
+        testsService.registerPreProcessor(this.registerWithStatePreprocessor(describeRunner));
 
         // update existing data providers, add react component
         // if parent exists, and it's parent's runner is ReactTestRunner
         // then component provider already been registered
-        const componentDataProviderFn = this.createComponentDataProviderFn(describeManager);
+        const componentDataProviderFn = this.createComponentDataProviderFn(describeRunner);
         if (
-            !parentDescribeManager
-            || !(parentDescribeManager.getTestRunner() instanceof ReactTestRunner)
+            !parentDescribeRunner
+            || !(parentDescribeRunner.getTestRunner() instanceof ReactTestRunner)
         ) {
-            for (const providerName of testsManager.getDataProviders()) {
-                const providerData = testsManager.getDataProvider(providerName);
-                const [data] = componentDataProviderFn(providerData, isArray(providerData) && isArray(providerData[0]));
-                testsManager.registerDataProvider(providerName, data);
+            for (const providerName of testsService.getDataProviders()) {
+                const providerData = testsService.getDataProvider(providerName);
+                const [data] = componentDataProviderFn(
+                    providerData,
+                    isArray(providerData) && isArray(providerData[0])
+                );
+                testsService.registerDataProvider(providerName, data);
             }
         }
 
         // register new data providers
-        testsManager.registerDataProvider(
+        testsService.registerDataProvider(
             ReactTestRunner.REACT_DATA_PROVIDER,
             componentDataProviderFn(undefined)
         );
-        for (const testEntity of testsManager.getTests()) {
+        for (const testEntity of testsService.getTests()) {
             this.registerComponentProviderOnTestEntity(
                 testEntity,
                 reactExtension,
-                testsManager,
+                testsService,
                 componentDataProviderFn
             );
         }
@@ -99,7 +102,7 @@ export default class ReactTestRunner implements ITestRunner {
     private registerComponentProviderOnTestEntity(
         testEntity: TestEntity,
         reactExtension: ReactExtension,
-        testsManager: ITestsManager,
+        testsService: ITestsService,
         componentDataProviderFn: (arg: object | object[], flatProps?: boolean) => any[][]
     ): void {
         const propsDataProvider = reactExtension.getWithProps(testEntity.name as string);
@@ -116,21 +119,21 @@ export default class ReactTestRunner implements ITestRunner {
             testEntity.registerDataProvider(ReactTestRunner.REACT_DATA_PROVIDER);
         } else {
             const dataProviderName = Symbol();
-            testsManager.registerDataProvider(dataProviderName, componentDataProviderFn(propsDataProvider));
+            testsService.registerDataProvider(dataProviderName, componentDataProviderFn(propsDataProvider));
             testEntity.registerDataProvider(dataProviderName);
         }
     }
 
     private createComponentDataProviderFn(
-        describeManager: IDescribeManager
+        describeRunner: IDescribeRunner
     ): (arg: object | object[], flatProps?: boolean) => any[][] {
-        const reactExtension = ReactExtension.getReactExtension(describeManager.getClass());
-        const clazzInstance = describeManager.getClassInstance();
-        const componentManager = reactExtension.getComponentManager();
-        const componentProvider = componentManager.getComponentProvider();
+        const reactExtension = ReactExtension.getReactExtension(describeRunner.getClass());
+        const clazzInstance = describeRunner.getClassInstance();
+        const componentService = reactExtension.getComponentService();
+        const componentProvider = componentService.getComponentProvider();
 
         const componentPromiseFn = (props: object = {}) => new Promise(resolve =>
-            componentManager
+            componentService
                 .importOrGetComponent()
                 .then(importedComponent => resolve(clazzInstance[componentProvider.name]
                     .call(clazzInstance, importedComponent, props))));
@@ -144,8 +147,8 @@ export default class ReactTestRunner implements ITestRunner {
             : [isArray(dataProvider) ? dataProvider : [dataProvider]];
     }
 
-    private registerWithStatePreprocessor(describeManager: IDescribeManager): PreProcessor {
-        const reactExtension = ReactExtension.getReactExtension(describeManager.getClass());
+    private registerWithStatePreprocessor(describeRunner: IDescribeRunner): PreProcessor {
+        const reactExtension = ReactExtension.getReactExtension(describeRunner.getClass());
         return async (data: PreProcessorData): Promise<PreProcessorData> => {
             const stateDataProvider = reactExtension.getWithState(data.testEntity.name as string);
             let wrapper: ReactWrapper;

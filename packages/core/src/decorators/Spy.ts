@@ -1,6 +1,6 @@
 import { Class, Spy } from "@jest-decorated/shared";
 
-import DescribeManager from "../modules/DescribeManager";
+import { DescribeRunner } from "../runners";
 
 export function Spy(
     obj: Spy["obj"],
@@ -8,10 +8,10 @@ export function Spy(
     accessType?: Spy["accessType"]
 ) {
     return function SpyDecoratorFn(proto: object, name: string) {
-        const describeManager = DescribeManager.getDescribeManager(proto.constructor as Class);
+        const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
 
-        describeManager
-            .getMocksManager()
+        describeRunner
+            .getMocksService()
             .registerSpy(name, obj, prop, accessType);
     };
 }

@@ -1,10 +1,10 @@
 import { Class, ITestRunnerConstructor } from "@jest-decorated/shared";
 
-import DescribeManager from "../modules/DescribeManager";
+import { DescribeRunner } from "../runners";
 
 export function RunWith(testRunner: ITestRunnerConstructor) {
     return function RunWithDecoratorFn(clazz: Class) {
-        const describeManager = DescribeManager.getDescribeManager(clazz, false);
-        describeManager.setTestRunner(new testRunner(describeManager.getTestRunner()));
+        const describeRunner = DescribeRunner.getDescribeRunner(clazz, false);
+        describeRunner.setTestRunner(new testRunner(describeRunner.getTestRunner()));
     };
 }

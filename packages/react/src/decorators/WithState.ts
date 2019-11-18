@@ -1,6 +1,6 @@
 import { Class } from "@jest-decorated/shared";
 
-import ReactExtension from "../modules/ReactExtension";
+import { ReactExtension } from "../extensions";
 
 export function WithState(state: object) {
     return function WithStateDecoratorFunc(proto: object, methodName: string) {
