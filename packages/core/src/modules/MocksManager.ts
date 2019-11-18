@@ -1,5 +1,5 @@
 import { isCallable } from "@js-utilities/typecheck";
-import { IMocksManager, Class, MockFn, Spy } from "@jest-decorated/shared";
+import { IMocksManager, Class, Mock, MockFn, Spy, resolveModule } from "@jest-decorated/shared";
 
 export default class MocksManager implements IMocksManager {
 
@@ -8,12 +8,22 @@ export default class MocksManager implements IMocksManager {
         private readonly clazzInstance: object
     ) {}
 
+    private mocks: Map<string, Mock> = new Map();
+
     private mockFns: Map<string, MockFn> = new Map();
 
     private spies: Map<string, Spy> = new Map();
 
-    public getMocks(): readonly (Map<string, MockFn | Spy>)[] {
-        return [this.mockFns, this.spies];
+    public getMocks(): {
+        mocks: Map<string, Mock>;
+        mockFns: Map<string, MockFn>;
+        spies:  Map<string, Spy>;
+    } {
+        return {
+            mocks: new Map(this.mocks),
+            mockFns: new Map(this.mockFns),
+            spies: new Map(this.spies),
+        };
     }
 
     public registerMockFn(
@@ -32,17 +42,56 @@ export default class MocksManager implements IMocksManager {
         this.spies.set(name, { name, obj, prop, accessType });
     }
 
+    public registerMock(
+        mockName: string,
+        mock: string,
+        impl?: () => any,
+        options?: jest.MockOptions
+    ): void {
+        let modulePath: string;
+        try {
+            resolveModule(mock, (resolvedModulePath) => {
+                modulePath = resolvedModulePath;
+                jest.mock(modulePath, impl, options);
+                afterAll(() => jest.unmock(modulePath));
+            });
+        } catch (e) {
+            console.error(e);
+            throw new EvalError("Error during mock registration. Aborting test suite...");
+        }
+
+        const requiredMock = jest.requireMock(modulePath);
+
+        this.mocks.set(mockName, { mockName, mock, impl, options });
+
+        Object.defineProperty(this.clazz.prototype, mockName, {
+            value: requiredMock,
+        });
+    }
+
     public update(mocksManager: IMocksManager): void {
-        for (const [mockFns, spies] of mocksManager.getMocks()) {
-            if (mockFns) {
-                for (const config of mockFns.values()) {
-                    this.mockFns.set((config as MockFn).name, config as MockFn);
-                }
+        const { mocks, mockFns, spies } = mocksManager.getMocks();
+        if (mocks) {
+            for (const mock of mocks.values()) {
+                const mockAsMock = mock as Mock;
+                this.registerMock(
+                    mockAsMock.mockName,
+                    mockAsMock.mock,
+                    mockAsMock.impl,
+                    mockAsMock.options
+                );
             }
-            if (spies) {
-                for (const config of spies.values()) {
-                    this.spies.set((config as Spy).name, config as Spy);
-                }
+        }
+        if (mockFns) {
+            for (const mockFn of mockFns.values()) {
+                const mockFnAsMockFn = mockFn as MockFn;
+                this.registerMockFn(mockFnAsMockFn.name, mockFnAsMockFn.impl);
+            }
+        }
+        if (spies) {
+            for (const spy of spies.values()) {
+                const spyAsSpy = spy as Spy;
+                this.registerSpy(spyAsSpy.name, spyAsSpy.obj, spyAsSpy.prop, spyAsSpy.accessType);
             }
         }
     }

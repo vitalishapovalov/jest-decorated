@@ -10,7 +10,7 @@ export function Spy(
     return function SpyDecoratorFn(proto: object, name: string) {
         const describeManager = DescribeManager.getDescribeManager(proto.constructor as Class);
 
-        return describeManager
+        describeManager
             .getMocksManager()
             .registerSpy(name, obj, prop, accessType);
     };

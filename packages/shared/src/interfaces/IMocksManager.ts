@@ -1,8 +1,19 @@
-import { MockFn, Spy } from "../types";
+import { Mock, MockFn, Spy } from "../types";
 
 export interface IMocksManager {
 
-    getMocks(): readonly (Map<string, MockFn | Spy>)[];
+    getMocks(): {
+        mocks: Map<string, Mock>;
+        mockFns: Map<string, MockFn>;
+        spies:  Map<string, Spy>;
+    };
+
+    registerMock(
+        mockName: string,
+        mock: string,
+        impl?: () => any,
+        options?: jest.MockOptions
+    ): void;
 
     registerMockFn(
         name: MockFn["name"],

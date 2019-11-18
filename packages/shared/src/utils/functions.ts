@@ -4,30 +4,33 @@ import { NODE_MODULES } from "./constants";
 
 export const toString = (value: any): string => ({}).toString.call(value);
 
-export const resolveModule = (modulePath: string): any => {
-    const isRelativePath = modulePath.startsWith(".");
+export const resolveModule = (
+    module: string,
+    registrar: (modulePath: string) => any = require
+): any => {
+    const isRelativePath = module.startsWith(".");
     const testPath = (jasmine as any).testPath;
 
     if (isRelativePath) {
-        return require(path.join(testPath, "/../", modulePath));
+        return registrar(path.join(testPath, "/../", module));
     }
 
     try {
-        return require(modulePath);
+        return registrar(module);
     } catch {
         const { INIT_CWD, PWD } = (jasmine as any).process.env;
         const pathWithNodeModules = (nodeModulesRoot: string): string => nodeModulesRoot
             + "/"
             + NODE_MODULES
             + "/"
-            + modulePath;
+            + module;
         try {
-            return require(pathWithNodeModules(INIT_CWD));
+            return registrar(pathWithNodeModules(INIT_CWD));
         } catch {
             try {
-                return require(pathWithNodeModules(PWD));
+                return registrar(pathWithNodeModules(PWD));
             } catch {
-                throw new EvalError(`@jest-decorated: FAILED TO RESOLVE MODULE. MODULE PATH: ${modulePath}.`);
+                throw new EvalError(`@jest-decorated: FAILED TO RESOLVE MODULE. MODULE PATH: ${module}.`);
             }
         }
     }

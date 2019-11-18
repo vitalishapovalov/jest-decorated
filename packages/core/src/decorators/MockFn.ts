@@ -11,7 +11,7 @@ export function MockFn(impl?: MockFn["impl"]) {
             throw new SyntaxError("@MockFn only accepts function as an argument.");
         }
 
-        return describeManager
+        describeManager
             .getMocksManager()
             .registerMockFn(name, impl);
     };

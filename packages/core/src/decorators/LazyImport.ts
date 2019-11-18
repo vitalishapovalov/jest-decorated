@@ -11,7 +11,7 @@ export function LazyImport(path: string, getter?: ((importedModule: any) => any)
             throw new SyntaxError("@LazyImport 2nd argument must be a string, or a function, or an array.");
         }
 
-        return describeManager
+        describeManager
             .getImportsManager()
             .registerLazyModule({ name, path, getter });
     };
