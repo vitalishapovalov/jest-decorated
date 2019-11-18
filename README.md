@@ -31,15 +31,17 @@ To:
 
 ### [@BeforeEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/BeforeEach.md)
 
+### [@Mock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Mock.md)
+
+### [@MockFn](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/MockFn.md)
+
+### [@Spy](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Spy.md)
+
 ### [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
 
 ### [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithDataProvider.md)
 
 ### [@LazyImport](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/LazyImport.md)
-
-### [@MockFn](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/MockFn.md)
-
-### [@Spy](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Spy.md)
 
 ### [@RunWith](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/RunWith.md)
 
