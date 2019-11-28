@@ -43,10 +43,10 @@ export class ComponentService implements IComponentService {
                 container = null;
             });
 
-            const _this = this;
+            const componentService = this;
             Object.defineProperty(this.clazz.prototype, name, {
                 get(): any {
-                    return _this.componentContainers.get(name)[1];
+                    return componentService.componentContainers.get(name)[1];
                 },
             });
         }
@@ -59,12 +59,13 @@ export class ComponentService implements IComponentService {
                 this.componentProvider.isAsyncAct = isAsync;
                 continue;
             }
+
             const serviceInstance = this;
             const method = clazzInstance[name].bind(clazzInstance);
             Object.defineProperty(this.clazz.prototype, name, {
                 value(...args: any[]) {
                     return serviceInstance.runWithAct(method, args, isAsync);
-                }
+                },
             });
         }
     }

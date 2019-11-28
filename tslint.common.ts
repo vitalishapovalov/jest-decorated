@@ -23,6 +23,7 @@ module.exports = {
                 },
                 "esSpecCompliant": true
             }
-        ]
+        ],
+        "no-this-assignment": false
     }
 };

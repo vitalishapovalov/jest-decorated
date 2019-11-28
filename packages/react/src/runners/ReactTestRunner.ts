@@ -114,7 +114,7 @@ export class ReactTestRunner implements ITestRunner {
             componentDataProviderFn
         ));
 
-        testsService.registerPreProcessor(this.registerWithStatePreprocessor(describeRunner))
+        testsService.registerPreProcessor(this.registerWithStatePreprocessor(describeRunner));
     }
 
     private registerComponentProviderPreprocessor(
@@ -205,7 +205,7 @@ export class ReactTestRunner implements ITestRunner {
                     await componentPromiseFn(dataProviderEntry),
                     ...isArray(dataProviderEntry)
                         ? dataProviderEntry
-                        : [dataProviderEntry]
+                        : [dataProviderEntry],
                 ]))
                 : [await componentPromiseFn(dataProvider), dataProvider];
         };
