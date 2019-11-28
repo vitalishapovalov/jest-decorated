@@ -1,6 +1,6 @@
 {
   "name": "@jest-decorated/shared",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Types, interfaces and utils of jest-decorated lib.",
   "license": "MIT",
   "author": {
@@ -47,10 +47,18 @@
       "/dist/"
     ],
     "moduleNameMappe": {
-      "@shared/entities": ["<rootDir>/src/entities/index.ts"],
-      "@shared/interfaces": ["<rootDir>/src/interfaces/index.ts"],
-      "@shared/types": ["<rootDir>/src/types/index.ts"],
-      "@shared/utils": ["<rootDir>/src/utils/index.ts"]
+      "@shared/entities": [
+        "<rootDir>/src/entities/index.ts"
+      ],
+      "@shared/interfaces": [
+        "<rootDir>/src/interfaces/index.ts"
+      ],
+      "@shared/types": [
+        "<rootDir>/src/types/index.ts"
+      ],
+      "@shared/utils": [
+        "<rootDir>/src/utils/index.ts"
+      ]
     }
   },
   "gitHead": "550b64e4baabc68ec4b2375542a69b4d70802262"
