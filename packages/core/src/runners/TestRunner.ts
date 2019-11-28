@@ -38,7 +38,7 @@ export class TestRunner implements ITestRunner {
     protected registerTestInJest(testEntity: TestEntity, describeRunner: IDescribeRunner): void {
         const clazzInstance = describeRunner.getClassInstance();
         const testsService = describeRunner.getTestsService();
-        const registerTest = (args: any[] = [], providerName?: PropertyKey) => test(
+        const registerTestFn = (args: any[] = [], providerName?: PropertyKey) => test(
             TestRunner.resolveDescription(testEntity.description, args, providerName),
             async () => {
                 const preProcessorResult = await testsService.runPreProcessors({
@@ -53,16 +53,16 @@ export class TestRunner implements ITestRunner {
             }
         );
         if (!testEntity.dataProviders.length) {
-            registerTest();
+            registerTestFn();
         } else {
-            this.registerDataProvidersTest(testEntity, describeRunner, registerTest);
+            this.registerDataProvidersTest(testEntity, describeRunner, registerTestFn);
         }
     }
 
     protected registerDataProvidersTest(
         testEntity: TestEntity,
         describeRunner: IDescribeRunner,
-        registerFn: (args: any[], providerName?: PropertyKey) => any
+        registerTestFn: (args: any[], providerName?: PropertyKey) => any
     ) {
         const testsService = describeRunner.getTestsService();
         const dataProvidersData = testEntity.dataProviders
@@ -80,7 +80,7 @@ export class TestRunner implements ITestRunner {
                 new Map()
             )
             .forEach(
-                (argsArr, name) => argsArr.forEach(args => registerFn(args, name))
+                (argsArr, name) => argsArr.forEach(args => registerTestFn(args, name))
             );
     }
 }

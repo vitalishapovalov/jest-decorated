@@ -26,7 +26,8 @@ export interface IMocksService {
         name: Spy["name"],
         obj: Spy["obj"],
         prop: Spy["prop"],
-        accessType?: Spy["accessType"]
+        accessType?: Spy["accessType"],
+        impl?: Spy["impl"]
     ): void;
 
     registerMockFnsAndSpiesInClass(): void;

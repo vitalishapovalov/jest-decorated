@@ -105,13 +105,10 @@ export class TestsService implements ITestsService {
     }
 
     private registerPromisePreProcessor(): void {
-        this.registerPreProcessor(async (data: PreProcessorData) => {
-            const resolvedArguments: any[] = [];
-            for await (const arg of data.args) {
-                resolvedArguments.push(arg);
-            }
-            return { ...data, args: resolvedArguments } as PreProcessorData;
-        });
+        this.registerPreProcessor(async (data: PreProcessorData) => ({
+            ...data,
+            args: await Promise.all(data.args),
+        } as PreProcessorData));
     }
 
     private registerExpectPostProcessor(): void {
@@ -131,7 +128,8 @@ export class TestsService implements ITestsService {
                 continue;
             }
             const [expectVal, ...matcherValues] = testResult[matcher];
-            (not ? expect(expectVal).not : expect(expectVal))[matcher](...matcherValues);
+            const expectValue = not ? expect(expectVal).not : expect(expectVal);
+            expectValue[matcher](...matcherValues);
         }
     }
 

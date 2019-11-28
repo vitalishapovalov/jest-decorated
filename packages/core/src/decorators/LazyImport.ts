@@ -8,7 +8,7 @@ export function LazyImport(path: string, getter?: ((importedModule: any) => any)
         const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
 
         if (getter && !isCallable(getter) && !isString(getter) && !isArray(getter)) {
-            throw new SyntaxError("@LazyImport 2nd argument must be a string, or a function, or an array.");
+            throw new SyntaxError("@LazyImport 2nd argument must be a string, a function, or an array.");
         }
 
         describeRunner

@@ -1,12 +1,13 @@
-import { Class } from "@jest-decorated/shared";
+import { Class, IReactExtension } from "@jest-decorated/shared";
 
 import { ComponentService } from "../services";
 
-export class ReactExtension {
+export class ReactExtension implements IReactExtension {
 
-    private static readonly REACT_EXT_REGISTRY: WeakMap<Class, ReactExtension> = new WeakMap();
+    private static readonly REACT_EXT_REGISTRY: WeakMap<Class, IReactExtension> = new WeakMap();
 
-    public static getReactExtension(clazz?: Class, autoCreate: boolean = true): ReactExtension {
+    public static getReactExtension(clazz?: Class, autoCreate: boolean = true): IReactExtension | null {
+        if (!clazz) return null;
         let reactExtension = ReactExtension.REACT_EXT_REGISTRY.get(clazz);
         if (!reactExtension && autoCreate) {
             reactExtension = new this(clazz);
@@ -15,12 +16,12 @@ export class ReactExtension {
         return reactExtension;
     }
 
-    private readonly withPropsRegistry: { [key: string]: object | object[]; } = {};
     private readonly withStateRegistry: { [key: string]: object; } = {};
+    private readonly withPropsRegistry: { [key: string]: object | object[]; } = {};
 
     private constructor(
         private readonly clazz: Class,
-        private readonly componentService: ComponentService = new ComponentService()
+        private readonly componentService: ComponentService = new ComponentService(clazz)
     ) {}
 
     public getComponentService(): ComponentService {

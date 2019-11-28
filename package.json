@@ -31,7 +31,7 @@
     "ts-jest": "^24.0.2",
     "tslint": "^5.18.0",
     "tslint-config-airbnb": "^5.11.1",
-    "typescript": "^3.5.2"
+    "typescript": "^3.7.2"
   },
   "greenkeeper": {
     "ignore": [

@@ -88,7 +88,7 @@ export class DescribeRunner implements IDescribeRunner {
         });
     }
 
-    private updateDescribe(describeService?: IDescribeRunner): void {
+    private updateDescribe(describeService: IDescribeRunner): void {
         this.mocksService.mergeInAll(describeService.getMocksService());
         this.hooksService.mergeInAll(describeService.getHooksService());
         this.testsService.mergeInDataProviders(describeService.getTestsService());

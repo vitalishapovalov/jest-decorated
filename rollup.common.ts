@@ -25,7 +25,6 @@ export default {
         }),
         commonjs(),
         resolve(),
-        terser(),
         sourceMaps()
     ]
 };

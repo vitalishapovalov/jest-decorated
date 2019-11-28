@@ -1,19 +1,12 @@
 # Decorators library for writing jest-based tests
 
-Wrapper around [jest JavaScript testing framework](https://jestjs.io/). Provides decorators with core jest globals and other utilities 
-to make tests code cleaner.
+Wrapper around [jest JavaScript testing framework](https://jestjs.io/). Provides decorators with core jest globals and other utilities.
 
-From:
+## Extensions
 
-```typescript
+Support for different libs and frameworks.
 
-```
-
-To:
-
-```typescript
-
-```
+### [React](https://github.com/vitalishapovalov/jest-decorated/blob/master/packages/react/README.md)
 
 ## Decorators
 
@@ -44,12 +37,6 @@ To:
 ### [@LazyImport](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/LazyImport.md)
 
 ### [@RunWith](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/RunWith.md)
-
-## Extensions
-
-Support for different libs and frameworks.
-
-### [React](https://github.com/vitalishapovalov/jest-decorated/blob/master/packages/react/README.md)
 
 ## Contributing
 

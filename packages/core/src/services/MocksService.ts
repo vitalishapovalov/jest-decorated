@@ -37,9 +37,10 @@ export class MocksService implements IMocksService {
         name: Spy["name"],
         obj: Spy["obj"],
         prop: Spy["prop"],
-        accessType?: Spy["accessType"]
+        accessType?: Spy["accessType"],
+        impl?: Spy["impl"]
     ): void {
-        this.spies.set(name, { name, obj, prop, accessType });
+        this.spies.set(name, { name, obj, prop, accessType, impl });
     }
 
     public registerMock(
@@ -106,7 +107,7 @@ export class MocksService implements IMocksService {
     }
 
     private registerMockFnInClass(mockFnConfig: MockFn): void {
-        const mockFn = jest.fn(this.resolveMockFnImpl(mockFnConfig));
+        const mockFn = jest.fn(this.resolveImpl(mockFnConfig));
         this.registerAutoClearedMockInClass(mockFn, mockFnConfig.name);
     }
 
@@ -114,6 +115,10 @@ export class MocksService implements IMocksService {
         const spy = Boolean(spyConfig.accessType)
             ? jest.spyOn(spyConfig.obj, spyConfig.prop as jest.NonFunctionPropertyNames<object>, spyConfig.accessType as any)
             : jest.spyOn(spyConfig.obj, spyConfig.prop as jest.NonFunctionPropertyNames<object>);
+        const spyImpl = this.resolveImpl(spyConfig);
+        if (spyImpl) {
+            spy.mockImplementation(spyImpl as any);
+        }
         this.registerAutoClearedMockInClass(spy, spyConfig.name);
     }
 
@@ -122,7 +127,7 @@ export class MocksService implements IMocksService {
         Object.defineProperty(this.clazz.prototype, name, { value });
     }
 
-    private resolveMockFnImpl(mockFnConfig: MockFn): MockFn["impl"] {
+    private resolveImpl(mockFnConfig: MockFn | Spy): MockFn["impl"] | Spy["impl"] | undefined {
         if (mockFnConfig.impl) {
             return mockFnConfig.impl;
         }
