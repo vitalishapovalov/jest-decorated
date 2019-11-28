@@ -15,6 +15,10 @@ class MyComponentTest {
 
 ## Decorators
 
+### [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Act.md)
+
+### [@ComponentContainer](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentContainer.md)
+
 ### [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentProvider.md)
 
 ### [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithProps.md)
