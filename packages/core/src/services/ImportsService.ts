@@ -21,7 +21,7 @@ export class ImportsService implements IImportsService {
     public constructor(private readonly clazz: Class) {}
 
     public registerLazyModule(lazyModule: LazyModule): void {
-        this.modules.set(lazyModule.name, () => this.resolveComponent(lazyModule));
+        this.modules.set(lazyModule.name, () => this.resolveLazyModule(lazyModule));
     }
 
     public registerLazyModulesInClass(): void {
@@ -34,7 +34,7 @@ export class ImportsService implements IImportsService {
         }
     }
 
-    private resolveComponent(lazyModule: LazyModule): any {
+    private resolveLazyModule(lazyModule: LazyModule): any {
         const importedModule = this.importOrGetModule(lazyModule);
         if (lazyModule.getter) {
             const getter = lazyModule.getter;
