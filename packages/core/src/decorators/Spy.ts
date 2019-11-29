@@ -12,7 +12,7 @@ export function Spy(
     return function SpyDecoratorFn(proto: object, name: string) {
         const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
 
-        if (accessType && !isCallable(accessType) && isString(accessType)) {
+        if (accessType && !isCallable(accessType) && !isString(accessType)) {
             throw new SyntaxError(
                 "@Spy only accepts function (spy implementation) " +
                 "or string (spy access type, 'get' or 'set') as " +
