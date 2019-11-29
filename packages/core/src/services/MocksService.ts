@@ -124,6 +124,7 @@ export class MocksService implements IMocksService {
 
     private registerAutoClearedMockInClass(value: jest.MockInstance<any, any>, name): void {
         afterEach(() => value.mockClear());
+        afterAll(() => value.mockRestore());
         Object.defineProperty(this.clazz.prototype, name, { value });
     }
 
