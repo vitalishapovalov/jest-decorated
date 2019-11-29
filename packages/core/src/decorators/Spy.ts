@@ -16,7 +16,7 @@ export function Spy(
             throw new SyntaxError(
                 "@Spy only accepts function (spy implementation) " +
                 "or string (spy access type, 'get' or 'set') as " +
-                "first argument."
+                "3rd argument."
             );
         }
 
