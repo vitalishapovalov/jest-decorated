@@ -1,5 +1,5 @@
 import { ReactWrapper } from "enzyme";
-import { isArray, isObject } from "@js-utilities/typecheck";
+import { isArray, isCallable, isObject } from "@js-utilities/typecheck";
 import {
     IDescribeRunner,
     ITestRunner,
@@ -154,6 +154,26 @@ export class ReactTestRunner implements ITestRunner {
             const stateDataProvider = reactExtension.getWithState(data.testEntity.name as string);
             let wrapper: ReactWrapper;
             if (stateDataProvider && data.args[0]) {
+                if (!isCallable((data.args[0] as ReactWrapper).setState)) {
+                    console.error(
+                        "@WithState() is failed to run for test entity with name"
+                        + " "
+                        + `"${String(data.testEntity.name)}".`
+                        + " "
+                        + "in @Describe() suite"
+                        + " "
+                        + `"${describeRunner.getDescribeName()}".`
+                        + "\n"
+                        + "Reason: component returned from @ComponentProvider() doesn't have"
+                        + " "
+                        + `"setState" method.`
+                        + "\n"
+                        + "Advice: check @ComponentProvider() method and it's return value."
+                        + " "
+                        + `Also, make sure that your @ComponentProvider() returns component wrapped in Enzyme's "shallow" or "mount".`
+                    );
+                    return data;
+                }
                 await new Promise((resolve) => {
                     wrapper = (data.args[0] as ReactWrapper).setState(stateDataProvider, resolve);
                 });
@@ -207,32 +227,53 @@ export class ReactTestRunner implements ITestRunner {
                 .importOrGetComponent()
                 .then(importedComponent =>
                     callProviderMethodAct(importedComponent, props)
-                        .then(resolve)));
+                        .then(resolve))
+                .catch(error => {
+                    console.error(
+                        "Error during evaluating @ComponentProvider()"
+                        + " "
+                        + "for @Describe() with name"
+                        + " "
+                        + `"${describeRunner.getDescribeName()}"`
+                        + " "
+                        + "and @ComponentProvider() method"
+                        + " "
+                        + `"${componentProvider.name}".`
+                        + "\n"
+                        + "Advice: check @ComponentProvider() method and props passed to the component."
+                        + "\n"
+                        + "Error:",
+                        error
+                    );
+                    resolve(error);
+                }));
 
         return async (dataProvider: object | object[], defaultProps: object): Promise<any[]> => {
             const enrichedDataProvider = defaultProps
                 ? this.enrichWithDefaultProps(defaultProps, dataProvider, true)
                 : dataProvider;
-            // if no component source to import - just pass dataProvider
+            // if there is no component source to import - just pass dataProvider
             if (!Boolean(componentProvider.source)) {
                 return isArray(enrichedDataProvider)
                     ? enrichedDataProvider
                     : [enrichedDataProvider];
             }
             // otherwise - pass dataProvider among with imported component
-            return isArray(enrichedDataProvider)
-                ? await Promise.all(enrichedDataProvider.map(async dataProviderEntry => {
-                    const enrichedDataProviderEntry = defaultProps
-                        ? this.enrichWithDefaultProps(defaultProps, dataProviderEntry, true)
-                        : dataProviderEntry;
-                    return [
-                        await componentPromiseFn(enrichedDataProviderEntry),
-                        ...isArray(enrichedDataProviderEntry)
-                            ? enrichedDataProviderEntry
-                            : [enrichedDataProviderEntry],
-                    ];
-                }))
-                : [await componentPromiseFn(enrichedDataProvider), enrichedDataProvider];
+            if (!isArray(enrichedDataProvider)) {
+                return [await componentPromiseFn(enrichedDataProvider), enrichedDataProvider];
+            }
+            // or, if data provider is array - enrich each entry with component
+            return await Promise.all(enrichedDataProvider.map(async dataProviderEntry => {
+                const enrichedDataProviderEntry = defaultProps
+                    ? this.enrichWithDefaultProps(defaultProps, dataProviderEntry, true)
+                    : dataProviderEntry;
+                return [
+                    await componentPromiseFn(enrichedDataProviderEntry),
+                    ...isArray(enrichedDataProviderEntry)
+                        ? enrichedDataProviderEntry
+                        : [enrichedDataProviderEntry],
+                ];
+            }));
         };
     }
 
