@@ -1,18 +1,7 @@
 import { isCallable, isString } from "@js-utilities/typecheck";
-import { Class, IImportsService, LazyModule, resolveModule } from "@jest-decorated/shared";
+import { Class, IImportsService, LazyModule, resolveModule, extractModuleDefault } from "@jest-decorated/shared";
 
 export class ImportsService implements IImportsService {
-
-    private static DEFAULT_GETTER(importedModule: any): any {
-        if (
-            importedModule
-            && importedModule.defalt
-            && Object.keys(importedModule).length === 1
-        ) {
-            return importedModule.defalt;
-        }
-        return importedModule;
-    }
 
     private readonly modules: Map<string, () => any> = new Map();
 
@@ -44,7 +33,7 @@ export class ImportsService implements IImportsService {
                     ? importedModule[getter]
                     : getter.reduce((obj, key) => obj[key], importedModule);
         }
-        return ImportsService.DEFAULT_GETTER(importedModule);
+        return extractModuleDefault(importedModule);
     }
 
     private importOrGetModule(lazyModule: LazyModule): any {

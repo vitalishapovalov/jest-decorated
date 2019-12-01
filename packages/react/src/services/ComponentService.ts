@@ -1,4 +1,5 @@
-import { Class, ComponentProvider, IComponentService, resolveModule } from "@jest-decorated/shared";
+import { Class, ComponentProvider, IComponentService, resolveModule, extractModuleDefault } from "@jest-decorated/shared";
+import { isCallable, isObject, isString } from "@js-utilities/typecheck";
 
 export class ComponentService implements IComponentService {
 
@@ -22,6 +23,10 @@ export class ComponentService implements IComponentService {
     ): void {
         this.componentProvider.name = name;
         this.componentProvider.source = source;
+    }
+
+    public registerDefaultProps(defaultProps: ComponentProvider["defaultProps"]): void {
+        this.componentProvider.defaultProps = defaultProps;
     }
 
     public registerComponentContainer(name: string, tagName: keyof HTMLElementTagNameMap = "div"): void {
@@ -63,10 +68,34 @@ export class ComponentService implements IComponentService {
             const serviceInstance = this;
             const method = clazzInstance[name].bind(clazzInstance);
             Object.defineProperty(this.clazz.prototype, name, {
-                value(...args: any[]) {
+                value(...args: any[]): any {
                     return serviceInstance.runWithAct(method, args, isAsync);
                 },
             });
+        }
+    }
+
+    public createAndGetDefaultProps(
+        clazzInstance: object,
+        defaultProps: any = this.componentProvider.defaultProps
+    ): object | undefined {
+        if (!defaultProps) {
+            return;
+        }
+        if (isCallable(defaultProps)) {
+            return defaultProps.call(clazzInstance);
+        }
+        if (isString(defaultProps)) {
+            const props = this.createAndGetDefaultProps(clazzInstance, clazzInstance[defaultProps]);
+            Object.defineProperty(this.clazz.prototype, name, {
+                get(): any {
+                    return props;
+                },
+            });
+            return props;
+        }
+        if (isObject(defaultProps)) {
+            return defaultProps;
         }
     }
 
@@ -78,7 +107,7 @@ export class ComponentService implements IComponentService {
         if (!this.importedComponent) {
             return this.importedComponent = new Promise<T>((resolve) => {
                 const component = resolveModule(this.componentProvider.source);
-                resolve(component);
+                resolve(extractModuleDefault(component));
             });
         }
         return this.importedComponent;

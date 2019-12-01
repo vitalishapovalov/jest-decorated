@@ -4,9 +4,9 @@ export interface IReactExtension {
 
     getComponentService(): IComponentService;
 
-    registerWithProps(methodName: string, data: object | object[]): void;
+    registerWithProps(methodName: string, data: object): void;
 
-    getWithProps(methodName: string): object | object[];
+    getWithProps(methodName: string): object;
 
     registerWithState(methodName: string, data: object): void;
 

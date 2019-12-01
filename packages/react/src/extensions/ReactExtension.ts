@@ -17,7 +17,7 @@ export class ReactExtension implements IReactExtension {
     }
 
     private readonly withStateRegistry: { [key: string]: object; } = {};
-    private readonly withPropsRegistry: { [key: string]: object | object[]; } = {};
+    private readonly withPropsRegistry: { [key: string]: object; } = {};
 
     private constructor(
         private readonly clazz: Class,
@@ -28,11 +28,11 @@ export class ReactExtension implements IReactExtension {
         return this.componentService;
     }
 
-    public registerWithProps(methodName: string, data: object | object[]): void {
+    public registerWithProps(methodName: string, data: object): void {
         this.withPropsRegistry[methodName] = data;
     }
 
-    public getWithProps(methodName: string): object | object[] {
+    public getWithProps(methodName: string): object {
         return this.withPropsRegistry[methodName];
     }
 

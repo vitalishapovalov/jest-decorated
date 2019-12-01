@@ -35,3 +35,17 @@ export const resolveModule = (
         }
     }
 };
+
+export const extractModuleDefault = (module: { default?: any; __esModule?: boolean; }): any => {
+    if (
+        module
+        && module.default
+        && (
+            Object.keys(module).length === 1
+            || (Object.keys(module).length === 2 && module.__esModule)
+        )
+    ) {
+        return module.default;
+    }
+    return module;
+};

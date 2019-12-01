@@ -21,6 +21,8 @@ class MyComponentTest {
 
 ### [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentProvider.md)
 
+### [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultProps.md)
+
 ### [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithProps.md)
 
 ### [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithState.md)
