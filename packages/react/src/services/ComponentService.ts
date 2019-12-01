@@ -86,13 +86,7 @@ export class ComponentService implements IComponentService {
             return defaultProps.call(clazzInstance);
         }
         if (isString(defaultProps)) {
-            const props = this.createAndGetDefaultProps(clazzInstance, clazzInstance[defaultProps]);
-            Object.defineProperty(this.clazz.prototype, name, {
-                get(): any {
-                    return props;
-                },
-            });
-            return props;
+            return this.createAndGetDefaultProps(clazzInstance, clazzInstance[defaultProps]);
         }
         if (isObject(defaultProps)) {
             return defaultProps;
