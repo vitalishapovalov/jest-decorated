@@ -1,5 +1,5 @@
 import { ReactWrapper } from "enzyme";
-import { isArray, isCallable, isObject } from "@js-utilities/typecheck";
+import { isArray, isCallable, isObject, isUndefined } from "@js-utilities/typecheck";
 import {
     IDescribeRunner,
     ITestRunner,
@@ -153,8 +153,8 @@ export class ReactTestRunner implements ITestRunner {
         return async (data: PreProcessorData): Promise<PreProcessorData> => {
             const stateDataProvider = reactExtension.getWithState(data.testEntity.name as string);
             let wrapper: ReactWrapper;
-            if (stateDataProvider && data.args[0]) {
-                if (!isCallable((data.args[0] as ReactWrapper).setState)) {
+            if (stateDataProvider && !isUndefined(data.args[0])) {
+                if (!data.args[0] || !isCallable((data.args[0] as ReactWrapper).setState)) {
                     console.error(
                         "@WithState() is failed to run for test entity with name"
                         + " "
@@ -222,14 +222,14 @@ export class ReactTestRunner implements ITestRunner {
             }
             return await comp();
         };
-        const componentPromiseFn = (props: object = {}) => new Promise(resolve =>
+        const componentPromiseFn = (props: object = {}) => new Promise((resolve, reject) =>
             componentService
                 .importOrGetComponent()
                 .then(importedComponent =>
                     callProviderMethodAct(importedComponent, props)
                         .then(resolve))
                 .catch(error => {
-                    console.error(
+                    error.message =
                         "Error during evaluating @ComponentProvider()"
                         + " "
                         + "for @Describe() with name"
@@ -242,10 +242,10 @@ export class ReactTestRunner implements ITestRunner {
                         + "\n"
                         + "Advice: check @ComponentProvider() method and props passed to the component."
                         + "\n"
-                        + "Error:",
-                        error
-                    );
-                    resolve(error);
+                        + "Error:"
+                        + " "
+                        + `${error.message}`;
+                    reject(error);
                 }));
 
         return async (dataProvider: object | object[], defaultProps: object): Promise<any[]> => {
