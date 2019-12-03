@@ -135,8 +135,8 @@ export class TestsService implements ITestsService {
 
     private async processAsync<T = any>(data: T, processors: Function[]): Promise<T> {
         let dataResult: T = data;
-        for (const preProcessor of processors) {
-            dataResult = await preProcessor.call(this.clazzInstance, dataResult);
+        for (const processor of processors) {
+            dataResult = await processor.call(this.clazzInstance, dataResult);
         }
         return dataResult;
     }

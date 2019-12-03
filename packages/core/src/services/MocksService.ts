@@ -53,7 +53,7 @@ export class MocksService implements IMocksService {
         try {
             resolveModule(mock, (resolvedModulePath) => {
                 modulePath = resolvedModulePath;
-                jest.mock(modulePath, impl, options);
+                jest.doMock(modulePath, impl, options);
                 afterAll(() => jest.unmock(modulePath));
             });
         } catch (e) {

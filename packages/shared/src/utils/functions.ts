@@ -2,8 +2,6 @@ import * as path from "path";
 
 import { NODE_MODULES } from "./constants";
 
-export const toString = (value: any): string => ({}).toString.call(value);
-
 export const resolveModule = (
     module: string,
     registrar: (modulePath: string) => any = require

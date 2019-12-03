@@ -11,3 +11,7 @@ export function Act(isAsync?: boolean) {
             .registerActWrapper(methodName, isAsync);
     };
 }
+
+export function ActAsync(canBeUsedInFuture?: any) {
+    return Act(true);
+}
