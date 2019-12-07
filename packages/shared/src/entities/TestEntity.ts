@@ -4,7 +4,7 @@ export class TestEntity {
 
     public constructor(
         public readonly name: PropertyKey,
-        public readonly description: string | ((...args: any[]) => string),
+        public readonly description: string | ((...args: unknown[]) => string),
         public readonly dataProviders: PropertyKey[] = []
     ) {}
 
@@ -20,7 +20,7 @@ export class TestEntity {
         return this.metadata.get(key);
     }
 
-    public setMetadata(key: PropertyKey, data: any): void {
+    public setMetadata(key: PropertyKey, data: unknown): void {
         this.metadata.set(key, data);
     }
 }

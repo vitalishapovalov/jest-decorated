@@ -3,5 +3,5 @@ export type Spy = {
     obj: object;
     prop: string;
     accessType?: "get" | "set";
-    impl?: (...args: any[]) => any;
+    impl?: (...args: unknown[]) => any;
 };

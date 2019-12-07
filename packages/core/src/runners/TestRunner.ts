@@ -4,8 +4,8 @@ import { IDescribeRunner, ITestRunner, TestEntity } from "@jest-decorated/shared
 export class TestRunner implements ITestRunner {
 
     public static resolveDescription(
-        description: string | ((...args: any[]) => string),
-        args: any[] = [],
+        description: string | ((...args: unknown[]) => string),
+        args: unknown[] = [],
         providerName?: PropertyKey
     ): string {
         return isCallable(description)
@@ -38,7 +38,7 @@ export class TestRunner implements ITestRunner {
     protected registerTestInJest(testEntity: TestEntity, describeRunner: IDescribeRunner): void {
         const clazzInstance = describeRunner.getClassInstance();
         const testsService = describeRunner.getTestsService();
-        const registerTestFn = (args: any[] = [], providerName?: PropertyKey) => test(
+        const registerTestFn = (args: unknown[] = [], providerName?: PropertyKey) => test(
             TestRunner.resolveDescription(testEntity.description, args, providerName),
             async () => {
                 const preProcessorResult = await testsService.runPreProcessors({
@@ -62,13 +62,14 @@ export class TestRunner implements ITestRunner {
     protected registerDataProvidersTest(
         testEntity: TestEntity,
         describeRunner: IDescribeRunner,
-        registerTestFn: (args: any[], providerName?: PropertyKey) => any
+        registerTestFn: (args: unknown[], providerName?: PropertyKey) => unknown
     ) {
         const testsService = describeRunner.getTestsService();
         const dataProvidersData = testEntity.dataProviders
-            .map<any[][]>(testsService.getDataProvider.bind(testsService));
+            .map<unknown[][]>(testsService.getDataProvider.bind(testsService));
+
         testEntity.dataProviders
-            .reduce<Map<PropertyKey, any[][]>>(
+            .reduce<Map<PropertyKey, unknown[][]>>(
                 (map, name, i) => {
                     dataProvidersData[i].forEach((args) => {
                         const currArgs = map.get(name) || [];

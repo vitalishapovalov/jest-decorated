@@ -1,5 +1,5 @@
 import { ReactWrapper } from "enzyme";
-import { isArray, isCallable, isObject, isUndefined } from "@js-utilities/typecheck";
+import { isArray, isCallable, isUndefined } from "@js-utilities/typecheck";
 import {
     IDescribeRunner,
     ITestRunner,
@@ -37,11 +37,11 @@ export class ReactTestRunner implements ITestRunner {
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        this.registerComponentPreProcessors(describeRunner, parentDescribeRunner);
         ReactTestRunner
             .getReactExtension(describeRunner)
             .getComponentService()
             .createActWrappers(describeRunner.getClassInstance());
-        this.registerComponentPreProcessors(describeRunner, parentDescribeRunner);
         this.defaultTestsRunner.registerTestsInJest(describeRunner, parentDescribeRunner);
     }
 
@@ -57,99 +57,60 @@ export class ReactTestRunner implements ITestRunner {
         parentDescribeRunner?: IDescribeRunner
     ): void {
         const reactExtension = ReactTestRunner.getReactExtension(describeRunner);
+        const parentReactExtension = ReactExtension.getReactExtension(parentDescribeRunner?.getClass(), false);
         const testsService = describeRunner.getTestsService();
-        const hasComponentProvider = reactExtension
-            .getComponentService()
-            .isComponentProviderRegistered();
+        const componentService = reactExtension.getComponentService();
+        const hasComponentProvider = componentService.isComponentProviderRegistered();
 
-        // resolve component provider
-        if (!hasComponentProvider) {
-            if (parentDescribeRunner) {
-                const parentReactExtension = ReactExtension
-                    .getReactExtension(parentDescribeRunner.getClass());
-                // parent has component provider, use it
-                if (parentReactExtension?.getComponentService().isComponentProviderRegistered()) {
-                    reactExtension
-                        .getComponentService()
-                        .registerComponentProvider(
-                            parentReactExtension.getComponentService().componentProvider.name,
-                            parentReactExtension.getComponentService().componentProvider.source
-                        );
+        // no component provider
+        if (!hasComponentProvider && !parentReactExtension) {
+            return;
+        }
 
-                    // inherit default props
-                    const defaultProps = parentReactExtension.getComponentService().componentProvider.defaultProps;
-                    if (defaultProps && !reactExtension.getComponentService().componentProvider.defaultProps) {
-                        reactExtension
-                            .getComponentService()
-                            .registerDefaultProps(defaultProps);
-                    }
-                }
-            } else {
-                // no component provider at all
-                return;
-            }
+        // inherit component provider, act wrappers, default props
+        if (!hasComponentProvider && parentReactExtension) {
+            componentService.inheritComponentProviderWithDefaultProps(reactExtension, parentReactExtension);
         }
 
         const componentDataProviderFn = this.createComponentDataProviderFn(describeRunner);
-        const getDefaultProps = () => reactExtension
-            .getComponentService()
-            .createAndGetDefaultProps(describeRunner.getClassInstance());
 
         // update existing data providers, add react component
         // if parent's runner is ReactTestRunner
         // then react component already been registered
         if (
-            (
-                !parentDescribeRunner
-                || !(parentDescribeRunner.getTestRunner() instanceof ReactTestRunner)
-            )
-            && testsService.getDataProviders().length
+            testsService.getDataProviders().length
+            && !(parentDescribeRunner?.getTestRunner() instanceof ReactTestRunner)
         ) {
-            for (const providerName of testsService.getDataProviders()) {
-                const providerDataWithReactComponent = [];
-                const providerData = testsService.getDataProvider(providerName);
-                const defaultProps = getDefaultProps();
-                const componentPromise = componentDataProviderFn(defaultProps)
-                    .then(([comp]) => comp);
-                for (const providerDataUnit of this.enrichWithDefaultProps(defaultProps, providerData)) {
-                    providerDataWithReactComponent.push(isArray(providerDataUnit)
-                        ? [componentPromise, ...providerDataUnit]
-                        : [componentPromise, providerDataUnit]
-                    );
-                }
-                testsService.registerDataProvider(providerName, providerDataWithReactComponent);
-            }
+            componentService.addComponentToDataProviders(
+                reactExtension,
+                describeRunner,
+                props => componentDataProviderFn(props).then(([comp]) => comp)
+            );
         }
 
-        testsService.registerPreProcessor(this.registerComponentProviderPreprocessor(
+        testsService.registerPreProcessor(this.createComponentProviderPreProcessor(
             describeRunner,
-            componentDataProviderFn,
-            getDefaultProps
+            componentDataProviderFn
         ));
-
-        testsService.registerPreProcessor(this.registerWithStatePreprocessor(describeRunner));
+        testsService.registerPreProcessor(this.createWithStatePreProcessor(describeRunner));
     }
 
-    private registerComponentProviderPreprocessor(
+    private createComponentProviderPreProcessor(
         describeRunner: IDescribeRunner,
-        componentDataProviderFn: (arg: object | object[], defaultProps?: object) => Promise<any[]>,
-        getDefaultProps?: () => object
+        componentDataProviderFn: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
     ): PreProcessor {
-        const reactExtension = ReactTestRunner.getReactExtension(describeRunner);
-
         return async (data: PreProcessorData): Promise<PreProcessorData> => ({
             ...data,
             args: await this.getArgsArrayWithReactDataProviders(
                 data.args,
                 data.testEntity,
-                reactExtension,
-                componentDataProviderFn,
-                getDefaultProps
+                describeRunner,
+                componentDataProviderFn
             ),
         });
     }
 
-    private registerWithStatePreprocessor(describeRunner: IDescribeRunner): PreProcessor {
+    private createWithStatePreProcessor(describeRunner: IDescribeRunner): PreProcessor {
         const reactExtension = ReactTestRunner.getReactExtension(describeRunner);
         return async (data: PreProcessorData): Promise<PreProcessorData> => {
             const stateDataProvider = reactExtension.getWithState(data.testEntity.name as string);
@@ -186,12 +147,12 @@ export class ReactTestRunner implements ITestRunner {
     }
 
     private async getArgsArrayWithReactDataProviders(
-        args: any[],
+        args: unknown[],
         testEntity: TestEntity,
-        reactExtension: IReactExtension,
-        componentDataProviderFn: (arg: object | object[], defaultProps?: object) => Promise<any[]>,
-        getDefaultProps?: () => object
-    ): Promise<any[]> {
+        describeRunner: IDescribeRunner,
+        componentDataProviderFn: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
+    ): Promise<unknown[]> {
+        const reactExtension = ReactTestRunner.getReactExtension(describeRunner);
         const propsDataProvider = reactExtension.getWithProps(testEntity.name as string);
         const hasDataProviders = Boolean(testEntity.dataProviders.length);
         if (hasDataProviders) {
@@ -202,20 +163,60 @@ export class ReactTestRunner implements ITestRunner {
             }
             return args;
         }
+        const defaultProps = reactExtension
+            .getComponentService()
+            .createAndGetDefaultProps(describeRunner.getClassInstance());
         return propsDataProvider
-            ? await componentDataProviderFn(propsDataProvider, getDefaultProps())
-            : await componentDataProviderFn(getDefaultProps());
+            ? await componentDataProviderFn(propsDataProvider, defaultProps)
+            : await componentDataProviderFn(defaultProps);
     }
 
     private createComponentDataProviderFn(
         describeRunner: IDescribeRunner
     ): (arg: object | object[], defaultProps?: object) => Promise<any[]> {
         const reactExtension = ReactTestRunner.getReactExtension(describeRunner);
-        const clazzInstance = describeRunner.getClassInstance();
         const componentService = reactExtension.getComponentService();
         const componentProvider = componentService.getComponentProvider();
+        const componentPromiseFn = this.createComponentPromiseFn(describeRunner);
 
-        const callProviderMethodAct = async (component: any, props: object) => {
+        return async (dataProvider: object | object[], defaultProps: object): Promise<unknown[]> => {
+            const enrichedDataProvider = defaultProps
+                ? componentService.enrichWithDefaultProps(defaultProps, dataProvider, true)
+                : dataProvider;
+            // if there is no component source to import - just pass dataProvider
+            if (!Boolean(componentProvider.source)) {
+                return isArray(enrichedDataProvider)
+                    ? enrichedDataProvider
+                    : [enrichedDataProvider];
+            }
+            // otherwise - pass dataProvider among with imported component
+            if (!isArray(enrichedDataProvider)) {
+                return [await componentPromiseFn(enrichedDataProvider), enrichedDataProvider];
+            }
+            // or, if data provider is array - enrich each entry with component
+            return await Promise.all(enrichedDataProvider.map(async (dataProviderEntry) => {
+                const enrichedDataProviderEntry = defaultProps
+                    ? componentService.enrichWithDefaultProps(defaultProps, dataProviderEntry, true)
+                    : dataProviderEntry;
+                return [
+                    await componentPromiseFn(enrichedDataProviderEntry),
+                    ...isArray(enrichedDataProviderEntry)
+                        ? enrichedDataProviderEntry
+                        : [enrichedDataProviderEntry],
+                ];
+            }));
+        };
+    }
+
+    private createComponentPromiseFn(
+        describeRunner: IDescribeRunner
+    ): (props: object) => Promise<unknown> {
+        const reactExtension = ReactTestRunner.getReactExtension(describeRunner);
+        const componentService = reactExtension.getComponentService();
+        const componentProvider = componentService.getComponentProvider();
+        const clazzInstance = describeRunner.getClassInstance();
+
+        const callProviderMethodAct = async (component: unknown, props: object) => {
             const comp = async () => await clazzInstance[componentProvider.name]
                 .apply(clazzInstance, [component, ...isArray(props) ? props : [props]]);
             if (componentProvider.isAct) {
@@ -223,7 +224,8 @@ export class ReactTestRunner implements ITestRunner {
             }
             return await comp();
         };
-        const componentPromiseFn = (props: object = {}) => new Promise((resolve, reject) =>
+
+        return (props: object = {}) => new Promise((resolve, reject) =>
             componentService
                 .importOrGetComponent()
                 .then(importedComponent =>
@@ -248,55 +250,5 @@ export class ReactTestRunner implements ITestRunner {
                         + `${error.message}`;
                     reject(error);
                 }));
-
-        return async (dataProvider: object | object[], defaultProps: object): Promise<any[]> => {
-            const enrichedDataProvider = defaultProps
-                ? this.enrichWithDefaultProps(defaultProps, dataProvider, true)
-                : dataProvider;
-            // if there is no component source to import - just pass dataProvider
-            if (!Boolean(componentProvider.source)) {
-                return isArray(enrichedDataProvider)
-                    ? enrichedDataProvider
-                    : [enrichedDataProvider];
-            }
-            // otherwise - pass dataProvider among with imported component
-            if (!isArray(enrichedDataProvider)) {
-                return [await componentPromiseFn(enrichedDataProvider), enrichedDataProvider];
-            }
-            // or, if data provider is array - enrich each entry with component
-            return await Promise.all(enrichedDataProvider.map(async (dataProviderEntry) => {
-                const enrichedDataProviderEntry = defaultProps
-                    ? this.enrichWithDefaultProps(defaultProps, dataProviderEntry, true)
-                    : dataProviderEntry;
-                return [
-                    await componentPromiseFn(enrichedDataProviderEntry),
-                    ...isArray(enrichedDataProviderEntry)
-                        ? enrichedDataProviderEntry
-                        : [enrichedDataProviderEntry],
-                ];
-            }));
-        };
-    }
-
-    private enrichWithDefaultProps(
-        defaultProps: object,
-        dataProvider: object | object[],
-        merge: boolean = false
-    ): any {
-        if (isArray(dataProvider)) {
-            return dataProvider.map((dataProviderEntry) => {
-                if (isArray(dataProviderEntry)) {
-                    return [defaultProps, ...dataProviderEntry];
-                }
-                if (isObject(dataProvider) && merge) {
-                    return { ...defaultProps, ...dataProviderEntry };
-                }
-                return [defaultProps, dataProviderEntry];
-            });
-        }
-        if (isObject(dataProvider) && merge) {
-            return { ...defaultProps, ...dataProvider };
-        }
-        return [defaultProps, dataProvider];
     }
 }

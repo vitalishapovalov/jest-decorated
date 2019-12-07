@@ -3,7 +3,7 @@ import { TestEntity } from "../entities";
 export type PreProcessorData = {
     clazzInstance: object;
     testEntity: TestEntity;
-    args: any[];
+    args: unknown[];
 };
 
 export interface PreProcessor {
@@ -11,5 +11,5 @@ export interface PreProcessor {
 }
 
 export interface PostProcessor {
-    (testResult: any): Promise<void>;
+    (testResult: unknown): Promise<void>;
 }

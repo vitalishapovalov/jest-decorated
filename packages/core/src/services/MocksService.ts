@@ -57,8 +57,7 @@ export class MocksService implements IMocksService {
                 afterAll(() => jest.unmock(modulePath));
             });
         } catch (e) {
-            console.error(e);
-            throw new EvalError("Error during mock registration. Aborting test suite...");
+            throw new EvalError("Error during mock registration. Aborting test suite... " + e.message);
         }
 
         const requiredMock = jest.requireMock(modulePath);
@@ -122,7 +121,7 @@ export class MocksService implements IMocksService {
         this.registerAutoClearedMockInClass(spy, spyConfig.name);
     }
 
-    private registerAutoClearedMockInClass(value: jest.MockInstance<any, any>, name): void {
+    private registerAutoClearedMockInClass(value: jest.MockInstance<unknown, unknown[]>, name): void {
         afterEach(() => value.mockClear());
         afterAll(() => value.mockRestore());
         Object.defineProperty(this.clazz.prototype, name, { value });

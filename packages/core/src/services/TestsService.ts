@@ -50,7 +50,7 @@ export class TestsService implements ITestsService {
 
     private readonly tests: TestEntity[] = [];
 
-    private readonly dataProviders: Map<PropertyKey, any[] | (() => any[])> = new Map();
+    private readonly dataProviders: Map<PropertyKey, unknown[] | (() => unknown[])> = new Map();
 
     public constructor(private readonly clazzInstance: object) {
         this.registerPromisePreProcessor();
@@ -67,7 +67,7 @@ export class TestsService implements ITestsService {
         this.tests.push(testEntity);
     }
 
-    public registerDataProvider(dataProviderName: PropertyKey, data: () => any[]): void {
+    public registerDataProvider(dataProviderName: PropertyKey, data: () => unknown[]): void {
         this.dataProviders.set(dataProviderName, data);
     }
 
@@ -79,7 +79,7 @@ export class TestsService implements ITestsService {
         return [...this.tests];
     }
 
-    public getDataProvider(name: PropertyKey): any[] {
+    public getDataProvider(name: PropertyKey): unknown[] {
         const data = this.dataProviders.get(name);
         return isCallable(data) ? data() : data;
     }
@@ -100,8 +100,8 @@ export class TestsService implements ITestsService {
         return this.processAsync(data, this.preProcessors);
     }
 
-    public runPostProcessors(data: any): Promise<void> {
-        return this.processAsync(data, this.postProcessors);
+    public runPostProcessors(data: unknown): Promise<void> {
+        return this.processAsync(data, this.postProcessors) as Promise<void>;
     }
 
     private registerPromisePreProcessor(): void {
@@ -112,7 +112,7 @@ export class TestsService implements ITestsService {
     }
 
     private registerExpectPostProcessor(): void {
-        this.registerPostProcessor(async (testResult: any) => {
+        this.registerPostProcessor(async (testResult: unknown) => {
             if (!isObject(testResult)) return;
             this.invokeMatchers(testResult);
         });
@@ -133,8 +133,8 @@ export class TestsService implements ITestsService {
         }
     }
 
-    private async processAsync<T = any>(data: T, processors: Function[]): Promise<T> {
-        let dataResult: T = data;
+    private async processAsync<T>(data: T, processors: Function[]): Promise<T> {
+        let dataResult = data;
         for (const processor of processors) {
             dataResult = await processor.call(this.clazzInstance, dataResult);
         }

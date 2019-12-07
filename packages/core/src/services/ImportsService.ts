@@ -3,9 +3,9 @@ import { Class, IImportsService, LazyModule, resolveModule, extractModuleDefault
 
 export class ImportsService implements IImportsService {
 
-    private readonly modules: Map<string, () => any> = new Map();
+    private readonly modules: Map<string, () => unknown> = new Map();
 
-    private readonly resolvedModules: Map<string, any> = new Map();
+    private readonly resolvedModules: Map<string, unknown> = new Map();
 
     public constructor(private readonly clazz: Class) {}
 
@@ -16,14 +16,14 @@ export class ImportsService implements IImportsService {
     public registerLazyModulesInClass(): void {
         for (const [name, resolvedModuleFn] of this.modules.entries()) {
             Object.defineProperty(this.clazz.prototype, name, {
-                get(): any {
+                get(): unknown {
                     return resolvedModuleFn();
                 },
             });
         }
     }
 
-    private resolveLazyModule(lazyModule: LazyModule): any {
+    private resolveLazyModule(lazyModule: LazyModule): unknown {
         const importedModule = this.importOrGetModule(lazyModule);
         if (lazyModule.getter) {
             const getter = lazyModule.getter;
@@ -36,7 +36,7 @@ export class ImportsService implements IImportsService {
         return extractModuleDefault(importedModule);
     }
 
-    private importOrGetModule(lazyModule: LazyModule): any {
+    private importOrGetModule(lazyModule: LazyModule): unknown {
         const registeredModule = this.getModulePathRegisteredName(lazyModule.path);
         if (registeredModule) {
             return this.resolvedModules.get(registeredModule);

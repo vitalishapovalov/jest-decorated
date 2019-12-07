@@ -34,7 +34,7 @@ export const resolveModule = (
     }
 };
 
-export const extractModuleDefault = (module: { default?: any; __esModule?: boolean; }): any => {
+export const extractModuleDefault = (module: { default?: unknown; __esModule?: boolean; }): any => {
     if (
         module
         && module.default

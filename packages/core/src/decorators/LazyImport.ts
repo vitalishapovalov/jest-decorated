@@ -3,7 +3,7 @@ import { Class } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 
-export function LazyImport(path: string, getter?: ((importedModule: any) => any) | string | string[]) {
+export function LazyImport(path: string, getter?: ((importedModule: unknown) => any) | string | string[]) {
     return function LazyImportDecoratorFn(proto: object, name: string) {
         const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
 

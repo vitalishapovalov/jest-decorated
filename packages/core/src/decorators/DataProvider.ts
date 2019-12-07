@@ -8,7 +8,7 @@ export function DataProvider(dataProviderName?: PropertyKey) {
         const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
         const classInstance = describeRunner.getClassInstance();
         const resolvedName = isUndefined(dataProviderName) ? propName : dataProviderName;
-        const resolveData: () => any[] = () => isCallable(classInstance[propName])
+        const resolveData: () => unknown[] = () => isCallable(classInstance[propName])
             ? classInstance[propName].call(classInstance)
             : classInstance[propName];
 

@@ -7,13 +7,13 @@ export interface ITestsService {
 
     registerTest(testEntity: TestEntity): void;
 
-    registerDataProvider(dataProviderName: PropertyKey, data: any[] | (() => any[])): void;
+    registerDataProvider(dataProviderName: PropertyKey, data: unknown[] | (() => unknown[])): void;
 
     getTest(testName: PropertyKey): TestEntity;
 
     getTests(): TestEntity[];
 
-    getDataProvider(name: PropertyKey): any[];
+    getDataProvider(name: PropertyKey): unknown[];
 
     getDataProviders(): PropertyKey[];
 
@@ -23,5 +23,5 @@ export interface ITestsService {
 
     runPreProcessors(data: PreProcessorData): Promise<PreProcessorData>;
 
-    runPostProcessors(testResult: any): Promise<void>;
+    runPostProcessors(testResult: unknown): Promise<void>;
 }

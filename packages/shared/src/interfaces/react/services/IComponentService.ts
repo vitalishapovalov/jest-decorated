@@ -1,4 +1,6 @@
 import { ComponentProvider } from "@shared/types";
+import { IReactExtension } from "../../../../dist/types/interfaces/react/extensions";
+import { IDescribeRunner } from "../../../../dist/types/interfaces/core/runners";
 
 export interface IComponentService {
 
@@ -17,9 +19,9 @@ export interface IComponentService {
 
     registerComponentContainer(name: string, tagName?: keyof HTMLElementTagNameMap): void;
 
-    importOrGetComponent<T>(): Promise<T>;
+    importOrGetComponent(): Promise<unknown>;
 
-    createAndGetDefaultProps(clazzInstance: object, defaultProps?: any): object | undefined;
+    createAndGetDefaultProps(clazzInstance: object, defaultProps?: unknown): object | undefined;
 
     createComponentContainers(): void;
 
@@ -27,5 +29,22 @@ export interface IComponentService {
 
     isComponentProviderRegistered(): boolean;
 
-    runWithAct(method: Function, args: any[], isAsync: boolean): any;
+    runWithAct(method: Function, args: unknown[], isAsync: boolean): unknown;
+
+    inheritComponentProviderWithDefaultProps(
+        reactExtension: IReactExtension,
+        parentReactExtension: IReactExtension
+    ): boolean;
+
+    addComponentToDataProviders(
+        reactExtension: IReactExtension,
+        describeRunner: IDescribeRunner,
+        createComponentPromise: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
+    ): void;
+
+    enrichWithDefaultProps(
+        defaultProps: object,
+        dataProvider: object | object[],
+        merge: boolean
+    ): object | unknown[];
 }
