@@ -1,13 +1,5 @@
-import { ReactWrapper } from "enzyme";
-import { isArray, isCallable, isUndefined } from "@js-utilities/typecheck";
-import {
-    IDescribeRunner,
-    ITestRunner,
-    PreProcessorData,
-    PreProcessor,
-    TestEntity,
-    IReactExtension,
-} from "@jest-decorated/shared";
+import { isArray } from "@js-utilities/typecheck";
+import { IDescribeRunner, ITestRunner, IReactExtension } from "@jest-decorated/shared";
 
 import { ReactExtension } from "../extensions";
 
@@ -88,87 +80,14 @@ export class ReactTestRunner implements ITestRunner {
             );
         }
 
-        testsService.registerPreProcessor(this.createComponentProviderPreProcessor(
-            describeRunner,
+        const propsAndStateService = reactExtension.getPropsAndStateService();
+        testsService.registerPreProcessor(propsAndStateService.createComponentWithPropsPreProcessor(
+            describeRunner.getClassInstance(),
             componentDataProviderFn
         ));
-        testsService.registerPreProcessor(this.createWithStatePreProcessor(describeRunner));
-    }
-
-    private createComponentProviderPreProcessor(
-        describeRunner: IDescribeRunner,
-        componentDataProviderFn: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
-    ): PreProcessor {
-        return async (data: PreProcessorData): Promise<PreProcessorData> => ({
-            ...data,
-            args: await this.getArgsArrayWithReactDataProviders(
-                data.args,
-                data.testEntity,
-                describeRunner,
-                componentDataProviderFn
-            ),
-        });
-    }
-
-    private createWithStatePreProcessor(describeRunner: IDescribeRunner): PreProcessor {
-        const reactExtension = ReactTestRunner.getReactExtension(describeRunner);
-        return async (data: PreProcessorData): Promise<PreProcessorData> => {
-            const stateDataProvider = reactExtension.getWithState(data.testEntity.name as string);
-            let wrapper: ReactWrapper;
-            if (stateDataProvider && !isUndefined(data.args[0])) {
-                if (!data.args[0] || !isCallable((data.args[0] as ReactWrapper).setState)) {
-                    console.error(
-                        "@WithState() is failed to run for test entity with name"
-                        + " "
-                        + `"${String(data.testEntity.name)}".`
-                        + " "
-                        + "in @Describe() suite"
-                        + " "
-                        + `"${describeRunner.getDescribeName()}".`
-                        + "\n"
-                        + "Reason: component returned from @ComponentProvider() doesn't have"
-                        + " "
-                        + `"setState" method.`
-                        + "\n"
-                        + "Advice: check @ComponentProvider() method and it's return value."
-                        + " "
-                        + `Also, make sure that your @ComponentProvider() returns component wrapped in Enzyme's "shallow" or "mount".`
-                    );
-                    return data;
-                }
-                await new Promise((resolve) => {
-                    wrapper = (data.args[0] as ReactWrapper).setState(stateDataProvider, resolve);
-                });
-                const [_, ...restArgs] = data.args;
-                return { ...data, args: [wrapper || data.args[0], stateDataProvider, ...restArgs] };
-            }
-            return data;
-        };
-    }
-
-    private async getArgsArrayWithReactDataProviders(
-        args: unknown[],
-        testEntity: TestEntity,
-        describeRunner: IDescribeRunner,
-        componentDataProviderFn: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
-    ): Promise<unknown[]> {
-        const reactExtension = ReactTestRunner.getReactExtension(describeRunner);
-        const propsDataProvider = reactExtension.getWithProps(testEntity.name as string);
-        const hasDataProviders = Boolean(testEntity.dataProviders.length);
-        if (hasDataProviders) {
-            // if entity has data providers, means that @WithDataProvider already been declared
-            // currently, only @WithDataProvider or @WithProps is supported
-            if (propsDataProvider) {
-                throw new SyntaxError("Currently, only @WithDataProvider or @WithProps is supported per test at one time");
-            }
-            return args;
-        }
-        const defaultProps = reactExtension
-            .getComponentService()
-            .createAndGetDefaultProps(describeRunner.getClassInstance());
-        return propsDataProvider
-            ? await componentDataProviderFn(propsDataProvider, defaultProps)
-            : await componentDataProviderFn(defaultProps);
+        testsService.registerPreProcessor(propsAndStateService.createWithStatePreProcessor(
+            describeRunner.getDescribeName()
+        ));
     }
 
     private createComponentDataProviderFn(

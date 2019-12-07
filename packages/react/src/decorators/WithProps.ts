@@ -7,6 +7,7 @@ export function WithProps(props: object) {
         const reactExtension = ReactExtension.getReactExtension(proto.constructor as Class);
 
         reactExtension
+            .getPropsAndStateService()
             .registerWithProps(methodName, props);
     };
 }

@@ -17,7 +17,6 @@
       "@shared/interfaces": ["interfaces/index"],
       "@shared/types": ["types/index"],
       "@shared/utils": ["utils/index"]
-
     }
   },
   "include": [

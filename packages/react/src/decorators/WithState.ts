@@ -7,6 +7,7 @@ export function WithState(state: object) {
         const reactExtension = ReactExtension.getReactExtension(proto.constructor as Class);
 
         reactExtension
+            .getPropsAndStateService()
             .registerWithState(methodName, state);
     };
 }

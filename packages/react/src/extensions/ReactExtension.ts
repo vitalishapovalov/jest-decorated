@@ -1,6 +1,6 @@
-import { Class, IReactExtension } from "@jest-decorated/shared";
+import { Class, IComponentService, IPropsAndStateService, IReactExtension } from "@jest-decorated/shared";
 
-import { ComponentService } from "../services";
+import { ComponentService, PropsAndStateService } from "../services";
 
 export class ReactExtension implements IReactExtension {
 
@@ -16,31 +16,17 @@ export class ReactExtension implements IReactExtension {
         return reactExtension;
     }
 
-    private readonly withStateRegistry: { [key: string]: object; } = {};
-    private readonly withPropsRegistry: { [key: string]: object; } = {};
-
     private constructor(
         private readonly clazz: Class,
-        private readonly componentService: ComponentService = new ComponentService(clazz)
+        private readonly componentService: IComponentService = new ComponentService(clazz),
+        private readonly propsAndStateService: IPropsAndStateService = new PropsAndStateService(componentService)
     ) {}
 
-    public getComponentService(): ComponentService {
+    public getComponentService(): IComponentService {
         return this.componentService;
     }
 
-    public registerWithProps(methodName: string, data: object): void {
-        this.withPropsRegistry[methodName] = data;
-    }
-
-    public getWithProps(methodName: string): object {
-        return this.withPropsRegistry[methodName];
-    }
-
-    public registerWithState(methodName: string, data: object): void {
-        this.withStateRegistry[methodName] = data;
-    }
-
-    public getWithState(methodName: string): object {
-        return this.withStateRegistry[methodName];
+    public getPropsAndStateService(): IPropsAndStateService {
+        return this.propsAndStateService;
     }
 }
