@@ -4,7 +4,7 @@ import { ReactExtension } from "../extensions";
 
 export function WithContext(
     contextTypeOrValue: React.Context<object> | object,
-    value: object,
+    value?: object,
     lib: Context["lib"] = "react-dom"
 ) {
     return function WithContextDecoratorFunc(proto: object, methodName: string) {

@@ -23,6 +23,73 @@ class MyFnSpec {
 }
 ```
 
+## Setup
+
+### With `setupFilesAfterEnv` jest option
+
+You can register decorators once and use them everywhere, without importing! To achieve that, add `globals` files to `setupFilesAfterEnv` jest config.
+
+For example, if we want to register `core` and `react` decorators globally:
+
+```json
+{
+  "setupFilesAfterEnv": [
+    "@jest-decorated/core/globals",
+    "@jest-decorated/react/globals"
+  ]
+}
+```
+
+Or, if you already have single entry point for tests setup:
+
+```json
+{
+  "setupFilesAfterEnv": [
+    "<rootDir>/testSetup.ts"
+  ]
+}
+```
+```typescript
+// testSetup.ts
+
+import "@jest-decorated/core/globals";
+import "@jest-decorated/react/globals";
+```
+
+### With importing `globals` file
+
+Another option is to import `globals` files in tests separately:
+
+```typescript
+// myFn.spec.ts
+
+import "@jest-decorated/core/globals";
+import "@jest-decorated/react/globals";
+
+@Describe()
+@RunWith(ReactTestRunner)
+class MyFnSpec {
+  // ...
+}
+```
+
+### With direct import
+
+If solutions above doesn't serves your needs, you can use direct import:
+
+```typescript
+// myFn.spec.ts
+
+import { Describe, RunWith } from "@jest-decorated/core";
+import { ReactTestRunner } from "@jest-decorated/react";
+
+@Describe()
+@RunWith(ReactTestRunner)
+class MyFnSpec {
+  // ...
+}
+```
+
 ## Extensions
 
 Support for different libs and frameworks. Currently, only `React` is strongly supported.
