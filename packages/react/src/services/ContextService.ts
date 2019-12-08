@@ -50,47 +50,53 @@ export class ContextService implements IContextService {
     }
 
     private registerReactDOMContext(testsService: ITestsService): void {
-        testsService.registerPreProcessor(({ clazzInstance, testEntity, args }) => {
-            const ReactDOM = resolveModule("react-dom");
-            const ReactDOMRender = ReactDOM.render;
+        testsService.registerPreProcessor(
+            ({ clazzInstance, testEntity, args }) => {
+                const reactDOM = resolveModule("react-dom");
+                const reactDOMRender = reactDOM.render;
 
-            const contextValue = this.getContextValue(clazzInstance, testEntity);
+                const contextValue = this.getContextValue(clazzInstance, testEntity);
 
-            ReactDOM.render = (component: React.ElementType, container: HTMLElement) => {
-                const element = this.prepareReactElementWithContext(component, contextValue, testEntity);
-                ReactDOM.render = ReactDOMRender;
-                return ReactDOMRender(element, container);
-            };
+                reactDOM.render = (component: React.ElementType, container: HTMLElement) => {
+                    const element = this.prepareReactElementWithContext(component, contextValue, testEntity);
+                    reactDOM.render = reactDOMRender;
+                    return reactDOMRender(element, container);
+                };
 
-            return { clazzInstance, testEntity, args: [contextValue, ...args] };
-        }, 0);
+                return { clazzInstance, testEntity, args: [contextValue, ...args] };
+            },
+            0
+        );
     }
 
     private registerEnzymeContext(testsService: ITestsService): void {
-        testsService.registerPreProcessor(({ clazzInstance, testEntity, args }) => {
-            const enzyme = resolveModule("enzyme");
-            const enzymeShallow = enzyme.shallow;
-            const enzymeMount = enzyme.mount;
+        testsService.registerPreProcessor(
+            ({ clazzInstance, testEntity, args }) => {
+                const enzyme = resolveModule("enzyme");
+                const enzymeShallow = enzyme.shallow;
+                const enzymeMount = enzyme.mount;
 
-            const contextValue = this.getContextValue(clazzInstance, testEntity);
+                const contextValue = this.getContextValue(clazzInstance, testEntity);
 
-            for (const type of ["shallow", "mount"]) {
-                enzyme[type] = (component: React.ElementType, options: ShallowRendererProps | MountRendererProps = {}) => {
-                    const updatedOptions: ShallowRendererProps | MountRendererProps = {
-                        ...options,
-                        context: {
-                            ...options.context,
-                            ...this.prepareEnzymeContext(component, contextValue, testEntity)
-                        },
+                for (const type of ["shallow", "mount"]) {
+                    enzyme[type] = (component: React.ElementType, options: ShallowRendererProps | MountRendererProps = {}) => {
+                        const updatedOptions: ShallowRendererProps | MountRendererProps = {
+                            ...options,
+                            context: {
+                                ...options.context,
+                                ...this.prepareEnzymeContext(component, contextValue, testEntity),
+                            },
+                        };
+                        enzyme.shallow = enzymeShallow;
+                        enzyme.mount = enzymeMount;
+                        return enzyme[type](component, updatedOptions);
                     };
-                    enzyme.shallow = enzymeShallow;
-                    enzyme.mount = enzymeMount;
-                    return enzyme[type](component, updatedOptions);
-                };
-            }
+                }
 
-            return { clazzInstance, testEntity, args: [contextValue, ...args] };
-        }, 0);
+                return { clazzInstance, testEntity, args: [contextValue, ...args] };
+            },
+            0
+        );
     }
 
     private getContextValue(clazzInstance: object, testEntity: TestEntity): object {
@@ -105,13 +111,13 @@ export class ContextService implements IContextService {
         contextValue: object,
         testEntity: TestEntity
     ): React.ElementType {
-        const React = resolveModule("react");
+        const react = resolveModule("react");
         const context = this.withContextRegistry.get(testEntity.name)?.contextType
             || this.defaultContext.contextType;
-        return React.createElement(
+        return react.createElement(
             context.Provider,
             { value: contextValue },
-            React.createElement(context.Consumer, null, contextVal => component)
+            react.createElement(context.Consumer, null, contextVal => component)
         );
     }
 
@@ -120,7 +126,7 @@ export class ContextService implements IContextService {
         contextValue: object,
         testEntity: TestEntity
     ): object {
-        const PropTypes = resolveModule("prop-types");
+        const propTypes = resolveModule("prop-types");
         const componentAsAny = component as any;
         const contextType = this.withContextRegistry.get(testEntity.name)?.contextType
             || this.defaultContext.contextType;
@@ -128,11 +134,11 @@ export class ContextService implements IContextService {
         componentAsAny.type.contextTypes = {};
         if ("_currentValue" in contextType) {
             for (const key of Object.keys((contextType as { _currentValue: object })._currentValue)) {
-                componentAsAny.type.contextTypes[key] = PropTypes.any.isRequired;
+                componentAsAny.type.contextTypes[key] = propTypes.any.isRequired;
             }
         }
         for (const key of Object.keys(contextValue)) {
-            componentAsAny.type.contextTypes[key] = PropTypes.any.isRequired;
+            componentAsAny.type.contextTypes[key] = propTypes.any.isRequired;
         }
         return contextValue;
     }

@@ -63,14 +63,16 @@ export class ReactTestRunner implements ITestRunner {
         componentService.inheritComponentProviderWithDefaultProps(parentReactExtension);
 
         // provide component, props
-        testsService.registerPreProcessor(propsAndStateService.createComponentWithPropsPreProcessor(
-            describeRunner
-        ), 2);
+        testsService.registerPreProcessor(
+            propsAndStateService.createComponentWithPropsPreProcessor(describeRunner),
+            2
+        );
 
         // provide state
-        testsService.registerPreProcessor(propsAndStateService.createWithStatePreProcessor(
-            describeRunner.getDescribeName()
-        ), 3);
+        testsService.registerPreProcessor(
+            propsAndStateService.createWithStatePreProcessor(describeRunner.getDescribeName()),
+            3
+        );
 
         // provide context
         contextService.inheritDefaultContext(parentReactExtension);

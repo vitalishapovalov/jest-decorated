@@ -80,7 +80,7 @@ export class PropsAndStateService implements IPropsAndStateService {
                 const [_, ...restArgs] = data.args as unknown[];
                 return {
                     ...data,
-                    args: [wrapper || data.args[0], ...restArgs, stateDataProvider]
+                    args: [wrapper || data.args[0], ...restArgs, stateDataProvider],
                 };
             }
             return data;
