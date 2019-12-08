@@ -1,10 +1,31 @@
 # Decorators library for writing jest-based tests
 
-Wrapper around [jest JavaScript testing framework](https://jestjs.io/). Provides decorators with core jest globals and other utilities.
+Wrapper around [jest JavaScript testing framework](https://jestjs.io/). Provides decorators with core jest globals and other utilities to minimize boilerplate code.
+
+```typescript
+@Describe()
+class MyFnSpec {
+    
+    @Spy(console, "log")
+    consoleLogSpy;
+    
+    @Test()
+    shouldCallLogTwice() {
+       myFn("foo");
+       expect(this.consoleLogSpy).toHaveBeenCalledTimes(2);
+    }
+    
+    @Test()
+    shouldCallLogOnce() {
+        myFn("bar");
+        expect(this.consoleLogSpy).toHaveBeenCalledTimes(1);
+    }
+}
+```
 
 ## Extensions
 
-Support for different libs and frameworks.
+Support for different libs and frameworks. Currently, only `React` is strongly supported.
 
 ### [React](https://github.com/vitalishapovalov/jest-decorated/blob/master/packages/react/README.md)
 

@@ -1,15 +1,36 @@
 # Decorators for writing jest-based tests for react components
 
-Utilities for testing `react` with `enzyme` library. Make sure to register `ReactTestRunner` on your parent test:
+Extension of [@jest-decorated](https://github.com/vitalishapovalov/jest-decorated/blob/master/README.md) package.
+
+Utilities for testing `react` components. Compatible with `enzyme`, `testing-libray` and `react-dom/test-utils`.
+
+## Example usage
+
+Make sure to register `ReactTestRunner` on your parent test:
 
 ```typescript
-import { Describe, RunWith } from "@jest-decorated/core";
-import { ReactTestRunner } from "@jest-decorated/react";
-
 @Describe()
 @RunWith(ReactTestRunner)
 class MyComponentTest {
-    // ...
+    
+    @ComponentContainer()
+    container;
+    
+    @ComponentProvider()
+    provider(passedProps) {
+        return render(<MyComponent {...passedProps} />, this.container);
+    }
+    
+    @WithProps({ onChange: jest.fn() })
+    @It("changes value when clicked")
+    shouldToggle(returnValueOfComponentProvider, passedPops) {
+        const button = document.querySelector("[data-testid=toggle]");
+        expect(button.innerHTML).toBe("Turn on");
+    
+        button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        expect(passedPops.onChange).toHaveBeenCalledTimes(1);
+        expect(button.innerHTML).toBe("Turn off");
+    }
 }
  ```
 

@@ -1,6 +1,10 @@
-# Types, interfaces and utils of jest-decorated lib
+# Types, interfaces and utils for `@jest-decorated` package
 
-## [Docs](https://github.com/vitalishapovalov/jest-decorated/blob/master/README.md) 
+## [Read Docs](https://github.com/vitalishapovalov/jest-decorated/blob/master/README.md) 
+
+## Contributing
+
+[Contribution guidelines for this project](https://github.com/vitalishapovalov/jest-decorated/blob/master/CONTRIBUTING.md)
 
 ## License
 
