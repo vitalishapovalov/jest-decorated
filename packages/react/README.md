@@ -21,8 +21,8 @@ class MyComponentTest {
         return render(<MyComponent {...passedProps} />, this.container);
     }
     
+    @It("changes value when clicked, calls onChange")
     @WithProps({ onChange: jest.fn() })
-    @It("changes value when clicked")
     shouldToggle(returnValueOfComponentProvider, passedPops) {
         const button = document.querySelector("[data-testid=toggle]");
         expect(button.innerHTML).toBe("Turn on");
@@ -53,6 +53,10 @@ class MyComponentTest {
 ### [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithProps.md)
 
 ### [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithState.md)
+
+## Contributing
+
+[Contribution guidelines for this project](https://github.com/vitalishapovalov/jest-decorated/blob/master/CONTRIBUTING.md)
 
 ## License
 
