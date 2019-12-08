@@ -23,7 +23,11 @@ class MyComponentTest {
 
 ### [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentProvider.md)
 
+### [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md)
+
 ### [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultProps.md)
+
+### [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithContext.md)
 
 ### [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithProps.md)
 

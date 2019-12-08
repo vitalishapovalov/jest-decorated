@@ -69,19 +69,19 @@ export class TestRunner implements ITestRunner {
             .map<unknown[][]>(testsService.getDataProvider.bind(testsService));
 
         testEntity.dataProviders
-            .reduce<Map<PropertyKey, unknown[][]>>(
+            .reduce<Map<PropertyKey, unknown[]>>(
                 (map, name, i) => {
-                    dataProvidersData[i].forEach((args) => {
-                        const currArgs = map.get(name) || [];
-                        currArgs.push(args);
-                        map.set(name, currArgs);
+                    dataProvidersData[i].forEach((arg) => {
+                        const argsArr = map.get(name) || [];
+                        argsArr.push(arg);
+                        map.set(name, argsArr);
                     });
                     return map;
                 },
                 new Map()
             )
             .forEach(
-                (argsArr, name) => argsArr.forEach(args => registerTestFn(args, name))
+                (argsArr, name) => argsArr.forEach(args => registerTestFn([args], name))
             );
     }
 }

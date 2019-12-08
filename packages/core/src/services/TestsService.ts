@@ -1,5 +1,5 @@
 import { isObject, isCallable } from "@js-utilities/typecheck";
-import { ITestsService, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
+import { ITestsService, OrderedMap, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
 
 export class TestsService implements ITestsService {
 
@@ -44,9 +44,9 @@ export class TestsService implements ITestsService {
         "toThrowErrorMatchingInlineSnapshot",
     ];
 
-    private readonly preProcessors: PreProcessor[] = [];
+    private readonly preProcessors: OrderedMap<PreProcessor[]> = {};
 
-    private readonly postProcessors: PostProcessor[] = [];
+    private readonly postProcessors: OrderedMap<PostProcessor[]> = [];
 
     private readonly tests: TestEntity[] = [];
 
@@ -88,12 +88,16 @@ export class TestsService implements ITestsService {
         return [...this.dataProviders.keys()];
     }
 
-    public registerPreProcessor(preProcessor: PreProcessor): void {
-        this.preProcessors.push(preProcessor);
+    public registerPreProcessor(preProcessor: PreProcessor, order: number): void {
+        const currPreProcessors = this.preProcessors[order] || [];
+        currPreProcessors.push(preProcessor);
+        this.preProcessors[order] = currPreProcessors;
     }
 
-    public registerPostProcessor(postProcessor: PostProcessor): void {
-        this.postProcessors.push(postProcessor);
+    public registerPostProcessor(postProcessor: PostProcessor, order: number): void {
+        const currPostProcessors = this.postProcessors[order] || [];
+        currPostProcessors.push(postProcessor);
+        this.postProcessors[order] = currPostProcessors;
     }
 
     public runPreProcessors(data: PreProcessorData): Promise<PreProcessorData> {
@@ -105,17 +109,23 @@ export class TestsService implements ITestsService {
     }
 
     private registerPromisePreProcessor(): void {
-        this.registerPreProcessor(async (data: PreProcessorData) => ({
-            ...data,
-            args: await Promise.all(data.args),
-        } as PreProcessorData));
+        this.registerPreProcessor(
+            async (data: PreProcessorData) => ({
+                ...data,
+                args: await Promise.all(data.args),
+            } as PreProcessorData),
+            1
+        );
     }
 
     private registerExpectPostProcessor(): void {
-        this.registerPostProcessor(async (testResult: unknown) => {
-            if (!isObject(testResult)) return;
-            this.invokeMatchers(testResult);
-        });
+        this.registerPostProcessor(
+            async (testResult: unknown) => {
+                if (!isObject(testResult)) return;
+                this.invokeMatchers(testResult);
+            },
+            1
+        );
     }
 
     private invokeMatchers(testResult: object, not: boolean = false): void {
@@ -133,10 +143,12 @@ export class TestsService implements ITestsService {
         }
     }
 
-    private async processAsync<T>(data: T, processors: Function[]): Promise<T> {
+    private async processAsync<T>(data: T, processors: OrderedMap<(PostProcessor | PreProcessor)[]>): Promise<T> {
         let dataResult = data;
-        for (const processor of processors) {
-            dataResult = await processor.call(this.clazzInstance, dataResult);
+        for (const processorOrder of Object.keys(processors)) {
+            for (const processor of processors[processorOrder]) {
+                dataResult = await processor.call(this.clazzInstance, dataResult);
+            }
         }
         return dataResult;
     }

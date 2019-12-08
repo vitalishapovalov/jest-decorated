@@ -86,9 +86,9 @@ export class ComponentService implements IComponentService {
     public createAndGetDefaultProps(
         clazzInstance: object,
         defaultProps: unknown = this.componentProvider.defaultProps
-    ): object | undefined {
+    ): object {
         if (!defaultProps) {
-            return;
+            return {};
         }
         if (isCallable(defaultProps)) {
             return defaultProps.call(clazzInstance);
@@ -138,76 +138,29 @@ export class ComponentService implements IComponentService {
         return func();
     }
 
-    public inheritComponentProviderWithDefaultProps(
-        reactExtension: IReactExtension,
-        parentReactExtension: IReactExtension
-    ): boolean {
-        const componentsService = reactExtension.getComponentService();
-        const parentComponentsService = parentReactExtension.getComponentService();
+    public inheritComponentProviderWithDefaultProps(parentReactExtension?: IReactExtension): boolean {
+        const parentComponentsService = parentReactExtension?.getComponentService();
 
         // parent has component provider, use it
-        if (parentComponentsService.isComponentProviderRegistered()) {
-            componentsService.registerComponentProvider(
-                parentReactExtension.getComponentService().componentProvider.name,
-                parentReactExtension.getComponentService().componentProvider.source
+        if (
+            !this.isComponentProviderRegistered()
+            && parentComponentsService?.isComponentProviderRegistered()
+        ) {
+            this.registerComponentProvider(
+                parentComponentsService.componentProvider.name,
+                parentComponentsService.componentProvider.source
             );
 
             // inherit default props
             const defaultProps = parentComponentsService.componentProvider.defaultProps;
-            if (defaultProps && !componentsService.componentProvider.defaultProps) {
-                componentsService.registerDefaultProps(defaultProps);
+            if (defaultProps && !this.componentProvider.defaultProps) {
+                this.registerDefaultProps(defaultProps);
             }
             // inherit act, asyncAct
-            componentsService.componentProvider.isAct = parentComponentsService.componentProvider.isAct;
-            componentsService.componentProvider.isAsyncAct = parentComponentsService.componentProvider.isAsyncAct;
+            this.componentProvider.isAct = parentComponentsService.componentProvider.isAct;
+            this.componentProvider.isAsyncAct = parentComponentsService.componentProvider.isAsyncAct;
             return true;
         }
         return false;
-    }
-
-    public addComponentToDataProviders(
-        reactExtension: IReactExtension,
-        describeRunner: IDescribeRunner,
-        createComponentPromise: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
-    ): void {
-        const testsService = describeRunner.getTestsService();
-
-        for (const providerName of testsService.getDataProviders()) {
-            const providerDataWithReactComponent = [];
-            const providerData = testsService.getDataProvider(providerName);
-            const defaultProps = reactExtension
-                .getComponentService()
-                .createAndGetDefaultProps(describeRunner.getClassInstance());
-            const componentPromise = createComponentPromise(defaultProps);
-            for (const providerDataUnit of this.enrichWithDefaultProps(defaultProps, providerData) as unknown[]) {
-                providerDataWithReactComponent.push(isArray(providerDataUnit)
-                    ? [componentPromise, ...providerDataUnit]
-                    : [componentPromise, providerDataUnit]
-                );
-            }
-            testsService.registerDataProvider(providerName, providerDataWithReactComponent);
-        }
-    }
-
-    public enrichWithDefaultProps(
-        defaultProps: object,
-        dataProvider: object | object[],
-        merge: boolean = false
-    ): object | unknown[] {
-        if (isArray(dataProvider)) {
-            return dataProvider.map((dataProviderEntry) => {
-                if (isArray(dataProviderEntry)) {
-                    return [defaultProps, ...dataProviderEntry];
-                }
-                if (isObject(dataProvider) && merge) {
-                    return { ...defaultProps, ...dataProviderEntry };
-                }
-                return [defaultProps, dataProviderEntry];
-            });
-        }
-        if (isObject(dataProvider) && merge) {
-            return { ...defaultProps, ...dataProvider };
-        }
-        return [defaultProps, dataProvider];
     }
 }

@@ -1,4 +1,5 @@
 import { PreProcessor } from "@shared/types";
+import { IDescribeRunner } from "@shared/interfaces";
 
 export interface IPropsAndStateService {
 
@@ -10,10 +11,7 @@ export interface IPropsAndStateService {
 
     getWithState(methodName: string): object;
 
-    createComponentWithPropsPreProcessor(
-        clazzInstance: object,
-        componentDataProviderFn: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
-    ): PreProcessor;
+    createComponentWithPropsPreProcessor(describeRunner: IDescribeRunner): PreProcessor;
 
     createWithStatePreProcessor(describeName: string): PreProcessor;
 }

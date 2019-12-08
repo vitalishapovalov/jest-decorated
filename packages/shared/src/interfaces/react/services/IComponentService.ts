@@ -1,6 +1,5 @@
 import { ComponentProvider } from "@shared/types";
-import { IReactExtension } from "../../../../dist/types/interfaces/react/extensions";
-import { IDescribeRunner } from "../../../../dist/types/interfaces/core/runners";
+import { IReactExtension } from "@shared/interfaces";
 
 export interface IComponentService {
 
@@ -31,20 +30,5 @@ export interface IComponentService {
 
     runWithAct(method: Function, args: unknown[], isAsync: boolean): unknown;
 
-    inheritComponentProviderWithDefaultProps(
-        reactExtension: IReactExtension,
-        parentReactExtension: IReactExtension
-    ): boolean;
-
-    addComponentToDataProviders(
-        reactExtension: IReactExtension,
-        describeRunner: IDescribeRunner,
-        createComponentPromise: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
-    ): void;
-
-    enrichWithDefaultProps(
-        defaultProps: object,
-        dataProvider: object | object[],
-        merge: boolean
-    ): object | unknown[];
+    inheritComponentProviderWithDefaultProps(parentReactExtension: IReactExtension): boolean;
 }

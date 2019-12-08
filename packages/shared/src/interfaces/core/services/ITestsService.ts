@@ -17,9 +17,9 @@ export interface ITestsService {
 
     getDataProviders(): PropertyKey[];
 
-    registerPreProcessor(preProcessor: PreProcessor): void;
+    registerPreProcessor(preProcessor: PreProcessor, order: number): void;
 
-    registerPostProcessor(postProcessor: PostProcessor): void;
+    registerPostProcessor(postProcessor: PostProcessor, order: number): void;
 
     runPreProcessors(data: PreProcessorData): Promise<PreProcessorData>;
 

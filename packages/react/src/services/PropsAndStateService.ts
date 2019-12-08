@@ -2,55 +2,55 @@ import { ReactWrapper } from "enzyme";
 import { isCallable, isUndefined } from "@js-utilities/typecheck";
 import {
     IComponentService,
+    IDescribeRunner,
     IPropsAndStateService,
     PreProcessor,
     PreProcessorData,
-    TestEntity
 } from "@jest-decorated/shared";
 
 export class PropsAndStateService implements IPropsAndStateService {
 
-    private readonly withStateRegistry: { [key: string]: object; } = {};
+    private readonly withStateRegistry: Map<string, object> = new Map();
 
-    private readonly withPropsRegistry: { [key: string]: object; } = {};
+    private readonly withPropsRegistry: Map<string, object> = new Map();
 
     public constructor(private readonly componentService: IComponentService) {}
 
     public registerWithProps(methodName: string, data: object): void {
-        this.withPropsRegistry[methodName] = data;
+        this.withPropsRegistry.set(methodName, data);
     }
 
     public getWithProps(methodName: string): object {
-        return this.withPropsRegistry[methodName];
+        return this.withPropsRegistry.get(methodName);
     }
 
     public registerWithState(methodName: string, data: object): void {
-        this.withStateRegistry[methodName] = data;
+        this.withStateRegistry.set(methodName, data);
     }
 
     public getWithState(methodName: string): object {
-        return this.withStateRegistry[methodName];
+        return this.withStateRegistry.get(methodName);
     }
 
-    public createComponentWithPropsPreProcessor(
-        clazzInstance: object,
-        componentDataProviderFn: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
-    ): PreProcessor {
-        return async (data: PreProcessorData): Promise<PreProcessorData> => ({
-            ...data,
-            args: await this.getArgsArrayWithReactDataProviders(
-                data.args,
-                data.testEntity,
-                clazzInstance,
-                componentDataProviderFn
-            ),
-        });
+    public createComponentWithPropsPreProcessor(describeRunner: IDescribeRunner): PreProcessor {
+        return async (data: PreProcessorData): Promise<PreProcessorData> => {
+            const propsDataProvider = this.getWithProps(data.testEntity.name as string);
+            const defaultProps = this.componentService.createAndGetDefaultProps(describeRunner.getClassInstance());
+
+            const componentWithProps = propsDataProvider
+                ? await this.getComponentProviderResultAndProps(describeRunner, propsDataProvider, defaultProps)
+                : await this.getComponentProviderResultAndProps(describeRunner, defaultProps);
+
+            return {
+                ...data,
+                args: [...componentWithProps, ...data.args],
+            };
+        };
     }
 
     public createWithStatePreProcessor(describeName: string): PreProcessor {
         return async (data: PreProcessorData): Promise<PreProcessorData> => {
             const stateDataProvider = this.getWithState(data.testEntity.name as string);
-            let wrapper: ReactWrapper;
             if (stateDataProvider && !isUndefined(data.args[0])) {
                 if (!data.args[0] || !isCallable((data.args[0] as ReactWrapper).setState)) {
                     console.error(
@@ -72,35 +72,59 @@ export class PropsAndStateService implements IPropsAndStateService {
                     );
                     return data;
                 }
+                let wrapper: ReactWrapper;
                 await new Promise((resolve) => {
                     wrapper = (data.args[0] as ReactWrapper).setState(stateDataProvider, resolve);
                 });
-                const [_, ...restArgs] = data.args;
-                return { ...data, args: [wrapper || data.args[0], stateDataProvider, ...restArgs] };
+                // we're sure that args are array here, because of props pre-processor
+                const [_, ...restArgs] = data.args as unknown[];
+                return {
+                    ...data,
+                    args: [wrapper || data.args[0], ...restArgs, stateDataProvider]
+                };
             }
             return data;
         };
     }
 
-    private async getArgsArrayWithReactDataProviders(
-        args: unknown[],
-        testEntity: TestEntity,
-        clazzInstance: object,
-        componentDataProviderFn: (arg: object | object[], defaultProps?: object) => Promise<unknown[]>
-    ): Promise<unknown[]> {
-        const propsDataProvider = this.getWithProps(testEntity.name as string);
-        const hasDataProviders = Boolean(testEntity.dataProviders.length);
-        if (hasDataProviders) {
-            // if entity has data providers, means that @WithDataProvider already been declared
-            // currently, only @WithDataProvider or @WithProps is supported
-            if (propsDataProvider) {
-                throw new SyntaxError("Currently, only @WithDataProvider or @WithProps is supported per test at one time");
-            }
-            return args;
+    private async getComponentProviderResultAndProps(
+        describe: IDescribeRunner,
+        props: object | object[],
+        defaultProps?: object
+    ): Promise<[unknown, object]> {
+        const componentProvider = this.componentService.getComponentProvider();
+        const clazzInstance = describe.getClassInstance();
+        // enrich with default props, if possible
+        const enrichedProps = defaultProps ? { ...defaultProps, ...props } : props;
+        try {
+            // import component if needed, pass it to @ComponentProvider args
+            const componentProviderArgs = componentProvider.source
+                ? [await this.componentService.importOrGetComponent(), enrichedProps]
+                : [enrichedProps];
+            // handle @Act decorators on @ComponentProvider
+            const componentProviderResultFn = async () => await clazzInstance[componentProvider.name]
+                .apply(clazzInstance, componentProviderArgs);
+            const componentProviderResult = componentProvider.isAct
+                ? await this.componentService.runWithAct(componentProviderResultFn, [], componentProvider.isAsyncAct)
+                : await componentProviderResultFn();
+            // this will be passed to each test as arguments
+            return [componentProviderResult, enrichedProps];
+        } catch (error) {
+            throw new Error("Error during evaluating @ComponentProvider()"
+                + " "
+                + "for @Describe() with name"
+                + " "
+                + `"${describe.getDescribeName()}"`
+                + " "
+                + "and @ComponentProvider() method"
+                + " "
+                + `"${componentProvider.name}".`
+                + "\n"
+                + "Advice: check @ComponentProvider() method and props passed to the component."
+                + "\n"
+                + "Error:"
+                + " "
+                + `${error.message}`);
         }
-        const defaultProps = this.componentService.createAndGetDefaultProps(clazzInstance);
-        return propsDataProvider
-            ? await componentDataProviderFn(propsDataProvider, defaultProps)
-            : await componentDataProviderFn(defaultProps);
     }
 }
