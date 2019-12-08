@@ -1,0 +1,16 @@
+declare var AfterAll: typeof import("./dist/types/decorators/AfterAll").AfterAll;
+declare var AfterEach: typeof import("./dist/types/decorators/AfterEach").AfterEach;
+declare var BeforeAll: typeof import("./dist/types/decorators/BeforeAll").BeforeAll;
+declare var BeforeEach: typeof import("./dist/types/decorators/BeforeEach").BeforeEach;
+declare var DataProvider: typeof import("./dist/types/decorators/DataProvider").DataProvider;
+declare var Describe: typeof import("./dist/types/decorators/Describe").Describe;
+declare var It: typeof import("./dist/types/decorators/Test").It;
+declare var LazyImport: typeof import("./dist/types/decorators/LazyImport").LazyImport;
+declare var Mock: typeof import("./dist/types/decorators/Mock").Mock;
+declare var MockFn: typeof import("./dist/types/decorators/MockFn").MockFn;
+declare var RunWith: typeof import("./dist/types/decorators/RunWith").RunWith;
+declare var Spy: typeof import("./dist/types/decorators/Spy").Spy;
+declare var Test: typeof import("./dist/types/decorators/Test").Test;
+declare var WithDataProvider: typeof import("./dist/types/decorators/WithDataProvider").WithDataProvider;
+declare var DescribeRunner: typeof import("./dist/types/runners/DescribeRunner").DescribeRunner;
+declare var TestRunner: typeof import("./dist/types/runners/TestRunner").TestRunner;
