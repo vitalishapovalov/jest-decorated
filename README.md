@@ -1,6 +1,8 @@
 # Decorators library for writing jest-based tests
 
-Wrapper around [jest JavaScript testing framework](https://jestjs.io/). Provides decorators with core jest globals and other utilities to minimize boilerplate code.
+Wrapper around [jest JavaScript testing framework](https://jestjs.io/).
+
+Provides decorators with core jest globals and other utilities to minimize boilerplate code and make tests code more consistent.
 
 ```typescript
 @Describe()
@@ -58,7 +60,7 @@ import "@jest-decorated/react/globals";
 
 ### With importing `globals` file
 
-Another option is to import `globals` files in tests separately:
+Another option is to import `globals` files in each test separately:
 
 ```typescript
 // myFn.spec.ts
