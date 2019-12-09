@@ -1,1 +1,85 @@
-# @Test
+# @Test / @It
+
+The same as jest `test` and `it`.
+
+Each class containing `@Test` and/or `@It` should be marked with [@Describe](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Describe.md).
+
+## Arguments
+
+`testName (String | () => String)?`: Test name. Optional, otherwise - decorated method's name will be taken. 
+
+`timeout (Number)?`: Optional. The timeout for an async function test. If testName is skipped, can be passed as first argument.
+
+## Examples
+
+### With method name as test name
+
+```typescript
+@Describe()
+class MySpec {
+    
+    @Test()
+    shouldReturnFalse() {
+        expect(myFn()).toBeFalsy();
+    }
+}
+```
+
+### With test name passed as string argument
+
+```typescript
+@Describe()
+class MySpec {
+    
+    @It("should return false")
+    myFnTest() {
+        expect(myFn()).toBeFalsy();
+    }
+}
+```
+
+### With test name passed as function argument
+
+Could be useful with [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
+
+```typescript
+@Describe()
+class MySpec {
+    
+    @Test(() => "should return false")
+    myFnTest() {
+        expect(myFn()).toBeFalsy();
+    }
+}
+```
+
+### Asynchronous test
+
+```typescript
+@Describe()
+class MySpec {
+    
+    @It("should return false")
+    async myFnTest() {
+        expect(await myFn()).toBeFalsy();
+    }
+}
+```
+
+### Asynchronous test with timeout
+
+```typescript
+@Describe()
+class MySpec {
+    
+    @Test(500)
+    async shouldReturnFalse() {
+        expect(await myFn()).toBeFalsy();
+    }
+    
+    @It("should return false", 500)
+    async myFnTest() {
+        expect(await myFn()).toBeFalsy();
+    }
+}
+```

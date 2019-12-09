@@ -50,7 +50,8 @@ export class TestRunner implements ITestRunner {
                     .clazzInstance[preProcessorResult.testEntity.name]
                     .apply(preProcessorResult.clazzInstance, preProcessorResult.args);
                 await testsService.runPostProcessors(testResult);
-            }
+            },
+            testEntity.timeout
         );
         if (!testEntity.dataProviders.length) {
             registerTestFn();

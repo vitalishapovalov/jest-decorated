@@ -5,6 +5,7 @@ export class TestEntity {
     public constructor(
         public readonly name: PropertyKey,
         public readonly description: string | ((...args: unknown[]) => string),
+        public readonly timeout?: number,
         public readonly dataProviders: PropertyKey[] = []
     ) {}
 

@@ -2,7 +2,7 @@
 
 Wrapper around [jest JavaScript testing framework](https://jestjs.io/).
 
-Provides decorators with core jest globals and other utilities to minimize boilerplate code and make tests code more consistent.
+Provides decorators with core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
 
 ```typescript
 @Describe()
@@ -106,13 +106,13 @@ Support for different libs and frameworks. Currently, only `React` is strongly s
 
 ### [@It](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Test.md)
 
-### [@AfterAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/AfterAll.md)
+### [@AfterAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Hooks.md)
 
-### [@AfterEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/AfterEach.md)
+### [@AfterEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Hooks.md)
 
-### [@BeforeAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/BeforeAll.md)
+### [@BeforeAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Hooks.md)
 
-### [@BeforeEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/BeforeEach.md)
+### [@BeforeEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Hooks.md)
 
 ### [@Mock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Mock.md)
 
