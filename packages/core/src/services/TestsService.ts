@@ -44,9 +44,9 @@ export class TestsService implements ITestsService {
         "toThrowErrorMatchingInlineSnapshot",
     ];
 
-    private readonly preProcessors: OrderedMap<PreProcessor[]> = {};
+    private readonly preProcessors: OrderedMap<PreProcessor> = {};
 
-    private readonly postProcessors: OrderedMap<PostProcessor[]> = [];
+    private readonly postProcessors: OrderedMap<PostProcessor> = {};
 
     private readonly tests: TestEntity[] = [];
 
@@ -143,7 +143,7 @@ export class TestsService implements ITestsService {
         }
     }
 
-    private async processAsync<T>(data: T, processors: OrderedMap<(PostProcessor | PreProcessor)[]>): Promise<T> {
+    private async processAsync<T>(data: T, processors: OrderedMap<PostProcessor | PreProcessor>): Promise<T> {
         let dataResult = data;
         for (const processorOrder of Object.keys(processors)) {
             for (const processor of processors[processorOrder]) {

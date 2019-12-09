@@ -4,9 +4,9 @@ import {
     IComponentService,
     resolveModule,
     extractModuleDefault,
-    IReactExtension, IDescribeRunner
+    IReactExtension,
 } from "@jest-decorated/shared";
-import { isArray, isCallable, isObject, isString } from "@js-utilities/typecheck";
+import { isCallable, isObject, isString } from "@js-utilities/typecheck";
 
 export class ComponentService implements IComponentService {
 

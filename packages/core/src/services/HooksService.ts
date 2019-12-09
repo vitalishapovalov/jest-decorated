@@ -1,8 +1,9 @@
 import { IHooksService, Hook } from "@jest-decorated/shared";
+import { isCallable } from "@js-utilities/typecheck";
 
 export class HooksService implements IHooksService {
 
-    public readonly hooks: Map<Hook, PropertyKey[]> = new Map()
+    public readonly hooks: Map<Hook, (PropertyKey | (() => any))[]> = new Map()
         .set(Hook.BEFORE_ALL, [])
         .set(Hook.BEFORE_EACH, [])
         .set(Hook.AFTER_ALL, [])
@@ -10,14 +11,14 @@ export class HooksService implements IHooksService {
 
     public constructor(private readonly clazzInstance: object) {}
 
-    public mergeInAll(hooksService: IHooksService): void {
-        for (const [hook, names] of hooksService.hooks) {
-            names.forEach(name => this.registerHook(hook, name));
-        }
+    public registerHook(hook: Hook, name: PropertyKey | (() => any)): void {
+        this.hooks.get(hook).push(name);
     }
 
-    public registerHook(hook: Hook, name: PropertyKey): void {
-        this.hooks.get(hook).push(name);
+    public mergeInAll(hooksService: IHooksService): void {
+        for (const [hook, names] of hooksService.hooks.entries()) {
+            names.forEach(name => this.registerHook(hook, name));
+        }
     }
 
     public registerHooksInJest(): void {
@@ -26,8 +27,10 @@ export class HooksService implements IHooksService {
         }
     }
 
-    public registerHookInJest(hook: Hook, name: PropertyKey): void {
-        const handler = async () => await this.clazzInstance[name].call(this.clazzInstance);
+    public registerHookInJest(hook: Hook, hookValue: PropertyKey | (() => any)): void {
+        const handler = async () => isCallable(hookValue)
+            ? await hookValue()
+            : await this.clazzInstance[hookValue].call(this.clazzInstance);
         switch (hook) {
             case Hook.BEFORE_ALL:
                 beforeAll(handler);

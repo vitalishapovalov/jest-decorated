@@ -1,3 +1,3 @@
 export type OrderedMap<T = unknown> = {
-    [order: number]: T;
+    [order: number]: T[];
 };

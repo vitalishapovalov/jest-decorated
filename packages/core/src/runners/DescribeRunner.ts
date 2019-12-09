@@ -81,17 +81,21 @@ export class DescribeRunner implements IDescribeRunner {
             this.updateDescribe(parentDescribeService);
         }
         describe(this.describeName, () => {
+            beforeAll(() => {
+                this.testRunner.beforeTestsJestRegistration(this, parentDescribeService);
+            });
             this.hooksService.registerHooksInJest();
-            this.testRunner.beforeTestsJestRegistration(this, parentDescribeService);
             this.testRunner.registerTestsInJest(this, parentDescribeService);
-            this.testRunner.afterTestsJestRegistration(this, parentDescribeService);
+            afterAll(() => {
+                this.testRunner.afterTestsJestRegistration(this, parentDescribeService);
+            });
         });
     }
 
-    private updateDescribe(describeService: IDescribeRunner): void {
-        this.mocksService.mergeInAll(describeService.getMocksService());
-        this.hooksService.mergeInAll(describeService.getHooksService());
-        this.testsService.mergeInDataProviders(describeService.getTestsService());
-        this.setTestRunner(describeService.getTestRunner());
+    private updateDescribe(describeRunner: IDescribeRunner): void {
+        this.mocksService.mergeInAll(describeRunner.getMocksService());
+        this.hooksService.mergeInAll(describeRunner.getHooksService());
+        this.testsService.mergeInDataProviders(describeRunner.getTestsService());
+        this.setTestRunner(describeRunner.getTestRunner());
     }
 }

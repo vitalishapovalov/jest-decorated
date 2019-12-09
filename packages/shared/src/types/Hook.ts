@@ -1,6 +1,6 @@
 export const enum Hook {
-    BEFORE_ALL,
-    BEFORE_EACH,
-    AFTER_ALL,
-    AFTER_EACH,
+    BEFORE_ALL = "beforeAll",
+    BEFORE_EACH = "beforeEach",
+    AFTER_ALL = "afterAll",
+    AFTER_EACH = "afterEach",
 }

@@ -2,7 +2,7 @@ import { Hook } from "@shared/types";
 
 export interface IHooksService {
 
-    readonly hooks: Map<Hook, PropertyKey[]>;
+    readonly hooks: Map<Hook, (PropertyKey | (() => any))[]>;
 
     registerHook(hook: Hook, name: PropertyKey): void;
 

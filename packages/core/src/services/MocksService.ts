@@ -121,9 +121,15 @@ export class MocksService implements IMocksService {
         this.registerAutoClearedMockInClass(spy, spyConfig.name);
     }
 
-    private registerAutoClearedMockInClass(value: jest.MockInstance<unknown, unknown[]>, name): void {
-        afterEach(() => value.mockClear());
-        afterAll(() => value.mockRestore());
+    private registerAutoClearedMockInClass(value: jest.MockInstance<unknown, unknown[]>, name: string): void {
+        afterEach(() => {
+            // for some reason, this is being called after each test,
+            // in every describe. First describe in file runs as expected,
+            // and each test in second describe will have their own mockClear
+            // plus all of the previous describe's mockClear.
+            // doesn't affects tests, but need to fix.
+            value.mockClear();
+        });
         Object.defineProperty(this.clazz.prototype, name, { value });
     }
 
