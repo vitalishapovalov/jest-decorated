@@ -4,6 +4,35 @@ Wrapper around [jest JavaScript testing framework](https://jestjs.io/).
 
 Provides decorators with core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
 
+Jest test:
+
+```typescript
+describe("MyFnSpec", () => {
+    
+    const consoleLogSpy = jest.spyOn(console, "log");
+    
+    afterEach(() => {
+        consoleLogSpy.mockClear();
+    });
+    
+    afterAll(() => {
+        consoleLogSpy.mockRestore();
+    });
+    
+    test("shouldCallLogTwice", () => {
+        myFn("foo");
+        expect(consoleLogSpy).toHaveBeenCalledTimes(2);
+    });
+    
+    test("shouldCallLogOnce", () => {
+        myFn("bar");
+        expect(consoleLogSpy).toHaveBeenCalledTimes(2);
+    });
+});
+```
+
+Same test with `@jest-decorated` and `@Spy` util:
+
 ```typescript
 @Describe()
 class MyFnSpec {
@@ -12,9 +41,9 @@ class MyFnSpec {
     consoleLogSpy;
     
     @Test()
-    shouldCallLogTwice() {
-       myFn("foo");
-       expect(this.consoleLogSpy).toHaveBeenCalledTimes(2);
+    shouldLogTwice() {
+        myFn("foo");
+        expect(this.consoleLogSpy).toHaveBeenCalledTimes(2);
     }
     
     @Test()
@@ -23,6 +52,15 @@ class MyFnSpec {
         expect(this.consoleLogSpy).toHaveBeenCalledTimes(1);
     }
 }
+```
+
+## Install
+
+```bash
+npm i -D @jest-decorated/core
+
+# if used with react
+npm i -D @jest-decorated/react
 ```
 
 ## Setup

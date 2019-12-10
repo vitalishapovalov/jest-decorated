@@ -10,6 +10,19 @@ No arguments.
 
 ### Common usage
 
+From:
+
+```typescript
+describe("MySpec", () => {
+    
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+});
+```
+
+To:
+
 ```typescript
 @Describe()
 class MySpec {
@@ -18,12 +31,31 @@ class MySpec {
     clearMocks() {
         jest.clearAllMocks();
     }
-    
-    // ...
 }
 ```
 
 ### Multiple hooks
+
+From:
+
+```typescript
+describe("MySpec", () => {
+    
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+    
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
+    
+    afterAll(() => {
+        jest.useRealTimers();
+    });
+});
+```
+
+To:
 
 ```typescript
 @Describe()
@@ -43,12 +75,25 @@ class MySpec {
     restoreTimers() {
         jest.useRealTimers();
     }
-    
-    // ...
 }
 ```
 
 ### Combined hooks
+
+From:
+
+```typescript
+describe("MySpec", () => {
+    
+    const clearMocks = () => jest.clearAllMocks();
+    
+    beforeAll(clearMocks);
+    
+    afterAll(clearMocks);
+});
+```
+
+To:
 
 ```typescript
 @Describe()
@@ -59,12 +104,23 @@ class MySpec {
     clearMocks() {
         jest.clearAllMocks();
     }
-    
-    // ...
 }
 ```
 
 ### Asynchronous hook
+
+From:
+
+```typescript
+describe("MySpec", () => {
+    
+    beforeAll(async () => {
+        await myModule.prepare();
+    });
+});
+```
+
+To:
 
 ```typescript
 @Describe()
@@ -74,8 +130,41 @@ class MySpec {
     async prepareModule() {
         await myModule.prepare();
     }
+}
+```
+
+### Inherit hooks
+
+From:
+
+```typescript
+describe("MySpec", () => {
     
-    // ...
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+    
+    describe(() => {
+        // @AfterEach inherited
+    });
+});
+```
+
+To:
+
+```typescript
+@Describe()
+class MySpec {
+    
+    @AfterEach()
+    clearMocks() {
+        jest.clearAllMocks();
+    }
+}
+
+@Describe()
+class MySpecSubSpec extends MySpec {
+    // @AfterEach inherited
 }
 ```
 
@@ -94,25 +183,5 @@ class MySpec {
     }
     
     // ...
-}
-```
-
-### Inherit hooks
-
-```typescript
-@Describe()
-class MySpec {
-    
-    @AfterEach()
-    clearMocks() {
-        jest.clearAllMocks();
-    }
-        
-    // ...
-}
-
-@Describe()
-class MySpecSubSpec extends MySpec {
-    // @AfterEach inherited
 }
 ```

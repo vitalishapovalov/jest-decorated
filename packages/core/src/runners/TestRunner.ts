@@ -1,5 +1,6 @@
 import { isCallable } from "@js-utilities/typecheck";
 import { IDescribeRunner, ITestRunner, TestEntity } from "@jest-decorated/shared";
+import { TestType } from "@jest-decorated/shared/dist/types/types/TestType";
 
 export class TestRunner implements ITestRunner {
 
@@ -38,7 +39,15 @@ export class TestRunner implements ITestRunner {
     protected registerTestInJest(testEntity: TestEntity, describeRunner: IDescribeRunner): void {
         const clazzInstance = describeRunner.getClassInstance();
         const testsService = describeRunner.getTestsService();
-        const registerTestFn = (args: unknown[] = [], providerName?: PropertyKey) => test(
+        const jestTestType = this.resolveJestTestType(testEntity);
+
+        // special case for test.tоdo
+        if (testEntity.getTestType() === TestType.TODO) {
+            test.todo(TestRunner.resolveDescription(testEntity.description));
+            return;
+        }
+
+        const registerTestFn = (args: unknown[] = [], providerName?: PropertyKey) => jestTestType(
             TestRunner.resolveDescription(testEntity.description, args, providerName),
             async () => {
                 const preProcessorResult = await testsService.runPreProcessors({
@@ -84,5 +93,19 @@ export class TestRunner implements ITestRunner {
             .forEach(
                 (argsArr, name) => argsArr.forEach(args => registerTestFn([args], name))
             );
+    }
+
+    protected resolveJestTestType(testEntity: TestEntity): typeof test {
+        switch (testEntity.getTestType()) {
+            case TestType.ONLY:
+                return test.only;
+            case TestType.SKIP:
+                return test.skip;
+            case TestType.TODO:
+                return test.todo;
+            case TestType.DEFAULT:
+            default:
+                return test;
+        }
     }
 }

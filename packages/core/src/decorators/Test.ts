@@ -1,25 +1,51 @@
 import { isUndefined, isNumber } from "@js-utilities/typecheck";
-import { Class, TestEntity } from "@jest-decorated/shared";
+import { Class, TestEntity, TestType } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 
-export function Test(testNameOrTimeout?: string | ((...args: unknown[]) => string) | number, timeout?: number) {
-    return function TestDecoratorFn(proto: object, methodName: PropertyKey) {
-        const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
-        const resolvedTestDescription: string | ((...args: unknown[]) => string) =
-            isUndefined(testNameOrTimeout) || isNumber(testNameOrTimeout)
-                ? String(methodName)
-                : testNameOrTimeout;
-        const resolvedTimeout = isNumber(testNameOrTimeout)
-            ? testNameOrTimeout
-            : timeout;
+export const Test: ExtendedTest = createTest(TestType.DEFAULT);
 
-        describeRunner
-            .getTestsService()
-            .registerTest(new TestEntity(methodName, resolvedTestDescription, resolvedTimeout));
-    };
+export const It: ExtendedTest = createTest(TestType.DEFAULT);
+
+Test.Only = createTest(TestType.ONLY);
+
+Test.Skip = createTest(TestType.SKIP);
+
+Test.Todo = createTest(TestType.TODO);
+
+It.Only = Test.Only;
+
+It.Skip = Test.Skip;
+
+It.Todo = Test.Todo;
+
+function createTest(testType: TestType): TestDecorator {
+    return (testNameOrTimeout, timeout) => {
+        return function TestDecoratorFn(proto, methodName) {
+            const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
+            const resolvedTestDescription: string | ((...args: unknown[]) => string) =
+                isUndefined(testNameOrTimeout) || isNumber(testNameOrTimeout)
+                    ? String(methodName)
+                    : testNameOrTimeout;
+            const resolvedTimeout = isNumber(testNameOrTimeout)
+                ? testNameOrTimeout
+                : timeout;
+
+            const testEntity = new TestEntity(methodName, resolvedTestDescription, resolvedTimeout);
+            testEntity.setTestType(testType);
+
+            describeRunner
+                .getTestsService()
+                .registerTest(testEntity);
+        };
+    }
 }
 
-export function It(itName?: string | ((...args: unknown[]) => string)) {
-    return Test(itName);
-}
+type TestDecorator = ((testNameOrTimeout?: string | ((...args: unknown[]) => string) | number, timeout?: number) =>
+    (proto: object, methodName: PropertyKey) => void);
+
+type ExtendedTest = TestDecorator & {
+    Only?: TestDecorator;
+    Skip?: TestDecorator;
+    Todo?: TestDecorator;
+};

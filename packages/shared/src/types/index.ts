@@ -8,3 +8,4 @@ export * from "./MockFn";
 export * from "./OrderedMap";
 export * from "./Processor";
 export * from "./Spy";
+export * from "./TestType";

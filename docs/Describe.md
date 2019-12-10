@@ -12,6 +12,16 @@ Each class marked with `@Describe` should contain at least one [@Test](https://g
 
 ### With class name as describe name
 
+From:
+
+```typescript
+describe("MySpec", () => {
+    // ...
+});
+```
+
+To:
+
 ```typescript
 @Describe()
 class MySpec {
@@ -21,6 +31,16 @@ class MySpec {
 
 ### With describe name passed as argument
 
+From:
+
+```typescript
+describe("Component spec", () => {
+    // ...
+});
+```
+
+To:
+
 ```typescript
 @Describe("Component spec")
 class MySpec {
@@ -29,6 +49,21 @@ class MySpec {
 ```
 
 ### Inherit @RunWith and all of the hooks (e.g. @BeforeAll), @MockFn, @Spy etc.
+
+From:
+
+```typescript
+describe("Component spec", () => {
+    
+    // ...
+    
+    describe("MySpecSubSpec", () => {
+        // ...
+    });
+});
+```
+
+To:
 
 ```typescript
 @Describe()
