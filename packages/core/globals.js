@@ -1,6 +1,7 @@
 const {
   AfterAll,
   AfterEach,
+  AutoClearedMock,
   BeforeAll,
   BeforeEach,
   DataProvider,
@@ -19,6 +20,7 @@ const {
 
 global.AfterAll = AfterAll;
 global.AfterEach = AfterEach;
+global.AutoClearedMock = AutoClearedMock;
 global.BeforeAll = BeforeAll;
 global.BeforeEach = BeforeEach;
 global.DataProvider = DataProvider;

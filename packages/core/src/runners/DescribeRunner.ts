@@ -84,6 +84,7 @@ export class DescribeRunner implements IDescribeRunner {
             beforeAll(() => {
                 this.testRunner.beforeTestsJestRegistration(this, parentDescribeService);
             });
+            this.mocksService.registerMocksInClass();
             this.hooksService.registerHooksInJest();
             this.testRunner.registerTestsInJest(this, parentDescribeService);
             afterAll(() => {

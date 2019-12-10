@@ -8,7 +8,7 @@ Each class containing `@Test` and/or `@It` should be marked with [@Describe](htt
 
 `testName (String | () => String)?`: Test name. Optional, otherwise - decorated method's name will be taken. 
 
-`timeout (Number)?`: Optional. The timeout for an async function test. If testName is skipped, can be passed as first argument.
+`timeout (Number)?`: Optional. The timeout for an async function test. If `testName` is skipped, can be passed as first argument.
 
 ## Examples
 
@@ -64,35 +64,6 @@ class MySpec {
 }
 ```
 
-### With test name passed as function argument
-
-Could be useful with [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
-
-From:
-
-```typescript
-describe("MySpec", () => {
-    
-    // first argument is always a string
-    test("should return false", () => {
-        expect(myFn()).toBeFalsy();
-    });
-});
-```
-
-To:
-
-```typescript
-@Describe()
-class MySpec {
-    
-    @Test(() => "should return false")
-    myFnTest() {
-        expect(myFn()).toBeFalsy();
-    }
-}
-```
-
 ### Asynchronous test
 
 From:
@@ -126,10 +97,6 @@ From:
 ```typescript
 describe("MySpec", () => {
     
-    test("shouldReturnFalse", async () => {
-        expect(await myFn()).toBeFalsy();
-    }, 500);
-    
     test("should return false", async () => {
         expect(await myFn()).toBeFalsy();
     }, 500);
@@ -141,12 +108,7 @@ To:
 ```typescript
 @Describe()
 class MySpec {
-    
-    @Test(500)
-    async shouldReturnFalse() {
-        expect(await myFn()).toBeFalsy();
-    }
-    
+   
     @It("should return false", 500)
     async myFnTest() {
         expect(await myFn()).toBeFalsy();
@@ -188,6 +150,23 @@ class MySpec {
     }
     
     @It.Only("should return false")
+    myFnTest() {
+        expect(myFn()).toBeFalsy();
+    }
+}
+```
+
+## `@jest-decorated` specific
+
+### With test name passed as function argument
+
+Could be useful with [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
+
+```typescript
+@Describe()
+class MySpec {
+    
+    @Test(() => "should return false")
     myFnTest() {
         expect(myFn()).toBeFalsy();
     }

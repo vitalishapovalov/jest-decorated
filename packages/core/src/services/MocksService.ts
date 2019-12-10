@@ -1,4 +1,4 @@
-import { isCallable } from "@js-utilities/typecheck";
+import { isCallable, isObject } from "@js-utilities/typecheck";
 import { IMocksService, Class, Mock, MockFn, Spy, resolveModule } from "@jest-decorated/shared";
 
 export class MocksService implements IMocksService {
@@ -43,30 +43,8 @@ export class MocksService implements IMocksService {
         this.spies.set(name, { name, obj, prop, accessType, impl });
     }
 
-    public registerMock(
-        mockName: string,
-        mock: string,
-        impl?: () => any,
-        options?: jest.MockOptions
-    ): void {
-        let modulePath: string;
-        try {
-            resolveModule(mock, (resolvedModulePath) => {
-                modulePath = resolvedModulePath;
-                jest.doMock(modulePath, impl, options);
-                afterAll(() => jest.unmock(modulePath));
-            });
-        } catch (e) {
-            throw new EvalError("Error during mock registration. Aborting test suite... " + e.message);
-        }
-
-        const requiredMock = jest.requireMock(modulePath);
-
-        this.mocks.set(mockName, { mockName, mock, impl, options });
-
-        Object.defineProperty(this.clazz.prototype, mockName, {
-            value: requiredMock,
-        });
+    public registerMock(mock: Mock): void {
+        this.mocks.set(mock.mockName, mock);
     }
 
     public mergeInAll(mocksService: IMocksService): void {
@@ -74,12 +52,7 @@ export class MocksService implements IMocksService {
         if (mocks) {
             for (const mock of mocks.values()) {
                 const mockAsMock = mock as Mock;
-                this.registerMock(
-                    mockAsMock.mockName,
-                    mockAsMock.mock,
-                    mockAsMock.impl,
-                    mockAsMock.options
-                );
+                this.registerMock(mockAsMock);
             }
         }
         if (mockFns) {
@@ -93,6 +66,12 @@ export class MocksService implements IMocksService {
                 const spyAsSpy = spy as Spy;
                 this.registerSpy(spyAsSpy.name, spyAsSpy.obj, spyAsSpy.prop, spyAsSpy.accessType);
             }
+        }
+    }
+
+    public registerMocksInClass(): void {
+        for (const mock of this.mocks.keys()) {
+            this.registerMockInClass(mock);
         }
     }
 
@@ -121,6 +100,29 @@ export class MocksService implements IMocksService {
         this.registerAutoClearedMockInClass(spy, spyConfig.name);
     }
 
+    private registerMockInClass(mockName: string): void {
+        const { mock, impl, options, autoClear } = this.mocks.get(mockName);
+        let modulePath: string;
+        let requiredMock: any;
+        try {
+            resolveModule(mock, (resolvedModulePath) => {
+                modulePath = resolvedModulePath;
+                jest.doMock(modulePath, impl, options);
+                requiredMock = jest.requireMock(modulePath);
+                if (autoClear) {
+                    afterEach(() => this.tryToClearMock(requiredMock));
+                }
+                afterAll(() => jest.unmock(modulePath));
+            });
+        } catch (e) {
+            throw new EvalError("Error during mock registration. Aborting test suite... " + e.message);
+        }
+
+        Object.defineProperty(this.clazz.prototype, mockName, {
+            value: requiredMock,
+        });
+    }
+
     private registerAutoClearedMockInClass(value: jest.MockInstance<unknown, unknown[]>, name: string): void {
         afterEach(() => {
             // for some reason, this is being called after each test,
@@ -141,5 +143,16 @@ export class MocksService implements IMocksService {
             return this.clazzInstance[mockFnConfig.name].bind(this.clazzInstance);
         }
         return undefined;
+    }
+
+    private tryToClearMock(mock: any, currDepth = 1, maxDepth = 100): void {
+        if (jest.isMockFunction(mock)) {
+            mock.mockClear();
+        }
+        if (isObject(mock)) {
+            for (const key of Object.keys(mock)) {
+                this.tryToClearMock(mock[key], currDepth + 1);
+            }
+        }
     }
 }

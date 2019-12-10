@@ -10,12 +10,7 @@ export interface IMocksService {
         spies:  Map<string, Spy>;
     };
 
-    registerMock(
-        mockName: string,
-        mock: string,
-        impl?: () => any,
-        options?: jest.MockOptions
-    ): void;
+    registerMock(mock: Mock): void;
 
     registerMockFn(
         name: MockFn["name"],
@@ -31,4 +26,6 @@ export interface IMocksService {
     ): void;
 
     registerMockFnsAndSpiesInClass(): void;
+
+    registerMocksInClass(): void;
 }

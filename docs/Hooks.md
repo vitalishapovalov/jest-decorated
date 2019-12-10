@@ -168,6 +168,8 @@ class MySpecSubSpec extends MySpec {
 }
 ```
 
+## `@jest-decorated` specific
+
 ### Access @Spy / @MockFn / @Mock / @LazyImport and others inside hooks
 
 ```typescript

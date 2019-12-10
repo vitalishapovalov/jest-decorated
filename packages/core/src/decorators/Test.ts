@@ -3,8 +3,10 @@ import { Class, TestEntity, TestType } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 
+/* tslint:disable-next-line:variable-name */
 export const Test: ExtendedTest = createTest(TestType.DEFAULT);
 
+/* tslint:disable-next-line:variable-name */
 export const It: ExtendedTest = createTest(TestType.DEFAULT);
 
 Test.Only = createTest(TestType.ONLY);
@@ -38,7 +40,7 @@ function createTest(testType: TestType): TestDecorator {
                 .getTestsService()
                 .registerTest(testEntity);
         };
-    }
+    };
 }
 
 type TestDecorator = ((testNameOrTimeout?: string | ((...args: unknown[]) => string) | number, timeout?: number) =>

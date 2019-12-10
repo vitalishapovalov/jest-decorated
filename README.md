@@ -154,6 +154,8 @@ Support for different libs and frameworks. Currently, only `React` is strongly s
 
 ### [@Mock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Mock.md)
 
+### [@AutoClearedMock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Mock.md)
+
 ### [@MockFn](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/MockFn.md)
 
 ### [@Spy](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Spy.md)
