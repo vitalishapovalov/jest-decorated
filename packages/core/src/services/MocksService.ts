@@ -85,7 +85,9 @@ export class MocksService implements IMocksService {
     }
 
     private registerMockFnInClass(mockFnConfig: MockFn): void {
-        const mockFn = jest.fn(this.resolveImpl(mockFnConfig));
+        const mockFn = jest
+            .fn(this.resolveImpl(mockFnConfig))
+            .mockName(mockFnConfig.name);
         this.registerAutoClearedMockInClass(mockFn, mockFnConfig.name);
     }
 
@@ -120,6 +122,8 @@ export class MocksService implements IMocksService {
 
         Object.defineProperty(this.clazz.prototype, mockName, {
             value: requiredMock,
+            configurable: true,
+            writable: true,
         });
     }
 
@@ -145,9 +149,13 @@ export class MocksService implements IMocksService {
         return undefined;
     }
 
-    private tryToClearMock(mock: any, currDepth = 1, maxDepth = 100): void {
+    private tryToClearMock(mock: any, currDepth = 1, maxDepth = 15): void {
+        if (currDepth >= maxDepth) {
+            return;
+        }
         if (jest.isMockFunction(mock)) {
             mock.mockClear();
+            return;
         }
         if (isObject(mock)) {
             for (const key of Object.keys(mock)) {

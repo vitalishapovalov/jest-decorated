@@ -14,9 +14,9 @@ Mock will become accessible inside class methods via `this.annotatedPropertyName
 
 `pathToMock (String)`: Path to the module, which will be mocked.
 
-`mockImplementation (() => any)?`: Optional, otherwise - decorated method's implementation will be taken. 
+`mockImplementation (Object | () => any)?`: Optional, otherwise - decorated method's implementation will be taken. 
 
-`options (jest.MockOptions)?`: Optional. Jest mock options. If `mockImplementation` is skipped, can be passed as second argument.
+`options (jest.MockOptions)?`: Optional. Jest mock options.
 
 ## Examples
 
@@ -69,8 +69,18 @@ class MySpec {
     
     // or
     
+    @Mock("../module", { myVal: "foo" })
+    myMock;
+    
+    // or
+    
     @Mock("../module")
     myMock = () => ({ myVal: "foo" });
+    
+    // or
+    
+    @Mock("../module")
+    myMock = { myVal: "foo" };
     
     // or
     
@@ -99,13 +109,8 @@ To:
 @Describe()
 class MySpec {
     
-    @Mock("../module", () => ({ myVal: "foo" }), { virtual: true })
-    myMock;
-    
-    // or
-    
     @Mock("../module", { virtual: true })
-    myMock = () => ({ myVal: "foo" });
+    myMock = { myVal: "foo" };
 }
 ```
 
@@ -136,7 +141,7 @@ To:
 @Describe()
 class MySpec {
     
-    @AutoClearedMock("../module")
-    myMock = () => ({ myFn: jest.fn() });
+    @AutoClearedMock("../module", { myFn: jest.fn() })
+    myMock;
 }
 ```
