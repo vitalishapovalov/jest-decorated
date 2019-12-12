@@ -2,7 +2,7 @@ import { Class, Hook } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 
-export function BeforeAll(canBeUsedInFuture?: any) {
+export function BeforeAll() {
     return function BeforeAllDecoratorFn(proto: object, methodName: PropertyKey) {
         const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
 

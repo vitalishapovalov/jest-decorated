@@ -16,7 +16,7 @@ export interface IComponentService {
 
     registerActWrapper(name: string, isAsync: boolean): void;
 
-    registerComponentContainer(name: string, tagName?: keyof HTMLElementTagNameMap): void;
+    registerComponentContainer(name: string, tagName: keyof HTMLElementTagNameMap): void;
 
     importOrGetComponent(): Promise<unknown>;
 

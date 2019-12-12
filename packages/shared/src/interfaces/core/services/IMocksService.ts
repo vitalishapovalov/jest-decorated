@@ -2,14 +2,6 @@ import { Mock, MockFn, Spy } from "@shared/types";
 
 export interface IMocksService {
 
-    mergeInAll(mocksService: IMocksService): void;
-
-    getMocks(): {
-        mocks: Map<string, Mock>;
-        mockFns: Map<string, MockFn>;
-        spies:  Map<string, Spy>;
-    };
-
     registerMock(mock: Mock): void;
 
     registerMockFn(
@@ -25,7 +17,19 @@ export interface IMocksService {
         impl?: Spy["impl"]
     ): void;
 
+    getMocks(): {
+        mocks: Map<string, Mock>;
+        mockFns: Map<string, MockFn>;
+        spies:  Map<string, Spy>;
+    };
+
+    mergeInAll(mocksService: IMocksService): void;
+
+    registerAutoCleared(methodName: string): void;
+
     registerMockFnsAndSpiesInClass(): void;
 
     registerMocksInClass(): void;
+
+    registerAutoClearedInClass(): void
 }

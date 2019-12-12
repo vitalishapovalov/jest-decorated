@@ -1,5 +1,6 @@
 export * from "./AfterAll";
 export * from "./AfterEach";
+export * from "./AutoCleared";
 export * from "./BeforeAll";
 export * from "./BeforeEach";
 export * from "./DataProvider";

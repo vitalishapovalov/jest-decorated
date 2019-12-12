@@ -41,7 +41,7 @@ class MyFnSpec {
     consoleLogSpy;
     
     @Test()
-    shouldLogTwice() {
+    shouldCallLogTwice() {
         myFn("foo");
         expect(this.consoleLogSpy).toHaveBeenCalledTimes(2);
     }
@@ -160,9 +160,11 @@ Support for different libs and frameworks. Currently, only `React` is strongly s
 
 ### [@Spy](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Spy.md)
 
+### [@AutoCleared](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/AutoCleared.md)
+
 ### [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
 
-### [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithDataProvider.md)
+### [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
 
 ### [@LazyImport](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/LazyImport.md)
 

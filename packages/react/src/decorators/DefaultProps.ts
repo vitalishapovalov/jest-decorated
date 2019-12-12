@@ -2,7 +2,7 @@ import { Class } from "@jest-decorated/shared";
 
 import { ReactExtension } from "../extensions";
 
-export function DefaultProps(canBeUsedInFuture?: any) {
+export function DefaultProps() {
     return function DefaultPropsDecoratorFunc(proto: object, methodName: string) {
         const reactExtension = ReactExtension.getReactExtension(proto.constructor as Class);
 

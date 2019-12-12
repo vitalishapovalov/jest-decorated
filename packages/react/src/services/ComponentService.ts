@@ -36,7 +36,7 @@ export class ComponentService implements IComponentService {
         this.componentProvider.defaultProps = defaultProps;
     }
 
-    public registerComponentContainer(name: string, tagName: keyof HTMLElementTagNameMap = "div"): void {
+    public registerComponentContainer(name: string, tagName: keyof HTMLElementTagNameMap): void {
         this.componentContainers.set(name, [tagName, null]);
     }
 
