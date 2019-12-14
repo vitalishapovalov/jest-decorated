@@ -16,7 +16,7 @@ Tests annotated [@WithDataProvider](https://github.com/vitalishapovalov/jest-dec
 
 ## Examples
 
-### Common usage
+### Common usage:
 
 `shouldAddNumbersTest` will be executed 2 times:
 
@@ -40,7 +40,7 @@ class AddSpec {
 }
 ```
 
-### With explicit name
+### With explicit name:
 
 `hasAccessTest` will be executed 2 times:
 
@@ -59,7 +59,7 @@ class HasAccessSpec {
 }
 ```
 
-### Dynamic test name based on data provider
+### Dynamic test name based on data provider:
 
 `isPositiveTest` will be executed 3 times:
 
@@ -78,7 +78,7 @@ class IsPositiveSpec {
 }
 ```
 
-### Async data provider
+### Async data provider:
 
 `myTest` will be executed 2 times:
 
@@ -103,7 +103,7 @@ class MySpec {
 }
 ```
 
-### Multiple data providers
+### Multiple data providers:
 
 `isStringTest` will be executed 4 times:
 

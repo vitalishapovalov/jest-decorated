@@ -1,9 +1,10 @@
 import { Class, ComponentProvider } from "@jest-decorated/shared";
 
 import { ReactExtension } from "../extensions";
+import { isObject, isString } from "@js-utilities/typecheck";
 
 export function ComponentProvider(
-    pathToComponent?: string,
+    pathToComponentOrDefaultProps?: string,
     defaultProps?: ComponentProvider["defaultProps"] | (() => ComponentProvider["defaultProps"])
 ) {
     return function ComponentProviderDecoratorFunc(proto: object, methodName: string) {
@@ -14,11 +15,20 @@ export function ComponentProvider(
             throw new SyntaxError("You can have only one @ComponentProvider per @Describe");
         }
 
+        const firstArgIsDefaultProps = isObject(pathToComponentOrDefaultProps)
+            && !isString(pathToComponentOrDefaultProps);
+
         componentService
-            .registerComponentProvider(methodName, pathToComponent);
-        if (defaultProps) {
+            .registerComponentProvider(
+                methodName,
+                firstArgIsDefaultProps ? undefined : pathToComponentOrDefaultProps
+            );
+        if (defaultProps || firstArgIsDefaultProps) {
             componentService
-                .registerDefaultProps(defaultProps);
+                .registerDefaultProps(firstArgIsDefaultProps
+                    ? pathToComponentOrDefaultProps
+                    : defaultProps
+                );
         }
     };
 }

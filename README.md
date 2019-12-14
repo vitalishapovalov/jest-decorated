@@ -33,7 +33,7 @@ describe("MyFnSpec", () => {
 });
 ```
 
-Same test with `@jest-decorated` and `@Spy` util:
+Same test with `@jest-decorated`:
 
 ```typescript
 @Describe()

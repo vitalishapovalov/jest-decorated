@@ -12,7 +12,7 @@ Mock function will become accessible inside class methods via `this.annotatedPro
 
 ## Examples
 
-### Common usage
+### Common usage:
 
 From:
 
@@ -42,7 +42,7 @@ class MySpec {
 }
 ```
 
-### Usage with implementation
+### Usage with implementation:
 
 From:
 

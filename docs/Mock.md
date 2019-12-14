@@ -20,7 +20,7 @@ Mock will become accessible inside class methods via `this.annotatedPropertyName
 
 ## Examples
 
-### Common usage
+### Common usage:
 
 From:
 
@@ -46,7 +46,7 @@ class MySpec {
 }
 ```
 
-### Usage with implementation
+### Usage with implementation:
 
 From:
 
@@ -54,6 +54,11 @@ From:
 jest.mock("../module", () => ({ myVal: "foo" }));
 
 describe("MySpec", () => {
+    
+    afterAll(() => {
+        jest.unmock("../module");
+    });
+    
     // ...
 });
 ```
@@ -91,7 +96,7 @@ class MySpec {
 }
 ```
 
-### Usage with options
+### Usage with options:
 
 From:
 
@@ -99,6 +104,11 @@ From:
 jest.mock("../module", () => ({ myVal: "foo" }), { virtual: true });
 
 describe("MySpec", () => {
+    
+    afterAll(() => {
+        jest.unmock("../module");
+    });
+    
     // ...
 });
 ```
@@ -114,7 +124,7 @@ class MySpec {
 }
 ```
 
-### AutoClearedMock
+### AutoClearedMock:
 
 From:
 
@@ -129,6 +139,10 @@ describe("MySpec", () => {
     
     afterEach(() => {
         myFn.mockClear();
+    });
+    
+    afterAll(() => {
+        jest.unmock("../module");
     });
     
     // ...

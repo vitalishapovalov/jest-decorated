@@ -12,7 +12,7 @@ Each class containing `@Test` and/or `@It` should be marked with [@Describe](htt
 
 ## Examples
 
-### With method name as test name
+### With method name as test name:
 
 From:
 
@@ -38,7 +38,7 @@ class MySpec {
 }
 ```
 
-### With test name passed as string argument
+### With test name passed as string argument:
 
 From:
 
@@ -64,7 +64,7 @@ class MySpec {
 }
 ```
 
-### Asynchronous test
+### Asynchronous test:
 
 From:
 
@@ -90,7 +90,7 @@ class MySpec {
 }
 ```
 
-### Asynchronous test with timeout
+### Asynchronous test with timeout:
 
 From:
 
@@ -116,7 +116,7 @@ class MySpec {
 }
 ```
 
-## only, skip, todo
+## only, skip, todo:
 
 From:
 
@@ -158,7 +158,7 @@ class MySpec {
 
 ## `@jest-decorated` specific
 
-### With test name passed as function argument
+### With test name passed as function argument:
 
 Could be useful with [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
 

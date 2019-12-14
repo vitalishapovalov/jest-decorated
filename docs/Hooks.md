@@ -8,7 +8,7 @@ No arguments.
 
 ## Examples
 
-### Common usage
+### Common usage:
 
 From:
 
@@ -34,7 +34,7 @@ class MySpec {
 }
 ```
 
-### Multiple hooks
+### Multiple hooks:
 
 From:
 
@@ -78,7 +78,7 @@ class MySpec {
 }
 ```
 
-### Combined hooks
+### Combined hooks:
 
 From:
 
@@ -107,7 +107,7 @@ class MySpec {
 }
 ```
 
-### Asynchronous hook
+### Asynchronous hook:
 
 From:
 
@@ -133,7 +133,7 @@ class MySpec {
 }
 ```
 
-### Inherit hooks
+### Inherit hooks:
 
 From:
 
@@ -170,7 +170,7 @@ class MySpecSubSpec extends MySpec {
 
 ## `@jest-decorated` specific
 
-### Access @Spy / @MockFn / @Mock / @LazyImport and others inside hooks
+### Access @Spy / @MockFn / @Mock / @LazyImport and others inside hooks:
 
 ```typescript
 @Describe()

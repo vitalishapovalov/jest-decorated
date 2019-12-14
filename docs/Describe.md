@@ -10,7 +10,7 @@ Each class marked with `@Describe` should contain at least one [@Test](https://g
 
 ## Examples
 
-### With class name as describe name
+### With class name as describe name:
 
 From:
 
@@ -29,7 +29,7 @@ class MySpec {
 }
 ```
 
-### With describe name passed as argument
+### With describe name passed as argument:
 
 From:
 
@@ -48,7 +48,7 @@ class MySpec {
 }
 ```
 
-### Inherit @RunWith and all of the hooks (e.g. @BeforeAll), @MockFn, @Spy etc.
+### Inherit @RunWith and all of the hooks (e.g. @BeforeAll), @MockFn, @Spy etc.:
 
 From:
 

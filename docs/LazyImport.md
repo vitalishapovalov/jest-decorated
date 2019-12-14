@@ -10,11 +10,11 @@ Mock will become accessible inside class methods via `this.annotatedPropertyName
 
 `pathToModule (String)`: Absolute or related path to the module to import.
 
-`getter?: ((importedModule: any) => any) | string | string[]`: Optional. If you need to import only part of the module, or deeply-nested component. If not set - `default` field will be extracted, if it's the only one imported module.
+`getter?: ((importedModule: any) => any) | string | string[]`: Optional. If you need to import only part of the module, or deeply-nested component. If not set - `default` export will be extracted, if it's the only export of the module.
 
 ## Example
 
-### Common usage, default extraction
+### Common usage, default extraction:
 
 If your file has a single export, marked as default, it will be extracted by default (if no `getter` specified):
 
@@ -35,7 +35,7 @@ class MySpec {
 }
 ```
 
-### With getter
+### With getter:
 
 ```typescript
 // myModule.ts
@@ -57,7 +57,7 @@ class MySpec {
 }
 ```
 
-### Nested values import
+### Nested values import:
 
 ```typescript
 // myModule.ts

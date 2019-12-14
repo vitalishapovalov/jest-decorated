@@ -20,7 +20,7 @@ Spy will become accessible inside class methods via `this.annotatedPropertyName`
 
 ## Examples
 
-### Common usage
+### Common usage:
 
 From:
 
@@ -54,7 +54,7 @@ class MySpec {
 }
 ```
 
-### Usage as getter/setter
+### Usage as getter/setter:
 
 ```typescript
 describe("MySpec", () => {
@@ -86,7 +86,7 @@ class MySpec {
 }
 ```
 
-### Usage with implementation
+### Usage with implementation:
 
 ```typescript
 describe("MySpec", () => {

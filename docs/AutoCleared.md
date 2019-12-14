@@ -12,7 +12,7 @@ No arguments.
 
 ## Examples
 
-### Common usage
+### Common usage:
 
 ```typescript
 @Describe()
