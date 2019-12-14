@@ -1,4 +1,4 @@
-import { TestEntity, TestType } from "../src";
+import { TestEntity, TestType } from "..";
 
 describe("TestEntity", () => {
 
@@ -11,7 +11,7 @@ describe("TestEntity", () => {
         const res = TestEntity.createWithNameAndDataProviders(name, [dataProviderName]);
         expect(res).toMatchObject({
             name,
-            dataProviders: [dataProviderName]
+            dataProviders: [dataProviderName],
         });
     });
 
@@ -28,7 +28,7 @@ describe("TestEntity", () => {
             name,
             description,
             timeout,
-            dataProviders: [dataProviderName]
+            dataProviders: [dataProviderName],
         });
         expect(res.getTestType()).toEqual(TestType.ONLY);
         expect(res.getMetadata("foo")).toEqual("bar");

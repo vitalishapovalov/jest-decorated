@@ -2,11 +2,11 @@
 
 <img src="https://raw.githubusercontent.com/vitalishapovalov/js-utilities/master/docs/logo.png" alt="@jest-decirated" width="350" />
 
-Read [documentation](https://vitalishapovalov.github.io/jest-decorated).
-
 Wrapper around [jest](https://jestjs.io/) JavaScript testing framework.
 
 Provides decorators with some of the core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
+
+[Read documentation.](https://vitalishapovalov.github.io/jest-decorated)
 
 Jest test:
 
@@ -149,9 +149,7 @@ class MyFnSpec {
 
 ## Extensions
 
-Support for different libs and frameworks. Currently, only `React` is strongly supported.
-
-### [React](https://github.com/vitalishapovalov/jest-decorated/blob/master/packages/react/README.md)
+Support for different libs and frameworks. Currently, only [React](https://vitalishapovalov.github.io/jest-decorated/react) is strongly supported.
 
 ## Decorators
 

@@ -1,7 +1,7 @@
-import moduleOne from "./moduleOne";
-import moduleTwo from "./moduleTwo";
+import moduleThree from "./moduleThree";
+import moduleFour from "./moduleFour";
 
 export default {
-    foo: moduleOne,
-    bar: moduleTwo
+    foo: moduleThree,
+    bar: moduleFour,
 };

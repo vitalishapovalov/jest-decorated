@@ -44,7 +44,9 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/__tests__/",
-      "/dist/"
+      "/dist/",
+      "functions.ts",
+      "constants.ts"
     ],
     "moduleNameMappe": {
       "@shared/entities": [
