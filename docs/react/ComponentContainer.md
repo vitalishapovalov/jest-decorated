@@ -12,7 +12,7 @@ Helper. Creates auto-restored (after each test) container, which will become acc
 
 From:
 
-```typescript
+```javascript
 let container = null;
 beforeEach(() => {
   container = document.createElement("div");
@@ -32,7 +32,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 @RunWith(ReactTestRunner)
 class MySpec {
@@ -48,7 +48,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 let container = null;
 beforeEach(() => {
   container = document.createElement("span");
@@ -68,7 +68,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 @RunWith(ReactTestRunner)
 class MySpec {

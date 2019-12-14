@@ -18,13 +18,13 @@ Mock will become accessible inside class methods via `this.annotatedPropertyName
 
 If your file has a single export, marked as default, it will be extracted by default (if no `getter` specified):
 
-```typescript
+```javascript
 // myModule.ts
 
 export default () => {};
 ```
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -37,13 +37,13 @@ class MySpec {
 
 ### With getter:
 
-```typescript
+```javascript
 // myModule.ts
 
 export const foo = () => {};
 ```
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -59,7 +59,7 @@ class MySpec {
 
 ### Nested values import:
 
-```typescript
+```javascript
 // myModule.ts
 
 export const foo = {
@@ -67,7 +67,7 @@ export const foo = {
 };
 ```
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     

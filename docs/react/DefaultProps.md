@@ -1,6 +1,6 @@
 # @DefaultProps
 
-Another approach to provide default props for your [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md).
+Another approach to provide default props for your [@ComponentProvider](react/ComponentProvider.md).
 
 ## Arguments
 
@@ -12,7 +12,7 @@ No arguments.
 
 From:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import { MyComponent } from "../MyComponent";
 
@@ -39,7 +39,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 
 @Describe()
@@ -63,13 +63,13 @@ class MyComponentSpec {
 }
 ```
 
-### Usage with [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithProps.md):
+### Usage with [@WithProps](react/WithProps.md):
 
 When using with `@WithProps`, props from `@WithProps` will override props from the `@DefaultProps`:
 
 From:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import { MyComponent } from "../MyComponent";
 
@@ -98,7 +98,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 
 @Describe()

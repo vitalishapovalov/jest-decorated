@@ -24,7 +24,7 @@ Spy will become accessible inside class methods via `this.annotatedPropertyName`
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     const consoleLogSpy = jest.spyOn(console, "log");
@@ -43,7 +43,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
   
@@ -56,7 +56,7 @@ class MySpec {
 
 ### Usage as getter/setter:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     const consoleLogSpy = jest.spyOn(console, "log", "set");
@@ -75,7 +75,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
   
@@ -88,7 +88,7 @@ class MySpec {
 
 ### Usage with implementation:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     const consoleLogSpy = jest
@@ -110,7 +110,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
   

@@ -1,8 +1,8 @@
 # @WithContext
 
-Provides context for component in [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md).
+Provides context for component in [@ComponentProvider](react/ComponentProvider.md).
 
-Will be merged (override values) with [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md). 
+Will be merged (override values) with [@DefaultContext](react/DefaultContext.md). 
 
 Test annotated with `@WithContext` will start to receive the return value of annotated method as a `third argument`, after component itself and it's props.
 
@@ -22,7 +22,7 @@ WARN: [prop-types](https://www.npmjs.com/package/prop-types) lib needs to be ins
 
 From:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import MyContext from "../MyContext";
 import { MyComponent } from "../MyComponent";
@@ -47,7 +47,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import MyContext from "../MyContext";
 
@@ -72,7 +72,7 @@ class MyComponentSpec {
 
 From:
 
-```typescript jsx
+```javascript
 import { shallow } from "enzyme";
 import propTypes from "prop-types";
 import { MyComponent } from "../MyComponent";
@@ -99,7 +99,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { shallow } from "enzyme";
 import MyContext from "../MyContext";
 
@@ -120,6 +120,6 @@ class MyComponentSpec {
 }
 ```
 
-### Usage with [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md):
+### Usage with [@DefaultContext](react/DefaultContext.md):
 
-See [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md).
+See [@DefaultContext](react/DefaultContext.md).

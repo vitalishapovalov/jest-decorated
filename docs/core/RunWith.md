@@ -10,9 +10,9 @@ Used to run with `@jest-decorated` extensions.
 
 ## Examples
 
-### Usage with [React extension](https://github.com/vitalishapovalov/jest-decorated/blob/master/packages/react/README.md):
+### Usage with [React extension](react/index.md):
 
-```typescript
+```javascript
 @Describe()
 @RunWith(ReactTestRunner)
 class MyComponentTest {

@@ -1,6 +1,6 @@
 # @WithDataProvider
 
-Helper. Used in a couple with [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/DataProvider.md).
+Helper. Used in a couple with [@DataProvider](core/DataProvider.md).
 
 Ability to provide a source of data and use it only for specific tests annotated `@WithDataProvider`.
 
@@ -10,4 +10,4 @@ Ability to provide a source of data and use it only for specific tests annotated
 
 ## Examples
 
-See the `Examples` section of [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/DataProvider.md).
+See the `Examples` section of [@DataProvider](core/DataProvider.md).

@@ -1,10 +1,12 @@
 # Decorators library for writing jest-based tests
 
-Wrapper around [jest JavaScript testing framework](https://jestjs.io/).
+<img src="https://raw.githubusercontent.com/vitalishapovalov/js-utilities/master/docs/logo.png" alt="@jest-decirated" width="350" />
 
-Provides decorators with some of core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
+Read [documentation](https://vitalishapovalov.github.io/jest-decorated).
 
-Does not bring `jest` as a dependency, you should install the wanted version by yourself.
+Wrapper around [jest](https://jestjs.io/) JavaScript testing framework.
+
+Provides decorators with some of the core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
 
 Jest test:
 
@@ -58,10 +60,23 @@ class MyFnSpec {
 
 ## Install
 
+Does not bring `jest` as a dependency, you should install the wanted version by yourself.
+
+Install `jest`
+
+```bash
+npm i -D jest
+```
+
+Install `@jest-decorated`
+
 ```bash
 npm i -D @jest-decorated/core
+```
 
-# if used with react
+Install extensions (if needed)
+
+```bash
 npm i -D @jest-decorated/react
 ```
 
@@ -140,47 +155,11 @@ Support for different libs and frameworks. Currently, only `React` is strongly s
 
 ## Decorators
 
-#### Jest core
-
-### [@Describe](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Describe.md)
-
-### [@Test](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Test.md)
-
-### [@It](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Test.md)
-
-### [@AfterAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Hooks.md)
-
-### [@AfterEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Hooks.md)
-
-### [@BeforeAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Hooks.md)
-
-### [@BeforeEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Hooks.md)
-
-### [@Mock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Mock.md)
-
-### [@AutoClearedMock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Mock.md)
-
-### [@MockFn](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/MockFn.md)
-
-### [@Spy](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Spy.md)
-
-#### Utilities
-
-### [@AutoCleared](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/AutoCleared.md)
-
-### [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/DataProvider.md)
-
-### [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/WithDataProvider.md)
-
-### [@LazyImport](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/LazyImport.md)
-
-#### Technical
-
-### [@RunWith](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/RunWith.md)
+Read [docs](https://vitalishapovalov.github.io/jest-decorated).
 
 ## Contributing
 
-[Contribution guidelines for this project](CONTRIBUTING.md)
+[Contribution guidelines for this project](docs/contributing.md)
 
 ## License
 

@@ -16,7 +16,7 @@ Mock function will become accessible inside class methods via `this.annotatedPro
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     const myMock = jest.fn().mockName("myMock");
@@ -31,7 +31,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -46,7 +46,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     const myMock = jest.fn(() => ({
@@ -65,7 +65,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     

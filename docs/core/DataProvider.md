@@ -1,8 +1,8 @@
 # @DataProvider
 
-Helper. Used in a couple with [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/WithDataProvider.md).
+Helper. Used in a couple with [@WithDataProvider](core/WithDataProvider.md).
 
-Ability to provide a source of data and use it only for specific tests annotated [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/WithDataProvider.md).
+Ability to provide a source of data and use it only for specific tests annotated [@WithDataProvider](core/WithDataProvider.md).
 
 ## Arguments
 
@@ -12,7 +12,7 @@ Ability to provide a source of data and use it only for specific tests annotated
 
 Annotated method must return an `Array`.
 
-Tests annotated [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/WithDataProvider.md) will be executed once for each entry in array.
+Tests annotated [@WithDataProvider](core/WithDataProvider.md) will be executed once for each entry in array.
 
 ## Examples
 
@@ -20,7 +20,7 @@ Tests annotated [@WithDataProvider](https://github.com/vitalishapovalov/jest-dec
 
 `shouldAddNumbersTest` will be executed 2 times:
 
-```typescript
+```javascript
 @Describe()
 class AddSpec {
     
@@ -44,7 +44,7 @@ class AddSpec {
 
 `hasAccessTest` will be executed 2 times:
 
-```typescript
+```javascript
 @Describe()
 class HasAccessSpec {
     
@@ -63,7 +63,7 @@ class HasAccessSpec {
 
 `isPositiveTest` will be executed 3 times:
 
-```typescript
+```javascript
 @Describe()
 class IsPositiveSpec {
     
@@ -82,7 +82,7 @@ class IsPositiveSpec {
 
 `myTest` will be executed 2 times:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -107,7 +107,7 @@ class MySpec {
 
 `isStringTest` will be executed 4 times:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     

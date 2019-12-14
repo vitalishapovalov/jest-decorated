@@ -14,7 +14,7 @@ Will be merged and override default properties (if set), and passed both to `@Co
 
 From:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import { MyComponent } from "../MyComponent";
 
@@ -35,7 +35,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 
 @Describe()
@@ -57,4 +57,4 @@ class MyComponentSpec {
 
 ### Usage with default props (set in `@ComponentProvider` or `@DefaultProps`):
 
-See [here](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultProps.md).
+See [here](react/DefaultProps.md).

@@ -9,17 +9,17 @@ export const Test: ExtendedTest = createTest(TestType.DEFAULT);
 /* tslint:disable-next-line:variable-name */
 export const It: ExtendedTest = createTest(TestType.DEFAULT);
 
-Test.Only = createTest(TestType.ONLY);
+Test.only = createTest(TestType.ONLY);
 
-Test.Skip = createTest(TestType.SKIP);
+Test.skip = createTest(TestType.SKIP);
 
-Test.Todo = createTest(TestType.TODO);
+Test.todo = createTest(TestType.TODO);
 
-It.Only = Test.Only;
+It.only = Test.only;
 
-It.Skip = Test.Skip;
+It.skip = Test.skip;
 
-It.Todo = Test.Todo;
+It.todo = Test.todo;
 
 function createTest(testType: TestType): TestDecorator {
     return (testNameOrTimeout, timeout) => {

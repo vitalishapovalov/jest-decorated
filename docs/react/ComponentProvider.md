@@ -8,9 +8,9 @@ If method annotated with `@ComponentProvider` exists in `@Describe`, each test w
 
 Will be executed for each test separately.
 
-Can be combined with [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md), [@ActAsync](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md).
+Can be combined with [@Act](react/Act.md), [@ActAsync](react/Act.md).
 
-Works with [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md), [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultProps.md), [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md), [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithProps.md), [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithState.md).
+Works with [@DefaultContext](react/DefaultContext.md), [@DefaultProps](react/DefaultProps.md), [@WithContext](react/WithContext.md), [@WithProps](react/WithProps.md), [@WithState](react/WithState.md).
 
 Can lazy-import components. You can access all of the imports/mocks etc. inside the annotated method.
 
@@ -26,7 +26,7 @@ Can lazy-import components. You can access all of the imports/mocks etc. inside 
 
 From:
 
-```typescript jsx
+```javascript
 import { shallow } from "enzyme";
 import MyComponent from "../MyComponent";
 
@@ -43,7 +43,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { shallow } from "enzyme";
 import MyComponent from "../MyComponent";
 
@@ -65,7 +65,7 @@ class MyComponentSpec {
 
 ### Usage with [enzyme](https://airbnb.io/enzyme/) and component importing:
 
-```typescript jsx
+```javascript
 // ../MyComponent
 //
 // component has only default export
@@ -75,7 +75,7 @@ export default () => <div></div>;
 
 From:
 
-```typescript jsx
+```javascript
 import { shallow } from "enzyme";
 import MyComponent from "../MyComponent";
 
@@ -89,7 +89,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { shallow } from "enzyme";
 
 @Describe()
@@ -109,7 +109,7 @@ class MyComponentSpec {
 
 From:
 
-```typescript jsx
+```javascript
 import { render, unmountComponentAtNode } from "react-dom";
 import MyComponent from "../MyComponent";
 
@@ -138,7 +138,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "react-dom";
 
 @Describe()
@@ -163,7 +163,7 @@ class MyComponentSpec {
 
 ### Usage with [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro):
 
-```typescript jsx
+```javascript
 // ../MyComponent
 
 export const MyComponent = () => <div></div>;
@@ -171,7 +171,7 @@ export const MyComponent = () => <div></div>;
 
 From:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import { MyComponent } from "../MyComponent";
 
@@ -186,7 +186,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "react-dom";
 
 @Describe()
@@ -207,11 +207,11 @@ class MyComponentSpec {
 
 ### Usage with default props:
 
-Also, you can provide default props with [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultProps.md).
+Also, you can provide default props with [@DefaultProps](react/DefaultProps.md).
 
 From:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import MyComponent from "../MyComponent";
 
@@ -231,7 +231,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 
 @Describe()
@@ -253,11 +253,11 @@ class MyComponentSpec {
 }
 ```
 
-### Usage with [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md):
+### Usage with [@Act](react/Act.md):
 
 If you're using pure `render` from `react-dom`, you probably need to annotate it with `@Act`:
 
-```typescript jsx
+```javascript
 import { render } from "react-dom";
 
 @Describe()
@@ -285,12 +285,12 @@ class MyComponentSpec {
 
 ### Providing context:
 
-See [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md), [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md).
+See [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md), [@WithContext](react/WithContext.md).
 
 ### Usage with specific props for each test:
 
-See [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithProps.md).
+See [@WithProps](react/WithProps.md).
 
 ### Usage with pre-set state:
 
-Available only with [enzyme](https://airbnb.io/enzyme/). See [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithState.md).
+Available only with [enzyme](https://airbnb.io/enzyme/). See [@WithState](react/WithState.md).

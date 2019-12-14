@@ -2,7 +2,7 @@
 
 The same as jest `describe`.
 
-Each class marked with `@Describe` should contain at least one [@Test](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Test.md) and/or [@It](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Test.md).
+Each class marked with `@Describe` should contain at least one [@Test](core/Test.md) and/or [@It](core/Test.md).
 
 ## Arguments
 
@@ -14,7 +14,7 @@ Each class marked with `@Describe` should contain at least one [@Test](https://g
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     // ...
 });
@@ -22,7 +22,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     // ...
@@ -33,7 +33,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("Component spec", () => {
     // ...
 });
@@ -41,7 +41,7 @@ describe("Component spec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe("Component spec")
 class MySpec {
     // ...
@@ -52,7 +52,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("Component spec", () => {
     
     // ...
@@ -65,7 +65,7 @@ describe("Component spec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     // ...

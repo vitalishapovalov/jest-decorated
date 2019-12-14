@@ -14,7 +14,7 @@ No arguments.
 
 From:
 
-```typescript
+```javascript
 describe("MyFnSpec", () => {
     
     beforeAll(() => {
@@ -39,7 +39,7 @@ describe("MyFnSpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MyFnSpec {
   
@@ -70,7 +70,7 @@ class MyFnSpec {
 
 From:
 
-```typescript
+```javascript
 describe("MyFnSpec", () => {
     
     test("myTest", async () => {
@@ -86,7 +86,7 @@ describe("MyFnSpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MyFnSpec {
   
@@ -107,4 +107,4 @@ class MyFnSpec {
 
 ### In pair with `@ComponentProvider`:
 
-See [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md) examples section.
+See [@ComponentProvider](react/ComponentProvider.md) examples section.

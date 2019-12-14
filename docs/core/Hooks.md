@@ -12,7 +12,7 @@ No arguments.
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     afterEach(() => {
@@ -23,7 +23,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -38,7 +38,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     beforeEach(() => {
@@ -57,7 +57,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -82,7 +82,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     const clearMocks = () => jest.clearAllMocks();
@@ -95,7 +95,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -111,7 +111,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     beforeAll(async () => {
@@ -122,7 +122,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -137,7 +137,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     afterEach(() => {
@@ -152,7 +152,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -172,7 +172,7 @@ class MySpecSubSpec extends MySpec {
 
 ### Access @Spy / @MockFn / @Mock / @LazyImport and others inside hooks:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     

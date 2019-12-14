@@ -24,7 +24,7 @@ Mock will become accessible inside class methods via `this.annotatedPropertyName
 
 From:
 
-```typescript
+```javascript
 jest.mock("../module");
 
 describe("MySpec", () => {
@@ -37,7 +37,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -50,7 +50,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 jest.mock("../module", () => ({ myVal: "foo" }));
 
 describe("MySpec", () => {
@@ -65,7 +65,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -100,7 +100,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 jest.mock("../module", () => ({ myVal: "foo" }), { virtual: true });
 
 describe("MySpec", () => {
@@ -115,7 +115,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -128,7 +128,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 jest.mock("../module", () => ({
     myFn: jest.fn()
 }));
@@ -151,7 +151,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 import { myFn } from "../module";
 
 @Describe()

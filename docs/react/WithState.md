@@ -30,7 +30,7 @@ _**That's not to say that there's never a use case for doing those things, so th
 
 From:
 
-```typescript jsx
+```javascript
 import { shallow } from "enzyme";
 import { MyComponent } from "../MyComponent";
 
@@ -57,7 +57,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 
 @Describe()

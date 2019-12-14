@@ -1,14 +1,12 @@
 # Decorators for writing jest-based tests for react components
 
-Extension of [@jest-decorated](https://vitalishapovalov.github.io/jest-decorated) package.
-
 Utilities for testing `react` components. Compatible with `enzyme`, `@testing-libray/react` and `react-dom/test-utils`.
 
 Make sure to register `ReactTestRunner` on your parent test.
 
 Jest test:
 
-```typescript jsx
+```javascript
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import MyComponent from "../MyComponent";
@@ -55,7 +53,7 @@ describe("MyComponentTest", () => {
  
 Same test with `@jest-decorated`:
 
-```typescript jsx
+```javascript
 import { render } from "react-dom/test-utils";
 
 @Describe()
@@ -89,32 +87,12 @@ class MyComponentTest {
 
 ## Install & Setup
 
-Read [here](https://github.com/vitalishapovalov/jest-decorated/blob/master/README.md#install).
-
-## Decorators
-
-### [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md)
-
-### [@ActAsync](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md)
-
-### [@ComponentContainer](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentContainer.md)
-
-### [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md)
-
-### [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md)
-
-### [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultProps.md)
-
-### [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md)
-
-### [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithProps.md)
-
-### [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithState.md)
+Read [here](../install.md).
 
 ## Contributing
 
-[Contribution guidelines for this project](https://github.com/vitalishapovalov/jest-decorated/blob/master/CONTRIBUTING.md)
+[Contribution guidelines for this project](../contributing.md)
 
 ## License
 
-[MIT License](https://github.com/vitalishapovalov/jest-decorated/blob/master/LICENSE)
+[MIT License](../license.md)

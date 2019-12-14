@@ -2,7 +2,7 @@
 
 The same as jest `test` and `it`.
 
-Each class containing `@Test` and/or `@It` should be marked with [@Describe](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Describe.md).
+Each class containing `@Test` and/or `@It` should be marked with [@Describe](core/Describe.md).
 
 ## Arguments
 
@@ -16,7 +16,7 @@ Each class containing `@Test` and/or `@It` should be marked with [@Describe](htt
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     test("shouldReturnFalse", () => {
@@ -27,7 +27,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -42,7 +42,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     test("should return false", () => {
@@ -53,7 +53,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -68,7 +68,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     test("should return false", async () => {
@@ -79,7 +79,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -94,7 +94,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     it("should return false within 500ms", async () => {
@@ -105,7 +105,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
    
@@ -120,7 +120,7 @@ class MySpec {
 
 From:
 
-```typescript
+```javascript
 describe("MySpec", () => {
     
     test.todo("should not return false");
@@ -137,7 +137,7 @@ describe("MySpec", () => {
 
 To:
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     
@@ -160,9 +160,9 @@ class MySpec {
 
 ### With test name passed as function argument:
 
-Could be useful with [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/DataProvider.md)
+Could be useful with [@DataProvider](core/DataProvider.md)
 
-```typescript
+```javascript
 @Describe()
 class MySpec {
     

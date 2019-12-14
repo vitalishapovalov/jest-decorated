@@ -14,7 +14,7 @@ No arguments.
 
 ### Common usage:
 
-```typescript
+```javascript
 @Describe()
 class MyProcessorSpec {
     

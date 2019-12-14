@@ -14,11 +14,11 @@ export function WithDataProvider(dataProviders: PropertyKey | PropertyKey[]) {
                 TestEntity.createWithNameAndDataProviders(methodName, resolvedDataProviders)
             );
             return;
-        } else {
-            describeRunner
-                .getTestsService()
-                .getTest(methodName)
-                .registerDataProviders(resolvedDataProviders);
         }
+
+        describeRunner
+            .getTestsService()
+            .getTest(methodName)
+            .registerDataProviders(resolvedDataProviders);
     };
 }

@@ -1,8 +1,8 @@
 # @DefaultContext
 
-Provides context for component in [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md).
+Provides context for component in [@ComponentProvider](react/ComponentProvider.md).
 
-Default means that context will be provided for each test, and merged with [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md), if needed.
+Default means that context will be provided for each test, and merged with [@WithContext](react/WithContext.md), if needed.
 
 Can be [persistent](#persistent-context) or [clean for each test](#clean-context-for-each-test).
 
@@ -22,7 +22,7 @@ WARN: [prop-types](https://www.npmjs.com/package/prop-types) lib needs to be ins
 
 From:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import MyContext from "../MyContext";
 import MyComponent from "../MyComponent";
@@ -51,7 +51,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import MyContext from "../MyContext";
 
@@ -77,11 +77,11 @@ class MyComponentSpec {
 }
 ```
 
-### Usage with [enzyme](https://airbnb.io/enzyme/):
+### Usage with  [enzyme](https://airbnb.io/enzyme/):
 
 From:
 
-```typescript jsx
+```javascript
 import { shallow } from "enzyme";
 import propTypes from "prop-types";
 import MyComponent from "../MyComponent";
@@ -114,7 +114,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { shallow } from "enzyme";
 import MyContext from "../MyContext";
 
@@ -141,11 +141,11 @@ class MyComponentSpec {
 }
 ```
 
-### Usage with [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md):
+### Usage with [@WithContext](react/WithContext.md):
 
 From:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import MyContext from "../MyContext";
 import MyComponent from "../MyComponent";
@@ -171,7 +171,7 @@ describe("MyComponentSpec", () => {
 
 To:
 
-```typescript jsx
+```javascript
 import { render } from "@testing-library/react";
 import MyContext from "../MyContext";
 
@@ -199,7 +199,7 @@ class MyComponentSpec {
 
 If you have `jest.fn()` inside of your context, or any other values with state, and you want to keep changes in this state during tests, context value should be an object:
 
-```typescript jsx
+```javascript
 @Describe()
 @RunWith(ReactTestRunner)
 class MyComponentSpec {
@@ -215,7 +215,7 @@ class MyComponentSpec {
 
 Opposite to persistent context. To have a new instance of context for each text, context value should be a function:
 
-```typescript jsx
+```javascript
 @Describe()
 @RunWith(ReactTestRunner)
 class MyComponentSpec {
