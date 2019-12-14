@@ -4,7 +4,7 @@ Provides context for component in [@ComponentProvider](https://github.com/vitali
 
 Default means that context will be provided for each test, and merged with [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md), if needed.
 
-Can be [persistent](#persistent-context:) or [clean for each test](#clean-context-for-each-test:).
+Can be [persistent](#persistent-context) or [clean for each test](#clean-context-for-each-test).
 
 If method annotated with `@DefaultContext` exists in `@Describe`, each test will start to receive the return value of annotated method as a `third argument`, after component itself and it's props.
 
