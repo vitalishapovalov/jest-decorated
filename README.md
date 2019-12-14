@@ -2,7 +2,6 @@
 
 <p align="center"><img src="https://raw.githubusercontent.com/vitalishapovalov/jest-decorated/master/docs/logo.png" alt="@jest-decirated" width="300" /></p>
 
-
 Wrapper around [jest](https://jestjs.io/) JavaScript testing framework.
 
 Provides decorators with some of the core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
