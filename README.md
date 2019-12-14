@@ -142,41 +142,41 @@ Support for different libs and frameworks. Currently, only `React` is strongly s
 
 #### Jest core
 
-### [@Describe](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Describe.md)
+### [@Describe](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Describe.md)
 
-### [@Test](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Test.md)
+### [@Test](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Test.md)
 
-### [@It](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Test.md)
+### [@It](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Test.md)
 
-### [@AfterAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Hooks.md)
+### [@AfterAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Hooks.md)
 
-### [@AfterEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Hooks.md)
+### [@AfterEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Hooks.md)
 
-### [@BeforeAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Hooks.md)
+### [@BeforeAll](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Hooks.md)
 
-### [@BeforeEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Hooks.md)
+### [@BeforeEach](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Hooks.md)
 
-### [@Mock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Mock.md)
+### [@Mock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Mock.md)
 
-### [@AutoClearedMock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Mock.md)
+### [@AutoClearedMock](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Mock.md)
 
-### [@MockFn](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/MockFn.md)
+### [@MockFn](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/MockFn.md)
 
-### [@Spy](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Spy.md)
+### [@Spy](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Spy.md)
 
 #### Utilities
 
-### [@AutoCleared](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/AutoCleared.md)
+### [@AutoCleared](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/AutoCleared.md)
 
-### [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
+### [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/DataProvider.md)
 
-### [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithDataProvider.md)
+### [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/WithDataProvider.md)
 
-### [@LazyImport](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/LazyImport.md)
+### [@LazyImport](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/LazyImport.md)
 
 #### Technical
 
-### [@RunWith](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/RunWith.md)
+### [@RunWith](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/RunWith.md)
 
 ## Contributing
 

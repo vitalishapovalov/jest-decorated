@@ -107,4 +107,4 @@ class MyFnSpec {
 
 ### In pair with `@ComponentProvider`:
 
-See [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentProvider.md) examples section.
+See [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md) examples section.

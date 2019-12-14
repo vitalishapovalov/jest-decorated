@@ -2,7 +2,7 @@
 
 The same as jest `describe`.
 
-Each class marked with `@Describe` should contain at least one [@Test](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Test.md) and/or [@It](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Test.md).
+Each class marked with `@Describe` should contain at least one [@Test](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Test.md) and/or [@It](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Test.md).
 
 ## Arguments
 

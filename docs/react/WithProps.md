@@ -57,4 +57,4 @@ class MyComponentSpec {
 
 ### Usage with default props (set in `@ComponentProvider` or `@DefaultProps`):
 
-See [here](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultProps.md).
+See [here](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultProps.md).

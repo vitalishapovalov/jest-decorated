@@ -1,8 +1,8 @@
 # @WithContext
 
-Provides context for component in [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentProvider.md).
+Provides context for component in [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md).
 
-Will be merged (override values) with [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md). 
+Will be merged (override values) with [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md). 
 
 Test annotated with `@WithContext` will start to receive the return value of annotated method as a `third argument`, after component itself and it's props.
 
@@ -120,6 +120,6 @@ class MyComponentSpec {
 }
 ```
 
-### Usage with [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md):
+### Usage with [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md):
 
-See [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md).
+See [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md).

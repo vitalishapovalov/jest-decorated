@@ -93,23 +93,23 @@ Read [here](https://github.com/vitalishapovalov/jest-decorated/blob/master/READM
 
 ## Decorators
 
-### [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Act.md)
+### [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md)
 
-### [@ActAsync](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Act.md)
+### [@ActAsync](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md)
 
-### [@ComponentContainer](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentContainer.md)
+### [@ComponentContainer](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentContainer.md)
 
-### [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentProvider.md)
+### [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md)
 
-### [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md)
+### [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md)
 
-### [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultProps.md)
+### [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultProps.md)
 
-### [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithContext.md)
+### [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md)
 
-### [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithProps.md)
+### [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithProps.md)
 
-### [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithState.md)
+### [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithState.md)
 
 ## Contributing
 

@@ -2,7 +2,7 @@
 
 The same as jest `test` and `it`.
 
-Each class containing `@Test` and/or `@It` should be marked with [@Describe](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Describe.md).
+Each class containing `@Test` and/or `@It` should be marked with [@Describe](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/Describe.md).
 
 ## Arguments
 
@@ -160,7 +160,7 @@ class MySpec {
 
 ### With test name passed as function argument:
 
-Could be useful with [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
+Could be useful with [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/DataProvider.md)
 
 ```typescript
 @Describe()

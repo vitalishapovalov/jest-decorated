@@ -1,8 +1,8 @@
 # @DataProvider
 
-Helper. Used in a couple with [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithDataProvider.md).
+Helper. Used in a couple with [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/WithDataProvider.md).
 
-Ability to provide a source of data and use it only for specific tests annotated [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithDataProvider.md).
+Ability to provide a source of data and use it only for specific tests annotated [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/WithDataProvider.md).
 
 ## Arguments
 
@@ -12,7 +12,7 @@ Ability to provide a source of data and use it only for specific tests annotated
 
 Annotated method must return an `Array`.
 
-Tests annotated [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithDataProvider.md) will be executed once for each entry in array.
+Tests annotated [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/core/WithDataProvider.md) will be executed once for each entry in array.
 
 ## Examples
 

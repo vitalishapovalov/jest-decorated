@@ -1,8 +1,8 @@
 # @DefaultContext
 
-Provides context for component in [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentProvider.md).
+Provides context for component in [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md).
 
-Default means that context will be provided for each test, and merged with [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithContext.md), if needed.
+Default means that context will be provided for each test, and merged with [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md), if needed.
 
 Can be [persistent](#persistent-context:) or [clean for each test](#clean-context-for-each-test:).
 
@@ -141,7 +141,7 @@ class MyComponentSpec {
 }
 ```
 
-### Usage with [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithContext.md):
+### Usage with [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md):
 
 From:
 

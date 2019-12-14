@@ -8,9 +8,9 @@ If method annotated with `@ComponentProvider` exists in `@Describe`, each test w
 
 Will be executed for each test separately.
 
-Can be combined with [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Act.md), [@ActAsync](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Act.md).
+Can be combined with [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md), [@ActAsync](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md).
 
-Works with [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md), [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultProps.md), [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithContext.md), [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithProps.md), [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithState.md).
+Works with [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultContext.md), [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultProps.md), [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md), [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithProps.md), [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithState.md).
 
 Can lazy-import components. You can access all of the imports/mocks etc. inside the annotated method.
 
@@ -207,7 +207,7 @@ class MyComponentSpec {
 
 ### Usage with default props:
 
-Also, you can provide default props with [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultProps.md).
+Also, you can provide default props with [@DefaultProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/DefaultProps.md).
 
 From:
 
@@ -253,7 +253,7 @@ class MyComponentSpec {
 }
 ```
 
-### Usage with [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Act.md):
+### Usage with [@Act](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/Act.md):
 
 If you're using pure `render` from `react-dom`, you probably need to annotate it with `@Act`:
 
@@ -285,12 +285,12 @@ class MyComponentSpec {
 
 ### Providing context:
 
-See [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md), [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithContext.md).
+See [@DefaultContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DefaultContext.md), [@WithContext](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithContext.md).
 
 ### Usage with specific props for each test:
 
-See [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithProps.md).
+See [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithProps.md).
 
 ### Usage with pre-set state:
 
-Available only with [enzyme](https://airbnb.io/enzyme/). See [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithState.md).
+Available only with [enzyme](https://airbnb.io/enzyme/). See [@WithState](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithState.md).

@@ -1,6 +1,6 @@
 # @DefaultProps
 
-Another approach to provide default props for your [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/ComponentProvider.md).
+Another approach to provide default props for your [@ComponentProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/ComponentProvider.md).
 
 ## Arguments
 
@@ -63,7 +63,7 @@ class MyComponentSpec {
 }
 ```
 
-### Usage with [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithProps.md):
+### Usage with [@WithProps](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/react/WithProps.md):
 
 When using with `@WithProps`, props from `@WithProps` will override props from the `@DefaultProps`:
 
