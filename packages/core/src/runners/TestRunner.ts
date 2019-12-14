@@ -10,7 +10,7 @@ export class TestRunner implements ITestRunner {
         providerName?: PropertyKey
     ): string {
         return isCallable(description)
-            ? description.apply(null, [providerName, ...args])
+            ? description.apply(null, [...args, providerName])
             : description;
     }
 

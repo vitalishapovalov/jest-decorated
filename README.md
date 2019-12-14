@@ -2,7 +2,9 @@
 
 Wrapper around [jest JavaScript testing framework](https://jestjs.io/).
 
-Provides decorators with core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
+Provides decorators with some of core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
+
+Does not bring `jest` as a dependency, you should install the wanted version by yourself.
 
 Jest test:
 
@@ -138,6 +140,8 @@ Support for different libs and frameworks. Currently, only `React` is strongly s
 
 ## Decorators
 
+#### Jest core
+
 ### [@Describe](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Describe.md)
 
 ### [@Test](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Test.md)
@@ -160,13 +164,17 @@ Support for different libs and frameworks. Currently, only `React` is strongly s
 
 ### [@Spy](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/Spy.md)
 
+#### Utilities
+
 ### [@AutoCleared](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/AutoCleared.md)
 
 ### [@DataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
 
-### [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/DataProvider.md)
+### [@WithDataProvider](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/WithDataProvider.md)
 
 ### [@LazyImport](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/LazyImport.md)
+
+#### Technical
 
 ### [@RunWith](https://github.com/vitalishapovalov/jest-decorated/blob/master/docs/RunWith.md)
 

@@ -1,5 +1,5 @@
 import { isUndefined, isNumber } from "@js-utilities/typecheck";
-import { Class, TestEntity, TestType } from "@jest-decorated/shared";
+import { Class, ExtendedTest, TestDecorator, TestEntity, TestType } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 
@@ -42,12 +42,3 @@ function createTest(testType: TestType): TestDecorator {
         };
     };
 }
-
-type TestDecorator = ((testNameOrTimeout?: string | ((...args: unknown[]) => string) | number, timeout?: number) =>
-    (proto: object, methodName: PropertyKey) => void);
-
-type ExtendedTest = TestDecorator & {
-    Only?: TestDecorator;
-    Skip?: TestDecorator;
-    Todo?: TestDecorator;
-};

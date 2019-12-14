@@ -2,6 +2,17 @@ import { TestType } from "@shared/types";
 
 export class TestEntity {
 
+    public static createWithNameAndDataProviders(
+        name: PropertyKey,
+        dataProviders: PropertyKey[]
+    ): TestEntity {
+        const inst = new this(name, null, null);
+        for (const dataProvider of dataProviders) {
+            inst.registerDataProvider(dataProvider);
+        }
+        return inst;
+    }
+
     private testType: TestType;
 
     private readonly metadata: Map<PropertyKey, any> = new Map();
@@ -10,8 +21,8 @@ export class TestEntity {
 
     public constructor(
         public readonly name: PropertyKey,
-        public readonly description: string | ((...args: unknown[]) => string),
-        public readonly timeout?: number
+        public description: string | ((...args: unknown[]) => string),
+        public timeout?: number
     ) {}
 
     public registerDataProvider(dataProvider: PropertyKey): void {
@@ -36,5 +47,26 @@ export class TestEntity {
 
     public getTestType(): TestType {
         return this.testType;
+    }
+
+    public mergeIn(testEntity: TestEntity): this {
+        if (testEntity.testType) {
+            this.testType = testEntity.testType;
+        }
+        if (testEntity.metadata) {
+            for (const [k, v] of testEntity.metadata) {
+                this.metadata.set(k, v);
+            }
+        }
+        if (testEntity.dataProviders?.length) {
+            this.dataProviders.push(...testEntity.dataProviders);
+        }
+        if (testEntity.description) {
+            this.description = testEntity.description;
+        }
+        if (testEntity.timeout) {
+            this.timeout = testEntity.timeout;
+        }
+        return this;
     }
 }

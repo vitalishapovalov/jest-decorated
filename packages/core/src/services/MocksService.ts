@@ -109,7 +109,9 @@ export class MocksService implements IMocksService {
             : jest.spyOn(spyConfig.obj, spyConfig.prop as jest.NonFunctionPropertyNames<object>);
         const spyImpl = this.resolveMockFnImpl(spyConfig);
         if (spyImpl) {
-            spy.mockImplementation(spyImpl as any);
+            spy
+                .mockImplementation(spyImpl as any)
+                .mockName(spyConfig.name);
         }
         this.registerAutoClearedValueInClass(spy, spyConfig.name);
     }
@@ -163,12 +165,12 @@ export class MocksService implements IMocksService {
         return undefined;
     }
 
-    private tryToClearMock(mock: any, currDepth = 1, maxDepth = 15): void {
-        if (currDepth >= maxDepth) {
+    private tryToClearMock(mock: any, depth = 1, maxDepth = 15): void {
+        if (depth >= maxDepth) {
             return;
         }
 
-        currDepth++;
+        const currDepth = depth + 1;
 
         if (jest.isMockFunction(mock)) {
             mock.mockClear();

@@ -2,11 +2,11 @@
 
 The same as `jest.doMock`.
 
-Will register mocks right im the start of the `@Describe()` suite (before hooks or `@LazyImport`).
+Will register mocks right in the start of the `@Describe()` suite (before hooks or `@LazyImport`).
 
 Will `jest.umock` module in `afterAll` hook.
 
-`@AutoClearedMock` mock will be cleared after each test.
+`@AutoClearedMock` is the same as `@Mock`, but it will be cleared after each test.
 
 Mock will become accessible inside class methods via `this.annotatedPropertyName`.
 
@@ -138,10 +138,14 @@ describe("MySpec", () => {
 To:
 
 ```typescript
+import { myFn } from "../module";
+
 @Describe()
 class MySpec {
     
-    @AutoClearedMock("../module", { myFn: jest.fn() })
-    myMock;
+    @AutoClearedMock("../module")
+    myMock = { myFn: jest.fn() };
+    
+    // ...
 }
 ```

@@ -6,13 +6,13 @@ import { DescribeRunner } from "../runners";
 export function Spy(
     obj: Spy["obj"],
     prop: Spy["prop"],
-    accessType?: Spy["accessType"],
+    accessTypeOrImpl?: Spy["accessType"] | Spy["impl"],
     impl?: Spy["impl"]
 ) {
     return function SpyDecoratorFn(proto: object, name: string) {
         const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
 
-        if (accessType && !isCallable(accessType) && !isString(accessType)) {
+        if (accessTypeOrImpl && !isCallable(accessTypeOrImpl) && !isString(accessTypeOrImpl)) {
             throw new SyntaxError(
                 "@Spy only accepts function (spy implementation) " +
                 "or string (spy access type, 'get' or 'set') as " +
@@ -26,6 +26,12 @@ export function Spy(
 
         describeRunner
             .getMocksService()
-            .registerSpy(name, obj, prop, accessType, impl);
+            .registerSpy(
+                name,
+                obj,
+                prop,
+                isCallable(accessTypeOrImpl) ? undefined : isCallable(impl),
+                isCallable(accessTypeOrImpl) ? accessTypeOrImpl : impl
+            );
     };
 }

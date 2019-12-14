@@ -64,6 +64,12 @@ export class TestsService implements ITestsService {
     }
 
     public registerTest(testEntity: TestEntity): void {
+        if (this.tests.some(({ name }) => name === testEntity.name)) {
+            this
+                .getTest(testEntity.name)
+                .mergeIn(testEntity);
+            return;
+        }
         this.tests.push(testEntity);
     }
 

@@ -31,5 +31,5 @@ export interface IMocksService {
 
     registerMocksInClass(): void;
 
-    registerAutoClearedInClass(): void
+    registerAutoClearedInClass(): void;
 }

@@ -97,7 +97,7 @@ From:
 ```typescript
 describe("MySpec", () => {
     
-    test("should return false", async () => {
+    it("should return false within 500ms", async () => {
         expect(await myFn()).toBeFalsy();
     }, 500);
 });
@@ -109,7 +109,7 @@ To:
 @Describe()
 class MySpec {
    
-    @It("should return false", 500)
+    @It("should return false within 500ms", 500)
     async myFnTest() {
         expect(await myFn()).toBeFalsy();
     }
@@ -141,15 +141,15 @@ To:
 @Describe()
 class MySpec {
     
-    @Test.Todo("should return false")
+    @Test.todo("should return false")
     todo;
     
-    @It.Skip("should return false")
+    @It.skip("should return false")
     myFnTest() {
         expect(myFn()).toBeFalsy();
     }
     
-    @It.Only("should return false")
+    @Test.only("should return false")
     myFnTest() {
         expect(myFn()).toBeFalsy();
     }
