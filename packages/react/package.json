@@ -33,10 +33,12 @@
     "test": "jest --coverage",
     "lint": "tslint -c tslint.ts 'src/**/*.ts'"
   },
+  "devDependencies": {
+    "@types/enzyme": "^3.10.4"
+  },
   "dependencies": {
     "@jest-decorated/shared": "^0.0.14",
-    "@js-utilities/typecheck": "^0.1.4",
-    "@types/enzyme": "^3.10.3"
+    "@js-utilities/typecheck": "^0.1.4"
   },
   "jest": {
     "transform": {
