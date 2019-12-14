@@ -1,6 +1,7 @@
 # Decorators library for writing jest-based tests
 
-<img src="https://raw.githubusercontent.com/vitalishapovalov/js-utilities/master/docs/logo.png" alt="@jest-decirated" width="350" />
+<p align="center"><img src="https://raw.githubusercontent.com/vitalishapovalov/jest-decorated/master/docs/logo.png" alt="@jest-decirated" width="300" /></p>
+
 
 Wrapper around [jest](https://jestjs.io/) JavaScript testing framework.
 
