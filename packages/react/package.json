@@ -1,6 +1,6 @@
 {
   "name": "@jest-decorated/react",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Decorators for writing jest-based tests for react components.",
   "license": "MIT",
   "author": {
@@ -45,7 +45,7 @@
     "react-dom": "^16.12.0"
   },
   "dependencies": {
-    "@jest-decorated/shared": "^0.0.14",
+    "@jest-decorated/shared": "^0.0.15",
     "@js-utilities/typecheck": "^0.1.4"
   },
   "jest": {
