@@ -1,5 +1,5 @@
 export type ComponentContext = {
-    contextType: React.Context<object>;
+    contextType: object;
     value: object;
     lib: "react-dom" | "enzyme";
 };
