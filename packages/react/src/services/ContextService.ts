@@ -1,4 +1,3 @@
-import { MountRendererProps, ShallowRendererProps } from "enzyme";
 import { isCallable, isObject, isString } from "@js-utilities/typecheck";
 import {
     ComponentContext,
@@ -79,8 +78,8 @@ export class ContextService implements IContextService {
                 const contextValue = this.getContextValue(clazzInstance, testEntity);
 
                 for (const type of ["shallow", "mount"]) {
-                    enzyme[type] = (component: React.ElementType, options: ShallowRendererProps | MountRendererProps = {}) => {
-                        const updatedOptions: ShallowRendererProps | MountRendererProps = {
+                    enzyme[type] = (component: React.ElementType, options: { context: object; } = { context: {} }) => {
+                        const updatedOptions: object = {
                             ...options,
                             context: {
                                 ...options.context,
@@ -112,8 +111,12 @@ export class ContextService implements IContextService {
         testEntity: TestEntity
     ): React.ElementType {
         const react = resolveModule("react");
-        const context = this.withContextRegistry.get(testEntity.name)?.contextType
-            || this.defaultContext.contextType;
+        const context = (this.withContextRegistry.get(testEntity.name)?.contextType
+            || this.defaultContext.contextType
+        ) as {
+            Provider: object;
+            Consumer: object;
+        };
         return react.createElement(
             context.Provider,
             { value: contextValue },
