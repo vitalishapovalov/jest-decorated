@@ -1,5 +1,7 @@
 # Decorators library for writing jest-based tests
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/vitalishapovalov/jest-decorated.svg)](https://greenkeeper.io/)
+
 <p align="center"><img src="https://raw.githubusercontent.com/vitalishapovalov/jest-decorated/master/docs/logo.png" alt="@jest-decirated" width="300" /></p>
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
