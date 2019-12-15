@@ -56,7 +56,7 @@ export class ContextService implements IContextService {
 
                 const contextValue = this.getContextValue(clazzInstance, testEntity);
 
-                reactDOM.render = (component: React.ElementType, container: HTMLElement) => {
+                reactDOM.render = (component: object, container: HTMLElement) => {
                     const element = this.prepareReactElementWithContext(component, contextValue, testEntity);
                     reactDOM.render = reactDOMRender;
                     return reactDOMRender(element, container);
@@ -78,7 +78,7 @@ export class ContextService implements IContextService {
                 const contextValue = this.getContextValue(clazzInstance, testEntity);
 
                 for (const type of ["shallow", "mount"]) {
-                    enzyme[type] = (component: React.ElementType, options: { context: object; } = { context: {} }) => {
+                    enzyme[type] = (component: object, options: { context: object; } = { context: {} }) => {
                         const updatedOptions: object = {
                             ...options,
                             context: {
@@ -106,10 +106,10 @@ export class ContextService implements IContextService {
     }
 
     private prepareReactElementWithContext(
-        component: React.ElementType,
+        component: object,
         contextValue: object,
         testEntity: TestEntity
-    ): React.ElementType {
+    ): object {
         const react = resolveModule("react");
         const context = (this.withContextRegistry.get(testEntity.name)?.contextType
             || this.defaultContext.contextType
@@ -125,7 +125,7 @@ export class ContextService implements IContextService {
     }
 
     private prepareEnzymeContext(
-        component: React.ElementType,
+        component: object,
         contextValue: object,
         testEntity: TestEntity
     ): object {
