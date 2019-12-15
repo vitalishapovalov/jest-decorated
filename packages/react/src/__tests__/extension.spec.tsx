@@ -37,6 +37,9 @@ import { myContext } from "./fixtures/contexts";
 @RunWith(ReactTestRunner)
 class MyComponentSpec {
 
+    @Test.todo("refactor tests")
+    refactoring;
+
     @LazyImport("enzyme", "shallow")
     protected shallow;
 
