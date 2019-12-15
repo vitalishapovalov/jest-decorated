@@ -1,8 +1,8 @@
-import { Class, Context } from "@jest-decorated/shared";
+import { Class, ComponentContext } from "@jest-decorated/shared";
 
 import { ReactExtension } from "../extensions";
 
-export function DefaultContext(contextType: React.Context<any>, lib: Context["lib"] = "react-dom") {
+export function DefaultContext(contextType: ComponentContext["contextType"], lib: ComponentContext["lib"] = "react-dom") {
     return function DefaultContextDecoratorFunc(proto: object, methodName: string) {
         const reactExtension = ReactExtension.getReactExtension(proto.constructor as Class);
 

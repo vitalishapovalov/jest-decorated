@@ -1,7 +1,7 @@
 import { MountRendererProps, ShallowRendererProps } from "enzyme";
 import { isCallable, isObject, isString } from "@js-utilities/typecheck";
 import {
-    Context,
+    ComponentContext,
     IContextService,
     IReactExtension,
     ITestsService,
@@ -11,17 +11,17 @@ import {
 
 export class ContextService implements IContextService {
 
-    public readonly defaultContext: Partial<Context> = {};
+    public readonly defaultContext: Partial<ComponentContext> = {};
 
-    private readonly withContextRegistry: Map<PropertyKey, Context> = new Map();
+    private readonly withContextRegistry: Map<PropertyKey, ComponentContext> = new Map();
 
-    public registerDefaultContext(defaultContext: Context): void {
+    public registerDefaultContext(defaultContext: ComponentContext): void {
         this.defaultContext.value = defaultContext.value;
         this.defaultContext.contextType = defaultContext.contextType;
         this.defaultContext.lib = defaultContext.lib;
     }
 
-    public registerWithContext(methodName: PropertyKey, context: Context): void {
+    public registerWithContext(methodName: PropertyKey, context: ComponentContext): void {
         this.withContextRegistry.set(methodName, context);
     }
 
@@ -145,7 +145,7 @@ export class ContextService implements IContextService {
 
     private createAndGetDefaultContext(
         clazzInstance: object,
-        defaultContext: Partial<Context> = this.defaultContext
+        defaultContext: Partial<ComponentContext> = this.defaultContext
     ): object | undefined {
         if (!defaultContext.contextType || !defaultContext.value) {
             return;

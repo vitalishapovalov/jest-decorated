@@ -1,11 +1,11 @@
-import { Class, Context } from "@jest-decorated/shared";
+import { Class, ComponentContext } from "@jest-decorated/shared";
 
 import { ReactExtension } from "../extensions";
 
 export function WithContext(
-    contextTypeOrValue: React.Context<object> | object,
+    contextTypeOrValue: ComponentContext["contextType"] | object,
     value?: object,
-    lib: Context["lib"] = "react-dom"
+    lib: ComponentContext["lib"] = "react-dom"
 ) {
     return function WithContextDecoratorFunc(proto: object, methodName: string) {
         const reactExtension = ReactExtension.getReactExtension(proto.constructor as Class);
@@ -18,7 +18,7 @@ export function WithContext(
             .registerWithContext(methodName, {
                 lib,
                 contextType: firstArgIsContextType
-                    ? contextTypeOrValue as React.Context<object>
+                    ? contextTypeOrValue as ComponentContext["contextType"]
                     : null,
                 value: firstArgIsContextType
                     ? value
