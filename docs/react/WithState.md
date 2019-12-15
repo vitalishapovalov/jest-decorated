@@ -10,7 +10,7 @@ State will be passed to the method annotated with `@WithProps`, as a `third argu
 
 `state (Object)`: State to set.
 
-## NOT RECOMMENDED TOO USE
+## NOT RECOMMENDED TO USE
 
 According to the [react-testing-library](https://testing-library.com/docs/react-testing-library/faq):
 
