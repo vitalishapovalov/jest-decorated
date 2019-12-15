@@ -1,13 +1,12 @@
 # Decorators library for writing jest-based tests
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/vitalishapovalov/jest-decorated.svg)](https://greenkeeper.io/)
-
 <p align="center"><img src="https://raw.githubusercontent.com/vitalishapovalov/jest-decorated/master/docs/logo.png" alt="@jest-decirated" width="300" /></p>
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![npm version](https://badge.fury.io/js/%40jest-decorated%2Fcore.svg)](https://badge.fury.io/js/%40jest-decorated%2Fcore)
 ![license](https://img.shields.io/github/license/vitalishapovalov/jest-decorated.svg)
 [![Build Status](https://travis-ci.org/vitalishapovalov/jest-decorated.svg?branch=master)](https://travis-ci.org/vitalishapovalov/jest-decorated)
+[![Greenkeeper badge](https://badges.greenkeeper.io/vitalishapovalov/jest-decorated.svg)](https://greenkeeper.io/)
 
 Wrapper around [jest](https://jestjs.io/) JavaScript testing framework.
 
