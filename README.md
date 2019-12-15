@@ -9,7 +9,7 @@
 
 Wrapper around [jest](https://jestjs.io/) JavaScript testing framework.
 
-Provides decorators with some of the core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
+Provides decorators with core jest globals. Also, provides utilities to minimize boilerplate code and make tests code more consistent.
 
 [Read documentation.](https://vitalishapovalov.github.io/jest-decorated)
 
