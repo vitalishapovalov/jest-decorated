@@ -1,7 +1,7 @@
+import { isObject, isString } from "@js-utilities/typecheck";
 import { Class, ComponentProvider } from "@jest-decorated/shared";
 
 import { ReactExtension } from "../extensions";
-import { isObject, isString } from "@js-utilities/typecheck";
 
 export function ComponentProvider(
     pathToComponentOrDefaultProps?: string,

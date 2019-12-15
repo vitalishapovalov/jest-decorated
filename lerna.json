@@ -1,7 +1,6 @@
 {
   "packages": [
-    "packages/shared",
-    "packages/core"
+    "packages/*"
   ],
   "version": "0.0.15",
   "command": {
