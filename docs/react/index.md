@@ -63,6 +63,7 @@ class MyComponentTest {
     @ComponentContainer()
     container;
     
+    @Act()
     @ComponentProvider("../MyComponent")
     provider(MyComponent, passedProps) {
         return render(<MyComponent {...passedProps} />, this.container);
