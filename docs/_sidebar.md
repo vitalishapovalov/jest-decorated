@@ -5,10 +5,9 @@
     * [@Describe](core/Describe.md)
     * [@Test / @It](core/Test.md)
     * [@AfterAll, @AfterEach, @BeforeAll, @BeforeEach](core/Hooks.md)
-    * [@Mock](core/Mock.md)
-    * [@AutoClearedMock](core/Mock.md)
     * [@MockFn](core/MockFn.md)
     * [@Spy](core/Spy.md)
+    * [@Mock, @AutoClearedMock](core/Mock.md)
   * Utilities
     * [@AutoCleared](core/AutoCleared.md)
     * [@DataProvider](core/DataProvider.md)
