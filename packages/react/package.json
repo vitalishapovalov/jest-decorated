@@ -33,17 +33,6 @@
     "test": "jest --coverage",
     "lint": "tslint -c tslint.ts src/**/*.ts src/**/*.tsx"
   },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@types/enzyme": "^3.10.4",
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.15.1",
-    "jest-environment-enzyme": "^7.1.2",
-    "jest-enzyme": "^7.1.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  },
   "dependencies": {
     "@jest-decorated/shared": "^0.0.15",
     "@js-utilities/typecheck": "^0.1.4"

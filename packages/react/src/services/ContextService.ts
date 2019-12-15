@@ -1,3 +1,4 @@
+import { MountRendererProps, ShallowRendererProps } from "enzyme";
 import { isCallable, isObject, isString } from "@js-utilities/typecheck";
 import {
     ComponentContext,
@@ -56,7 +57,7 @@ export class ContextService implements IContextService {
 
                 const contextValue = this.getContextValue(clazzInstance, testEntity);
 
-                reactDOM.render = (component: object, container: HTMLElement) => {
+                reactDOM.render = (component: React.ElementType, container: HTMLElement) => {
                     const element = this.prepareReactElementWithContext(component, contextValue, testEntity);
                     reactDOM.render = reactDOMRender;
                     return reactDOMRender(element, container);
@@ -78,8 +79,8 @@ export class ContextService implements IContextService {
                 const contextValue = this.getContextValue(clazzInstance, testEntity);
 
                 for (const type of ["shallow", "mount"]) {
-                    enzyme[type] = (component: object, options: { context: object; } = { context: {} }) => {
-                        const updatedOptions: object = {
+                    enzyme[type] = (component: React.ElementType, options: ShallowRendererProps | MountRendererProps = {}) => {
+                        const updatedOptions: ShallowRendererProps | MountRendererProps = {
                             ...options,
                             context: {
                                 ...options.context,
@@ -106,17 +107,13 @@ export class ContextService implements IContextService {
     }
 
     private prepareReactElementWithContext(
-        component: object,
+        component: React.ElementType,
         contextValue: object,
         testEntity: TestEntity
-    ): object {
+    ): React.ElementType {
         const react = resolveModule("react");
-        const context = (this.withContextRegistry.get(testEntity.name)?.contextType
-            || this.defaultContext.contextType
-        ) as {
-            Provider: object;
-            Consumer: object;
-        };
+        const context = this.withContextRegistry.get(testEntity.name)?.contextType
+            || this.defaultContext.contextType;
         return react.createElement(
             context.Provider,
             { value: contextValue },
@@ -125,7 +122,7 @@ export class ContextService implements IContextService {
     }
 
     private prepareEnzymeContext(
-        component: object,
+        component: React.ElementType,
         contextValue: object,
         testEntity: TestEntity
     ): object {
