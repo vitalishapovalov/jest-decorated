@@ -1,4 +1,3 @@
-import { ReactWrapper } from "enzyme";
 import { isCallable, isUndefined } from "@js-utilities/typecheck";
 import {
     IComponentService,
@@ -52,7 +51,7 @@ export class PropsAndStateService implements IPropsAndStateService {
         return async (data: PreProcessorData): Promise<PreProcessorData> => {
             const stateDataProvider = this.getWithState(data.testEntity.name as string);
             if (stateDataProvider && !isUndefined(data.args[0])) {
-                if (!data.args[0] || !isCallable((data.args[0] as ReactWrapper).setState)) {
+                if (!data.args[0] || !isCallable((data.args[0] as { setState: Function; }).setState)) {
                     console.error(
                         "@WithState() is failed to run for test entity with name"
                         + " "
@@ -72,9 +71,9 @@ export class PropsAndStateService implements IPropsAndStateService {
                     );
                     return data;
                 }
-                let wrapper: ReactWrapper;
+                let wrapper: { setState: Function; };
                 await new Promise((resolve) => {
-                    wrapper = (data.args[0] as ReactWrapper).setState(stateDataProvider, resolve);
+                    wrapper = (data.args[0] as { setState: Function; }).setState(stateDataProvider, resolve);
                 });
                 // we're sure that args are array here, because of props pre-processor
                 const [_, ...restArgs] = data.args as unknown[];
