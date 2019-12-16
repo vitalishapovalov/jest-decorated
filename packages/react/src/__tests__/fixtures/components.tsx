@@ -35,12 +35,13 @@ export function Card(props) {
     React.useEffect(() => {
         const timeoutID = setTimeout(() => {
             props.onSelect(null);
+            props.onRender && props.onRender();
         }, 5000);
+        props.onRender && props.onRender();
         return () => {
             clearTimeout(timeoutID);
         };
-    }, [props.onSelect]);
-
+    }, [props.onSelect, props.onRender]);
     return [1, 2, 3, 4].map(choice => (
         <button
             key={choice}

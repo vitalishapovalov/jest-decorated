@@ -123,9 +123,7 @@ class CardSpec {
     @DefaultProps()
     defaultProps() {
         return {
-            context: {
-                jack: 1000000,
-            },
+            onRender: jest.fn()
         };
     }
 
@@ -141,10 +139,11 @@ class CardSpec {
     }
 
     @It("should select null after timing out")
-    testOne() {
+    testOne(cmp, { onRender }) {
         // move ahead in time by 100ms
         this.advanceTimers(100);
         expect(this.onSelect).not.toHaveBeenCalled();
+        expect(onRender).toHaveBeenCalledTimes(1);
 
         // and then move ahead by 5 seconds
         this.advanceTimers(5000);
@@ -152,9 +151,10 @@ class CardSpec {
     }
 
     @It("should cleanup on being removed")
-    testTwo() {
+    testTwo(cmp, { onRender }) {
         this.advanceTimers(100);
         expect(this.onSelect).not.toHaveBeenCalled();
+        expect(onRender).toHaveBeenCalledTimes(1);
 
         // unmount the app
         render(null, this.container);
@@ -164,12 +164,15 @@ class CardSpec {
     }
 
     @It("should accept selections")
-    testThree() {
+    testThree(cmp, { onRender }) {
         this.container
             .querySelector(".alex2")
             .dispatchEvent(new MouseEvent("click", { bubbles: true }));
 
+        this.advanceTimers(5000);
+
         expect(this.onSelect).toHaveBeenCalledWith(2);
+        expect(onRender).toHaveBeenCalledTimes(2);
     }
 
     @It("spy impl test")
