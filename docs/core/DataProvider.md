@@ -42,7 +42,7 @@ class AddSpec {
 
 ### With explicit name:
 
-`hasAccessTest` will be executed 2 times:
+`hasAccessTest` will be executed 3 times:
 
 ```javascript
 @Describe()
