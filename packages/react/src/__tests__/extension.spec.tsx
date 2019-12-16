@@ -123,7 +123,7 @@ class CardSpec {
     @DefaultProps()
     defaultProps() {
         return {
-            onRender: jest.fn()
+            onRender: jest.fn(),
         };
     }
 
