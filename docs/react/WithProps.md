@@ -2,7 +2,7 @@
 
 Used to provide specific props for any test.
 
-Will be merged and override default properties (if set), and passed both to `@ComponentProvider` and method annotated with `@WithProps`.
+Will be merged and override default properties (if set), and passed both to the `@ComponentProvider` and method annotated with `@WithProps`.
 
 ## Arguments
 

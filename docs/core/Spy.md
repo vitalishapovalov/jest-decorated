@@ -2,9 +2,9 @@
 
 The same as `jest.spyOn()`.
 
-Will be cleared after each test.
+Will be cleared `afterEach` test.
 
-Will be restored after describe suite.
+Will be restored `afterAll` tests in suite.
 
 Spy will become accessible inside class methods via `this.annotatedPropertyName`.
 

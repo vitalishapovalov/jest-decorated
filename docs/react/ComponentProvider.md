@@ -4,7 +4,7 @@ Bread-and-butter of the `React extension`. Used to provide component fo your tes
 
 You may have only one `@ComponentProvider` per describe.
 
-If method annotated with `@ComponentProvider` exists in `@Describe`, each test will start to receive the return value of annotated method as a `first argument`, and props passed to the component as a `second argument`.
+If the method annotated with `@ComponentProvider` exists in `@Describe`, each test will start to receive the return value of the annotated method as a `first argument`, and props passed to the component as a `second argument`.
 
 Will be executed for each test separately.
 

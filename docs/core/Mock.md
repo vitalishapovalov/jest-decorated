@@ -4,9 +4,9 @@ The same as `jest.doMock`.
 
 Will register mocks right in the start of the `@Describe()` suite (before hooks or `@LazyImport`).
 
-Will `jest.umock` module in `afterAll` hook.
+Will register `afterAll` hook and do `jest.umock` module there.
 
-`@AutoClearedMock` is the same as `@Mock`, but it will be cleared after each test.
+`@AutoClearedMock` is the same as `@Mock`, but it will be also cleared (will register `afterEach` hook and try to `.mockClear()` all the `jest.fn()` in mock).
 
 Mock will become accessible inside class methods via `this.annotatedPropertyName`.
 

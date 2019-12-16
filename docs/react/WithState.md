@@ -1,4 +1,4 @@
-# @WithProps
+# @WithState
 
 Used to provide specific state for any test.
 

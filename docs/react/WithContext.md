@@ -4,7 +4,7 @@ Provides context for component in [@ComponentProvider](react/ComponentProvider.m
 
 Will be merged (override values) with [@DefaultContext](react/DefaultContext.md). 
 
-Test annotated with `@WithContext` will start to receive the return value of annotated method as a `third argument`, after component itself and it's props.
+Test annotated with `@WithContext` will start to receive the return value of the annotated method as a `third argument`, after component itself and it's props.
 
 WARN: [prop-types](https://www.npmjs.com/package/prop-types) lib needs to be installed, if you want to use `enzyme` lib.
 

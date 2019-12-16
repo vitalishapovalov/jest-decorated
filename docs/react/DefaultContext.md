@@ -6,7 +6,7 @@ Default means that context will be provided for each test, and merged with [@Wit
 
 Can be [persistent](#persistent-context) or [clean for each test](#clean-context-for-each-test).
 
-If method annotated with `@DefaultContext` exists in `@Describe`, each test will start to receive the return value of annotated method as a `third argument`, after component itself and it's props.
+If method annotated with `@DefaultContext` exists in `@Describe`, each test will start to receive the return value of the annotated method as a `third argument`, after component itself and it's props.
 
 WARN: [prop-types](https://www.npmjs.com/package/prop-types) lib needs to be installed, if you want to use `enzyme` lib.
 
@@ -197,7 +197,7 @@ class MyComponentSpec {
 
 ### Persistent context:
 
-If you have `jest.fn()` inside of your context, or any other values with state, and you want to keep changes in this state during tests, context value should be an object:
+If you have `jest.fn()` inside of your context, or any other values with state, and you want to keep changes in this state during test suite, context value should be an object:
 
 ```javascript
 @Describe()
