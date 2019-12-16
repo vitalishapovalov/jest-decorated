@@ -4,7 +4,7 @@ Used to provide specific state for any test.
 
 Compatible only with wrappers, which provide `.setState()` method (like `enzyme`).
 
-State will be passed to the method annotated with `@WithProps`, as a `third argument`, or `fourth argument` (if context has been registered).
+State will be passed to the method annotated with `@WithState`, as a `third argument`, or `fourth argument` (if context has been registered).
 
 ## Arguments
 
