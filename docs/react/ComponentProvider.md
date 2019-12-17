@@ -1,18 +1,20 @@
 # @ComponentProvider
 
-Bread-and-butter of the `React extension`. Used to provide component fo your tests.
+Bread-and-butter of the `React extension`. Used to provide component for your tests.
 
 You may have only one `@ComponentProvider` per describe.
 
 If the method annotated with `@ComponentProvider` exists in `@Describe`, each test will start to receive the return value of the annotated method as a `first argument`, and props passed to the component as a `second argument`.
 
-Will be executed for each test separately.
+Will be executed for each test separately (means that new instance of rendered component will be created for each test).
 
 Can be combined with [@Act](react/Act.md), [@ActAsync](react/Act.md).
 
 Works with [@DefaultContext](react/DefaultContext.md), [@DefaultProps](react/DefaultProps.md), [@WithContext](react/WithContext.md), [@WithProps](react/WithProps.md), [@WithState](react/WithState.md).
 
-Can lazy-import components. You can access all of the imports/mocks etc. inside the annotated method.
+Can lazy-import components.
+
+Also, you can access all of the imports/mocks etc. inside the annotated method.
 
 ## Arguments
 
