@@ -1,6 +1,6 @@
 # @Mock, @AutoClearedMock
 
-The same as `jest.doMock`.
+The same as `jest.doMock()`.
 
 Will register mocks right in the start of the `@Describe()` suite (before hooks or `@LazyImport`).
 
@@ -25,7 +25,7 @@ Mock will become accessible inside class methods via `this.annotatedPropertyName
 From:
 
 ```javascript
-jest.mock("../module");
+jest.doMock("../module");
 
 describe("MySpec", () => {
     
@@ -51,7 +51,7 @@ class MySpec {
 From:
 
 ```javascript
-jest.mock("../module", () => ({ myVal: "foo" }));
+jest.doMock("../module", () => ({ myVal: "foo" }));
 
 describe("MySpec", () => {
     
@@ -101,7 +101,7 @@ class MySpec {
 From:
 
 ```javascript
-jest.mock("../module", () => ({ myVal: "foo" }), { virtual: true });
+jest.doMock("../module", () => ({ myVal: "foo" }), { virtual: true });
 
 describe("MySpec", () => {
     
@@ -129,7 +129,7 @@ class MySpec {
 From:
 
 ```javascript
-jest.mock("../module", () => ({
+jest.doMock("../module", () => ({
     myFn: jest.fn()
 }));
 
