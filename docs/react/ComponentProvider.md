@@ -235,16 +235,17 @@ To:
 
 ```javascript
 import { render } from "@testing-library/react";
+import MyComponent from "../MyComponent";
 
 @Describe()
 @RunWith(ReactTestRunner)
 class MyComponentSpec {
     
-    // Or, if used with import:
+    // Or, if used with lazy-import:
     // @ComponentProvider("../MyComponent", { foo: "foo", bar: "bar" })
     
     @ComponentProvider({ foo: "foo", bar: "bar" })
-    myComponent(MyComponent, props) {
+    myComponent(props) {
         return render(<MyComponent {...props} />);
     }
     
