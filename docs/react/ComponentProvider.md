@@ -189,7 +189,7 @@ describe("MyComponentSpec", () => {
 To:
 
 ```javascript
-import { render } from "react-dom";
+import { render } from "@testing-library/react";
 
 @Describe()
 @RunWith(ReactTestRunner)
