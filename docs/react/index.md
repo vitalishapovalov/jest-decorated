@@ -88,12 +88,12 @@ class MyComponentTest {
 
 ## Install & Setup
 
-Read [here](../install.md).
+Read [here](install.md).
 
 ## Contributing
 
-[Contribution guidelines for this project](../contributing.md)
+[Contribution guidelines for this project](contributing.md)
 
 ## License
 
-[MIT License](../license.md)
+[MIT License](license.md)
