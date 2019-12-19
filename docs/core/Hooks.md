@@ -144,7 +144,7 @@ describe("MySpec", () => {
         jest.clearAllMocks();
     });
     
-    describe(() => {
+    describe("MySpecSubSpec", () => {
         // @AfterEach inherited
     });
 });
