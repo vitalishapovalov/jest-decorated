@@ -12,7 +12,7 @@ Each class containing `@Test` and/or `@It` should be marked with [@Describe](cor
 
 ## Examples
 
-### With method name as test name:
+### With method name as a test name:
 
 From:
 
@@ -38,7 +38,7 @@ class MySpec {
 }
 ```
 
-### With test name passed as string argument:
+### With test name passed as a string:
 
 From:
 
