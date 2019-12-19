@@ -2,7 +2,7 @@
 
 Provides context for component in [@ComponentProvider](react/ComponentProvider.md).
 
-Will be merged (override values) with [@DefaultContext](react/DefaultContext.md). 
+Will be merged (override values) with [@DefaultContext](react/DefaultContext.md) (if set). 
 
 Test annotated with `@WithContext` will start to receive the return value of the annotated method as a `third argument`, after component itself and it's props.
 
