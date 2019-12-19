@@ -2,9 +2,9 @@
 
 Helper.
 
-All modules will be imported during test run, in `beforeAll` hook.
+All modules will be imported during test run, inside the `beforeAll` hook.
 
-Mock will become accessible inside class methods via `this.annotatedPropertyName`.
+Mock will become accessible inside class methods via `this.{annotatedPropertyName}`.
 
 ## Arguments
 
