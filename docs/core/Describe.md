@@ -10,7 +10,7 @@ Each class marked with `@Describe` should contain at least one [@Test](core/Test
 
 ## Examples
 
-### With class name as describe name:
+### With class name as a describe name:
 
 From:
 
@@ -29,7 +29,7 @@ class MySpec {
 }
 ```
 
-### With describe name passed as argument:
+### With describe name passed as an argument:
 
 From:
 
@@ -66,7 +66,7 @@ describe("Component spec", () => {
 To:
 
 ```javascript
-@Describe()
+@Describe("Component spec")
 class MySpec {
     // ...
 }
