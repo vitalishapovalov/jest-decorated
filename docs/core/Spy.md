@@ -6,7 +6,7 @@ Will be cleared `afterEach` test.
 
 Will be restored `afterAll` tests in suite.
 
-Spy will become accessible inside class methods via `this.annotatedPropertyName`.
+Spy will become accessible inside class methods via `this.{annotatedPropertyName}`.
 
 ## Arguments
 
@@ -54,7 +54,7 @@ class MySpec {
 }
 ```
 
-### Usage as getter/setter:
+### Usage as a getter/setter:
 
 ```javascript
 describe("MySpec", () => {
