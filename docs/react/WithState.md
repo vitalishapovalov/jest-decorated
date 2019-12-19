@@ -74,5 +74,14 @@ class MyComponentSpec {
     behaviourTest(component, props, state) {
         expect(component.find(".red")).toHaveLength(1);
     }
+    
+    // or if used with @WithContext
+    
+    @Test("MyComponent should have '.red' when red is set")
+    @WithState({ red: true })
+    @WithContext(MyContext, { foo: "foo" })
+    behaviourTest(component, props, context, state) {
+        expect(component.find(".red")).toHaveLength(1);
+    }
 }
 ```
