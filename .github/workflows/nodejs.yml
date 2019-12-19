@@ -21,7 +21,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm bootstrap
       run: |
-        npm run bootstap
+        npm run bootstrap
     - name: npm lint, build, and test
       run: |
         npm ci
