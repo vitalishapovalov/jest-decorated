@@ -45,7 +45,7 @@ From:
 ```javascript
 describe("MySpec", () => {
     
-    test("should return false", () => {
+    it("should return false", () => {
         expect(myFn()).toBeFalsy();
     });
 });
@@ -71,7 +71,7 @@ From:
 ```javascript
 describe("MySpec", () => {
     
-    test("should return false", async () => {
+    it("should return false", async () => {
         expect(await myFn()).toBeFalsy();
     });
 });
@@ -125,7 +125,7 @@ describe("MySpec", () => {
     
     test.todo("should not return false");
     
-    test.skip("should return false", () => {
+    it.skip("should return false", () => {
         expect(myFn()).toBeFalsy();
     });
     
@@ -158,7 +158,7 @@ class MySpec {
 
 ## `@jest-decorated` specific
 
-### With test name passed as function argument:
+### With test name passed as a function:
 
 Could be useful with [@DataProvider](core/DataProvider.md)
 
