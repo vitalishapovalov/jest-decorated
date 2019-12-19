@@ -18,9 +18,9 @@ Also, you can access all of the imports/mocks etc. inside the annotated method.
 
 ## Arguments
 
-`pathToComponent (String)?`: Path to the component. If specified, component will be lazy-imported during suite, after all of the mocks/spies etc. If provided, annotated component will start to receive imported module as first argument.
+`pathToComponent (String)?`: Path to the component. If specified, component will be lazy-imported during suite, after all of the mocks/spies etc. If provided, annotated method will start to receive the imported module as a first argument.
 
-`defaultProps?: (Object | (() => Object))`?: Optional, otherwise - empty object will be created. 
+`defaultProps?: (Object | (() => Object))`?: Optional, otherwise - empty object will be created. Can't be combined with `@DefaultProps()`, you can have only one.
 
 ## Examples
 
@@ -34,7 +34,7 @@ import MyComponent from "../MyComponent";
 
 describe("MyComponentSpec", () => {
     
-    let myComponentShallow = () => shallow(<MyComponent />);
+    const myComponentShallow = () => shallow(<MyComponent />);
     
     it("shouldMatchSnapshot", () => {
         const myComponent = myComponentShallow();
@@ -83,7 +83,7 @@ import MyComponent from "../MyComponent";
 
 describe("MyComponentSpec", () => {
     
-    let myComponentShallow = () => shallow(<MyComponent />);
+    const myComponentShallow = () => shallow(<MyComponent />);
     
     // ...
 });
@@ -129,10 +129,14 @@ describe("MyComponentSpec", () => {
       container = null;
     });
     
-    it("should have correct behaviour", () => {
+    const renderComponent = () => {
         act(() => {
           render(<MyComponent />, container);
         });
+    };
+    
+    it("should have correct behaviour", () => {
+        renderComponent();
         // ...
     });
 });
@@ -179,8 +183,10 @@ import { MyComponent } from "../MyComponent";
 
 describe("MyComponentSpec", () => {
     
+    const renderComponent = () => render(<MyComponent />);
+    
     it("should have correct behaviour", () => {
-        const { queryByTestId } = render(<MyComponent />);
+        const { queryByTestId } = renderComponent();
         // ...
     });
 });
@@ -225,7 +231,7 @@ describe("MyComponentSpec", () => {
     } = {}) => render(<MyComponent foo={foo} bar={bar} />);
     
     it("should have correct behaviour", () => {
-        const { queryByTestId } = renderComponent(<MyComponent />);
+        const { queryByTestId } = renderComponent();
         // ...
     });
 });
@@ -280,7 +286,7 @@ class MyComponentSpec {
     
     @AsyncAct()
     @ComponentProvider("../MyComponent")
-    myComponent(MyComponent, props) {
+    async myComponent(MyComponent, props) {
         return render(<MyComponent {...props} />, this.container);
     }
 }
