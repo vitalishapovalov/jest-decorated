@@ -41,7 +41,8 @@ export class TestRunner implements ITestRunner {
         const testsService = describeRunner.getTestsService();
         const jestTestType = this.resolveJestTestType(testEntity);
 
-        // special case for test.tоdo
+        // special case for test.tоdo,
+        // cause it should have no implementation at all
         if (testEntity.getTestType() === TestType.TODO) {
             test.todo(TestRunner.resolveDescription(testEntity.description));
             return;

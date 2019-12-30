@@ -1,5 +1,6 @@
+import chalk from "chalk";
 import { ReactWrapper } from "enzyme";
-import { isCallable, isUndefined } from "@js-utilities/typecheck";
+import { isCallable, isObject, isString, isUndefined } from "@js-utilities/typecheck";
 import {
     IComponentService,
     IDescribeRunner,
@@ -7,6 +8,8 @@ import {
     PreProcessor,
     PreProcessorData,
 } from "@jest-decorated/shared";
+
+import { ComponentService } from "./ComponentService";
 
 export class PropsAndStateService implements IPropsAndStateService {
 
@@ -35,32 +38,49 @@ export class PropsAndStateService implements IPropsAndStateService {
     public createComponentWithPropsPreProcessor(describeRunner: IDescribeRunner): PreProcessor {
         return async (data: PreProcessorData): Promise<PreProcessorData> => {
             const propsDataProvider = this.getWithProps(data.testEntity.name as string);
-            const defaultProps = this.componentService.createAndGetDefaultProps(describeRunner.getClassInstance());
+            const defaultProps = this.createAndGetDefaultProps(describeRunner.getClassInstance());
 
-            const componentWithProps = propsDataProvider
+            const [component, props] = propsDataProvider
                 ? await this.getComponentProviderResultAndProps(describeRunner, propsDataProvider, defaultProps)
                 : await this.getComponentProviderResultAndProps(describeRunner, defaultProps);
 
+            // If context has been registered, object with props and state
+            // will be accessible and we just need to update it.
+            // Otherwise - create and register object with props and state.
+            const hasPropsAndStateObj = data.args.some(arg => arg[ComponentService.STATE_PROPS_CONTEXT_ARG]);
+            const mappedArgs = hasPropsAndStateObj
+                ? data.args.map(
+                    arg => arg[ComponentService.STATE_PROPS_CONTEXT_ARG]
+                        ? { ...arg as object, props, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }
+                        : arg
+                )
+                : data.args;
             return {
                 ...data,
-                args: [...componentWithProps, ...data.args],
+                args: [
+                    component,
+                    ...(hasPropsAndStateObj
+                        ? []
+                        : [{ props, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }]),
+                    ...mappedArgs
+                ],
             };
         };
     }
 
     public createWithStatePreProcessor(describeName: string): PreProcessor {
         return async (data: PreProcessorData): Promise<PreProcessorData> => {
-            const stateDataProvider = this.getWithState(data.testEntity.name as string);
-            if (stateDataProvider && !isUndefined(data.args[0])) {
+            const state = this.getWithState(data.testEntity.name as string);
+            if (state && !isUndefined(data.args[0])) {
                 if (!data.args[0] || !isCallable((data.args[0] as ReactWrapper).setState)) {
                     console.error(
                         "@WithState() is failed to run for test entity with name"
                         + " "
-                        + `"${String(data.testEntity.name)}".`
+                        + `"${chalk.greenBright(String(data.testEntity.name))}".`
                         + " "
                         + "in @Describe() suite"
                         + " "
-                        + `"${describeName}".`
+                        + `"${chalk.greenBright(describeName)}".`
                         + "\n"
                         + "Reason: component returned from @ComponentProvider() doesn't have"
                         + " "
@@ -74,13 +94,20 @@ export class PropsAndStateService implements IPropsAndStateService {
                 }
                 let wrapper: ReactWrapper;
                 await new Promise((resolve) => {
-                    wrapper = (data.args[0] as ReactWrapper).setState(stateDataProvider, resolve);
+                    wrapper = (data.args[0] as ReactWrapper).setState(state, resolve);
                 });
-                // we're sure that args are array here, because of props pre-processor
-                const [_, ...restArgs] = data.args as unknown[];
+                // we're sure that args are an array here, because of the props pre-processor
+                const [prevComponent, ...restArgs] = data.args as unknown[];
                 return {
                     ...data,
-                    args: [wrapper || data.args[0], ...restArgs, stateDataProvider],
+                    args: [
+                        wrapper || prevComponent,
+                        ...restArgs.map(
+                            arg => arg[ComponentService.STATE_PROPS_CONTEXT_ARG]
+                                ? { ...arg as object, state }
+                                : arg
+                        )
+                    ],
                 };
             }
             return data;
@@ -114,17 +141,35 @@ export class PropsAndStateService implements IPropsAndStateService {
                 + " "
                 + "for @Describe() with name"
                 + " "
-                + `"${describe.getDescribeName()}"`
+                + `"${chalk.greenBright(describe.getDescribeName())}"`
                 + " "
                 + "and @ComponentProvider() method"
                 + " "
-                + `"${componentProvider.name}".`
+                + `"${chalk.greenBright(componentProvider.name)}".`
                 + "\n"
                 + "Advice: check @ComponentProvider() method and props passed to the component."
                 + "\n"
-                + "Error:"
+                + "Error message:"
                 + " "
                 + `${error.message}`);
+        }
+    }
+
+    private createAndGetDefaultProps(
+        clazzInstance: object,
+        defaultProps: unknown = this.componentService.componentProvider.defaultProps
+    ): object {
+        if (!defaultProps) {
+            return {};
+        }
+        if (isCallable(defaultProps)) {
+            return defaultProps.call(clazzInstance);
+        }
+        if (isString(defaultProps)) {
+            return this.createAndGetDefaultProps(clazzInstance, clazzInstance[defaultProps]);
+        }
+        if (isObject(defaultProps)) {
+            return defaultProps;
         }
     }
 }

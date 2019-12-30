@@ -2,11 +2,11 @@
 
 Used to provide specific props for any test.
 
-Will be merged and override default properties (if set), and passed both to the `@ComponentProvider` and method annotated with `@WithProps`.
+Will be merged and override default props (if available), and passed both to the `@ComponentProvider` and method annotated with `@WithProps`.
 
 ## Arguments
 
-`props (Object)`: Props to set.
+`props (Object)`: Props to render with.
 
 ## Examples
 
@@ -49,7 +49,7 @@ class MyComponentSpec {
     
     @Test("MyComponent calls onRender and onChange once during render")
     @WithProps({ onRender: jest.fn() })
-    behaviourTest({ getByText }, props) {
+    behaviourTest({ getByText }, { props }) {
         expect(props.onRender).toHaveBeenCalledTimes(1);
     }
 }

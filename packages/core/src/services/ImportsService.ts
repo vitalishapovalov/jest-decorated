@@ -19,6 +19,7 @@ export class ImportsService implements IImportsService {
                 get(): unknown {
                     return resolvedModuleFn();
                 },
+                configurable: true,
             });
         }
     }

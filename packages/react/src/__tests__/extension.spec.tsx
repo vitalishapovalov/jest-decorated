@@ -66,10 +66,10 @@ class MyComponentSpec {
 
     @It("should display bar")
     @WithProps({ foo: 0, bar: "placeholder" })
-    testThree(myComponentShallow, { bar }) {
+    testThree(myComponentShallow, { props }) {
         expect(myComponentShallow.find(".higher")).toHaveLength(0);
         expect(myComponentShallow.find(".lower")).toHaveLength(0);
-        expect(myComponentShallow.children().text()).toBe(bar);
+        expect(myComponentShallow.children().text()).toBe(props.bar);
     }
 }
 
@@ -139,11 +139,11 @@ class CardSpec {
     }
 
     @It("should select null after timing out")
-    testOne(cmp, { onRender }) {
+    testOne(cmp, { props }) {
         // move ahead in time by 100ms
         this.advanceTimers(100);
         expect(this.onSelect).not.toHaveBeenCalled();
-        expect(onRender).toHaveBeenCalledTimes(1);
+        expect(props.onRender).toHaveBeenCalledTimes(1);
 
         // and then move ahead by 5 seconds
         this.advanceTimers(5000);
@@ -151,10 +151,10 @@ class CardSpec {
     }
 
     @It("should cleanup on being removed")
-    testTwo(cmp, { onRender }) {
+    testTwo(cmp, { props }) {
         this.advanceTimers(100);
         expect(this.onSelect).not.toHaveBeenCalled();
-        expect(onRender).toHaveBeenCalledTimes(1);
+        expect(props.onRender).toHaveBeenCalledTimes(1);
 
         // unmount the app
         render(null, this.container);
@@ -164,7 +164,7 @@ class CardSpec {
     }
 
     @It("should accept selections")
-    testThree(cmp, { onRender }) {
+    testThree(cmp, { props }) {
         this.container
             .querySelector(".alex2")
             .dispatchEvent(new MouseEvent("click", { bubbles: true }));
@@ -172,7 +172,7 @@ class CardSpec {
         this.advanceTimers(5000);
 
         expect(this.onSelect).toHaveBeenCalledWith(2);
-        expect(onRender).toHaveBeenCalledTimes(2);
+        expect(props.onRender).toHaveBeenCalledTimes(2);
     }
 
     @It("spy impl test")
@@ -215,9 +215,9 @@ class UserSpec {
 
     @Test()
     @WithContext({ alex: 200 })
-    testOne({ getByText }, props, { callMe, alex }) {
-        expect(callMe).toHaveBeenCalledTimes(2);
-        expect(alex).toBe(200);
+    testOne({ getByText }, { context }) {
+        expect(context.callMe).toHaveBeenCalledTimes(2);
+        expect(context.alex).toBe(200);
         expect(getByText(UserSpec.fakeUser.name)).toBeInTheDocument();
         expect(getByText(UserSpec.fakeUser.address)).toBeInTheDocument();
         expect(getByText(UserSpec.fakeUser.age)).toBeInTheDocument();
@@ -226,7 +226,7 @@ class UserSpec {
     @Test()
     @WithContext(myContext)
     @WithProps({ jack: 100 })
-    testTwo({ getByText }, { jack }, { callMe, alex }) {
+    testTwo({ getByText }, { props: { jack }, context: { callMe, alex } }) {
         expect(callMe).toHaveBeenCalledTimes(2);
         expect(alex).toBe(undefined);
         expect(jack).toBe(100);
@@ -280,9 +280,9 @@ class AlexClassSpec {
 
     @Test()
     @WithContext({ foo: 200 })
-    testOne(shallowWrapper, props, { callMe, foo }) {
-        expect(callMe).toHaveBeenCalledTimes(1);
-        expect(foo).toBe(200);
+    testOne(shallowWrapper, { context }) {
+        expect(context.callMe).toHaveBeenCalledTimes(1);
+        expect(context.foo).toBe(200);
         expect(shallowWrapper.find(".iamspan").length).toBe(1);
         expect(this.logSpy).toHaveBeenCalledTimes(3);
 
@@ -294,7 +294,7 @@ class AlexClassSpec {
 
     @Test()
     @WithState({ foo: "foo!" })
-    testTwo(shallowWrapper, props, context, state) {
+    testTwo(shallowWrapper, { context, state }) {
         expect(context.callMe).toHaveBeenCalledTimes(2);
         expect(shallowWrapper.find(".iamspan").length).toBe(1);
         expect(this.logSpy).toHaveBeenCalledTimes(2);

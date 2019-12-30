@@ -2,6 +2,8 @@
 
 Another approach to provide default props for your [@ComponentProvider](react/ComponentProvider.md).
 
+Props can be [persistent](#persistent-default-props) or [clean for each test](#clean-default-props-for-each-test).
+
 ## Arguments
 
 No arguments.
@@ -57,7 +59,7 @@ class MyComponentSpec {
     }
     
     @Test("MyComponent calls onRender once during render")
-    behaviourTest({ getByText }, props) {
+    behaviourTest({ getByText }, { props }) {
         expect(props.onRender).toHaveBeenCalledTimes(1);
     }
 }
@@ -106,9 +108,9 @@ import { render } from "@testing-library/react";
 class MyComponentSpec {
     
     @DefaultProps()
-    defaultProps = {
+    defaultProps = () => ({
         onRender: jest.fn()
-    };
+    });
     
     @ComponentProvider("../MyComponent")
     myComponent({ MyComponent }, props) {
@@ -117,9 +119,48 @@ class MyComponentSpec {
     
     @Test("MyComponent calls onRender and onChange once during render")
     @WithProps({ onChange: jest.fn() })
-    behaviourTest({ getByText }, props) {
+    behaviourTest({ getByText }, { props }) {
         expect(props.onChange).toHaveBeenCalledTimes(1);
         expect(props.onRender).toHaveBeenCalledTimes(1);
     }
+}
+```
+
+### Persistent default props:
+
+If you have `jest.fn()` inside of your default props, or any other values with own internal state, and you want to keep changes in this state during test suite, default props should be defined as an object:
+
+```javascript
+@Describe()
+@RunWith(ReactTestRunner)
+class MyComponentSpec {
+    
+    @DefaultProps()
+    defaultProps = { onChange: jest.fn() };
+    
+    // ....
+}
+```
+
+### Clean default props for each test:
+
+Opposite to persistent default props. To have a new instance of the default props for each text, default props value should be defined as a function:
+
+```javascript
+@Describe()
+@RunWith(ReactTestRunner)
+class MyComponentSpec {
+    
+    @DefaultProps()
+    defaultProps = () => { onChange: jest.fn() };
+    
+    // or
+    
+    @DefaultProps()
+    defaultProps() {
+        return { onChange: jest.fn() };
+    };
+    
+    // ....
 }
 ```

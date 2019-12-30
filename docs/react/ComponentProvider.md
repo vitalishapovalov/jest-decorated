@@ -4,7 +4,7 @@ Bread-and-butter of the `React extension`. Used to provide component for your te
 
 You may have only one `@ComponentProvider` per describe.
 
-If the method annotated with `@ComponentProvider` exists in `@Describe`, each test will start to receive the return value of the annotated method as a `first argument`, and props passed to the component as a `second argument`.
+If the method annotated with `@ComponentProvider` exists in `@Describe`, each test will start to receive the return value of the annotated method as a `first argument`, and object with props, state and context passed to the component as a `second argument`.
 
 Will be executed for each test separately (means that new instance of rendered component will be created for each test).
 
@@ -59,7 +59,7 @@ class MyComponentSpec {
     }
     
     @It()
-    shouldMatchSnapshot(myComponent, props) {
+    shouldMatchSnapshot(myComponent, { props }) {
         expect(myComponent).toMatchSnapshot();
     }
 }
@@ -99,7 +99,7 @@ import { shallow } from "enzyme";
 class MyComponentSpec {
     
     @ComponentProvider("../MyComponent")
-    myComponent(MyComponent, props) {
+    myComponent(MyComponent, { props }) {
         return shallow(<MyComponent />);
     }
     
@@ -161,7 +161,7 @@ class MyComponentSpec {
     }
     
     @It("should have correct behaviour")
-    behaviourTest(component, props) {
+    behaviourTest(component, { props }) {
         // ...
     }
 }
@@ -207,7 +207,7 @@ class MyComponentSpec {
     }
     
     @It("should have correct behaviour")
-    behaviourTest({ queryByTestId }, props) {
+    behaviourTest({ queryByTestId }, { props }) {
         // ...
     }
 }
@@ -256,7 +256,7 @@ class MyComponentSpec {
     }
     
     @It("should have correct behaviour")
-    behaviourTest({ queryByTestId }, props) {
+    behaviourTest({ queryByTestId }, { props }) {
         // ...
     }
 }
@@ -276,17 +276,9 @@ class MyComponentSpec {
     @ComponentContainer()
     container;
     
-    @Act()
+    @Act() // or @ActAsync(), if you need an async act:
     @ComponentProvider("../MyComponent")
-    myComponent(MyComponent, props) {
-        return render(<MyComponent {...props} />, this.container);
-    }
-    
-    // or, if you need an async act:
-    
-    @AsyncAct()
-    @ComponentProvider("../MyComponent")
-    async myComponent(MyComponent, props) {
+    myComponent(MyComponent, { props }) {
         return render(<MyComponent {...props} />, this.container);
     }
 }

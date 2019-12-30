@@ -13,6 +13,6 @@ export function MockFn(impl?: MockFn["impl"]) {
 
         describeRunner
             .getMocksService()
-            .registerMockFn(name, impl);
+            .registerMockFn({ name, impl });
     };
 }

@@ -12,15 +12,15 @@ class DataProviderSpec {
     }
 
     @DataProvider()
-    private dataProviderThree = () => [
-        [3, 3, 6],
-        [2, 2, 4],
-    ]
-
-    @DataProvider()
     private dataProviderTwo = [
         { a: 1, b: 2, c: 3 },
         { a: 2, b: 4, c: 6 },
+    ];
+
+    @DataProvider()
+    private dataProviderThree = () => [
+        [3, 3, 6],
+        [2, 2, 4],
     ];
 
     @DataProvider()

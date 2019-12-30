@@ -20,8 +20,6 @@ export interface IComponentService {
 
     importOrGetComponent(): Promise<unknown>;
 
-    createAndGetDefaultProps(clazzInstance: object, defaultProps?: unknown): object | undefined;
-
     createComponentContainers(): void;
 
     createActWrappers(clazzInstance: object): void;

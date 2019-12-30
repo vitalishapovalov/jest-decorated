@@ -6,9 +6,10 @@ import {
     extractModuleDefault,
     IReactExtension,
 } from "@jest-decorated/shared";
-import { isCallable, isObject, isString } from "@js-utilities/typecheck";
 
 export class ComponentService implements IComponentService {
+
+    public static readonly STATE_PROPS_CONTEXT_ARG: unique symbol = Symbol();
 
     public readonly componentProvider: Partial<ComponentProvider> = {};
 
@@ -60,6 +61,7 @@ export class ComponentService implements IComponentService {
                 get(): unknown {
                     return componentService.componentContainers.get(name)[1];
                 },
+                configurable: true,
             });
         }
     }
@@ -79,25 +81,8 @@ export class ComponentService implements IComponentService {
                     return serviceInstance.runWithAct(method, args, isAsync);
                 },
                 configurable: true,
+                writable: true,
             });
-        }
-    }
-
-    public createAndGetDefaultProps(
-        clazzInstance: object,
-        defaultProps: unknown = this.componentProvider.defaultProps
-    ): object {
-        if (!defaultProps) {
-            return {};
-        }
-        if (isCallable(defaultProps)) {
-            return defaultProps.call(clazzInstance);
-        }
-        if (isString(defaultProps)) {
-            return this.createAndGetDefaultProps(clazzInstance, clazzInstance[defaultProps]);
-        }
-        if (isObject(defaultProps)) {
-            return defaultProps;
         }
     }
 

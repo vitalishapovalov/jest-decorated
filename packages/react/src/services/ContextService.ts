@@ -9,6 +9,8 @@ import {
     TestEntity,
 } from "@jest-decorated/shared";
 
+import { ComponentService } from "./ComponentService";
+
 export class ContextService implements IContextService {
 
     public readonly defaultContext: Partial<ComponentContext> = {};
@@ -63,7 +65,11 @@ export class ContextService implements IContextService {
                     return reactDOMRender(element, container);
                 };
 
-                return { clazzInstance, testEntity, args: [contextValue, ...args] };
+                return {
+                    clazzInstance,
+                    testEntity,
+                    args: [{ context: contextValue, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }, ...args]
+                };
             },
             0
         );
@@ -75,10 +81,11 @@ export class ContextService implements IContextService {
                 const enzyme = resolveModule("enzyme");
                 const enzymeShallow = enzyme.shallow;
                 const enzymeMount = enzyme.mount;
+                const enzymeRender = enzyme.render;
 
                 const contextValue = this.getContextValue(clazzInstance, testEntity);
 
-                for (const type of ["shallow", "mount"]) {
+                for (const type of ["shallow", "mount", "render"]) {
                     enzyme[type] = (component: React.ElementType, options: ShallowRendererProps | MountRendererProps = {}) => {
                         const updatedOptions: ShallowRendererProps | MountRendererProps = {
                             ...options,
@@ -89,11 +96,16 @@ export class ContextService implements IContextService {
                         };
                         enzyme.shallow = enzymeShallow;
                         enzyme.mount = enzymeMount;
+                        enzyme.render = enzymeRender;
                         return enzyme[type](component, updatedOptions);
                     };
                 }
 
-                return { clazzInstance, testEntity, args: [contextValue, ...args] };
+                return {
+                    clazzInstance,
+                    testEntity,
+                    args: [{ context: contextValue, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }, ...args]
+                };
             },
             0
         );

@@ -4,18 +4,9 @@ export interface IMocksService {
 
     registerMock(mock: Mock): void;
 
-    registerMockFn(
-        name: MockFn["name"],
-        impl?: MockFn["impl"]
-    ): void;
+    registerMockFn(mockFn: MockFn): void;
 
-    registerSpy(
-        name: Spy["name"],
-        obj: Spy["obj"],
-        prop: Spy["prop"],
-        accessType?: Spy["accessType"],
-        impl?: Spy["impl"]
-    ): void;
+    registerSpy(spy: Spy): void;
 
     getMocks(): {
         mocks: Map<string, Mock>;

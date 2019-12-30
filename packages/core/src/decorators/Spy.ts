@@ -26,12 +26,12 @@ export function Spy(
 
         describeRunner
             .getMocksService()
-            .registerSpy(
+            .registerSpy({
                 name,
                 obj,
                 prop,
-                isCallable(accessTypeOrImpl) ? undefined : isCallable(impl),
-                isCallable(accessTypeOrImpl) ? accessTypeOrImpl : impl
-            );
+                accessType: isCallable(accessTypeOrImpl) ? undefined : isCallable(impl),
+                impl: isCallable(accessTypeOrImpl) ? accessTypeOrImpl : impl
+            });
     };
 }

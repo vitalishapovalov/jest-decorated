@@ -16,21 +16,12 @@ export class MocksService implements IMocksService {
 
     private readonly autoCleared: string[] = [];
 
-    public registerMockFn(
-        name: MockFn["name"],
-        impl?: MockFn["impl"]
-    ): void {
-        this.mockFns.set(name, { name, impl });
+    public registerMockFn(mockFn: MockFn): void {
+        this.mockFns.set(mockFn.name, mockFn);
     }
 
-    public registerSpy(
-        name: Spy["name"],
-        obj: Spy["obj"],
-        prop: Spy["prop"],
-        accessType?: Spy["accessType"],
-        impl?: Spy["impl"]
-    ): void {
-        this.spies.set(name, { name, obj, prop, accessType, impl });
+    public registerSpy(spy: Spy): void {
+        this.spies.set(spy.name, spy);
     }
 
     public registerMock(mock: Mock): void {
@@ -57,20 +48,17 @@ export class MocksService implements IMocksService {
         const { mocks, mockFns, spies } = mocksService.getMocks();
         if (mocks) {
             for (const mock of mocks.values()) {
-                const mockAsMock = mock as Mock;
-                this.registerMock(mockAsMock);
+                this.registerMock(mock as Mock);
             }
         }
         if (mockFns) {
             for (const mockFn of mockFns.values()) {
-                const mockFnAsMockFn = mockFn as MockFn;
-                this.registerMockFn(mockFnAsMockFn.name, mockFnAsMockFn.impl);
+                this.registerMockFn(mockFn as MockFn);
             }
         }
         if (spies) {
             for (const spy of spies.values()) {
-                const spyAsSpy = spy as Spy;
-                this.registerSpy(spyAsSpy.name, spyAsSpy.obj, spyAsSpy.prop, spyAsSpy.accessType);
+                this.registerSpy(spy as Spy);
             }
         }
     }
@@ -165,7 +153,7 @@ export class MocksService implements IMocksService {
         return undefined;
     }
 
-    private tryToClearMock(mock: any, depth = 1, maxDepth = 15): void {
+    private tryToClearMock(mock: any, depth = 0, maxDepth = 15): void {
         if (depth >= maxDepth) {
             return;
         }

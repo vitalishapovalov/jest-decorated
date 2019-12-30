@@ -4,7 +4,19 @@ Used to provide specific state for any test.
 
 Compatible only with wrappers, which provide `.setState()` method (like `enzyme`).
 
-State will be passed to the method annotated with `@WithState`, as a `third argument`, or `fourth argument` (if context has been registered).
+Test annotated with `@WithState` will start to receive the value passed to the decorator as a `state` field in props object:
+
+```javascript
+@Describe()
+class MySpec {
+  
+  @Test()
+  @WithState({ foo: "foo" })
+  myTest(component, { props, state }) {
+    // state.foo is available here
+  }
+}
+```
 
 ## Arguments
 
@@ -40,7 +52,7 @@ describe("MyComponentSpec", () => {
         const component = shallow(<MyComponent />);
         
         if (state) {
-            component.setState(state);
+            return component.setState(state);
         }
         
         return component;
@@ -58,7 +70,7 @@ describe("MyComponentSpec", () => {
 To:
 
 ```javascript
-import { render } from "@testing-library/react";
+import { shallow } from "enzyme";
 
 @Describe()
 @RunWith(ReactTestRunner)
@@ -66,21 +78,12 @@ class MyComponentSpec {
     
     @ComponentProvider("../MyComponent")
     myComponent({ MyComponent }) {
-        return render(<MyComponent />);
+        return shallow(<MyComponent />);
     }
     
     @Test("MyComponent should have '.red' when red is set")
     @WithState({ red: true })
-    behaviourTest(component, props, state) {
-        expect(component.find(".red")).toHaveLength(1);
-    }
-    
-    // or if used with @WithContext
-    
-    @Test("MyComponent should have '.red' when red is set")
-    @WithState({ red: true })
-    @WithContext(MyContext, { foo: "foo" })
-    behaviourTest(component, props, context, state) {
+    behaviourTest(component, { props, state }) {
         expect(component.find(".red")).toHaveLength(1);
     }
 }

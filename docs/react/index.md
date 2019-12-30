@@ -70,17 +70,17 @@ class MyComponentTest {
     }
     
     @It("turned on by default")
-    isTurnOn(component, passedPops) {
+    isTurnOn(component, { props }) {
         const button = document.querySelector("[data-testid=toggle]");
         expect(button.innerHTML).toBe("Turn on");
     }
     
     @It("changes value when clicked, calls onChange")
     @WithProps({ onChange: jest.fn() })
-    shouldToggle(component, passedPops) {
+    shouldToggle(component, { props }) {
         const button = document.querySelector("[data-testid=toggle]");
         button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-        expect(passedPops.onChange).toHaveBeenCalledTimes(1);
+        expect(props.onChange).toHaveBeenCalledTimes(1);
         expect(button.innerHTML).toBe("Turn off");
     }
 }

@@ -1,6 +1,6 @@
 # @ComponentContainer
 
-Helper. Creates auto-restored (after each test) container, which will become accessible inside class methods via `this.annotatedPropertyName`.
+Helper. Creates auto-restored (after each test) container, which will become accessible inside class methods via `this.{annotatedPropertyName}`.
 
 ## Arguments
 

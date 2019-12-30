@@ -2,9 +2,21 @@
 
 Provides context for component in [@ComponentProvider](react/ComponentProvider.md).
 
-Will be merged (override values) with [@DefaultContext](react/DefaultContext.md) (if set). 
+Will be merged (override values) with [@DefaultContext](react/DefaultContext.md), if available. 
 
-Test annotated with `@WithContext` will start to receive the return value of the annotated method as a `third argument`, after component itself and it's props.
+Test annotated with `@WithContext` will start to receive the value passed to the decorator as a `context` field in props object:
+
+```javascript
+@Describe()
+class MySpec {
+  
+  @Test()
+  @WithContext(MyContext, { foo: "foo" })
+  myTest(component, { props, context }) {
+    // context.foo is available here
+  }
+}
+```
 
 WARN: [prop-types](https://www.npmjs.com/package/prop-types) lib needs to be installed, if you want to use `enzyme` lib.
 
@@ -62,7 +74,7 @@ class MyComponentSpec {
     
     @Test("MyComponent calls onRender once during render")
     @WithContext(MyContext, { onRender: jest.fn() })
-    behaviourTest({ getByText }, props, context) {
+    behaviourTest({ getByText }, { context }) {
         expect(context.onRender).toHaveBeenCalledTimes(1);
     }
 }
@@ -114,7 +126,7 @@ class MyComponentSpec {
     
     @Test("MyComponent calls onRender once during render")
     @WithContext(MyContext, { onRender: jest.fn() })
-    behaviourTest({ getByText }, props, context) {
+    behaviourTest({ getByText }, { context }) {
        expect(context.onRender).toHaveBeenCalledTimes(1);
     }
 }
