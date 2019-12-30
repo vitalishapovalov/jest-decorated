@@ -7,7 +7,7 @@
     * [@AfterAll, @AfterEach, @BeforeAll, @BeforeEach](core/Hooks.md)
     * [@MockFn](core/MockFn.md)
     * [@Spy](core/Spy.md)
-    * [@Mock, @AutoClearedMock](core/Mock.md)
+    * [@Mock](core/Mock.md)
   * Utilities
     * [@AutoCleared](core/AutoCleared.md)
     * [@DataProvider](core/DataProvider.md)

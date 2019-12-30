@@ -129,7 +129,7 @@ class MySpec {
         return "bar";
     }
     
-    // with get/set
+    // or with get/set
     
     @Spy(console, "log", "get", () => "bar")
     consoleLogSpy;

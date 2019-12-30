@@ -5,41 +5,22 @@ import { DescribeRunner } from "../runners";
 
 export function Mock(mock: string, impl?: (() => any) | object, options?: jest.MockOptions) {
     return function MockDecoratorFn(proto: object, methodName: string) {
-        registerMock(mock, impl, options, proto, methodName, false);
+        const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
+
+        if (impl && (!isCallable(impl) && !isObject(impl))) {
+            throw new SyntaxError(`@Mock only accepts function or object as second argument, instead passed ${impl}`);
+        }
+
+        const resolvedImpl = resolveMockImpl(describeRunner, methodName, impl);
+        describeRunner
+            .getMocksService()
+            .registerMock({
+                mock,
+                options,
+                mockName: methodName,
+                impl: resolvedImpl,
+            });
     };
-}
-
-export function AutoClearedMock(mock: string, impl?: (() => any) | object, options?: jest.MockOptions) {
-    return function AutoClearedMockDecoratorFn(proto: object, methodName: string) {
-        registerMock(mock, impl, options, proto, methodName, true);
-    };
-}
-
-function registerMock(
-    mock: string,
-    impl: (() => any) | object,
-    options: jest.MockOptions,
-    proto: object,
-    methodName: string,
-    autoClear: boolean
-) {
-    const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
-
-    if (impl && (!isCallable(impl) && !isObject(impl))) {
-        const decorator = autoClear ? "@AutoClearedMock" : "@Mock";
-        throw new SyntaxError(`${decorator} only accepts function or object as second argument, instead passed ${impl}`);
-    }
-
-    const resolvedImpl = resolveMockImpl(describeRunner, methodName, impl);
-    describeRunner
-        .getMocksService()
-        .registerMock({
-            autoClear,
-            mock,
-            options,
-            mockName: methodName,
-            impl: resolvedImpl,
-        });
 }
 
 function resolveMockImpl(

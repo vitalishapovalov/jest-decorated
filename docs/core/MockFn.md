@@ -2,7 +2,7 @@
 
 The same as `jest.fn()`.
 
-Also, Will be cleared after each test.
+Will be cleared `afterEach` test.
 
 Mock function will become accessible inside class methods via `this.{annotatedPropertyName}`.
 

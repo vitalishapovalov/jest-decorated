@@ -7,7 +7,6 @@ import {
     Test,
     Spy,
     BeforeAll,
-    AutoClearedMock,
     AutoCleared,
 } from "../decorators";
 
@@ -136,14 +135,16 @@ class MockAndLazyImportSpec2 {
 @Describe()
 class AutoClearedMockAndLazyImportSpec {
 
-    @AutoClearedMock("./fixtures/moduleFive")
+    @AutoCleared()
+    @Mock("./fixtures/moduleFive")
     moduleFive() {
         return {
             default: jest.fn(),
         };
     }
 
-    @AutoClearedMock("./fixtures/moduleSix")
+    @AutoCleared()
+    @Mock("./fixtures/moduleSix")
     moduleSix = {
         default: jest.fn(),
     };

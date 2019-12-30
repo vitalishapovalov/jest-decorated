@@ -80,6 +80,10 @@ export class MocksService implements IMocksService {
 
     public registerAutoClearedInClass(): void {
         for (const autoClearedName of this.autoCleared) {
+            if (this.mocks.has(autoClearedName)) {
+                // name will be registered as a Mock and auto cleared there
+                continue;
+            }
             this.registerAutoClearedValueInClass(this.clazzInstance[autoClearedName], autoClearedName);
         }
     }
@@ -105,7 +109,7 @@ export class MocksService implements IMocksService {
     }
 
     private registerMockInClass(mockName: string): void {
-        const { mock, impl, options, autoClear } = this.mocks.get(mockName);
+        const { mock, impl, options } = this.mocks.get(mockName);
         let modulePath: string;
         let requiredMock: any;
         try {
@@ -113,7 +117,11 @@ export class MocksService implements IMocksService {
                 modulePath = resolvedModulePath;
                 jest.doMock(modulePath, impl, options);
                 requiredMock = jest.requireMock(modulePath);
-                this.registerAutoClearedValueInClass(requiredMock, mockName, autoClear);
+                this.registerAutoClearedValueInClass(
+                    requiredMock,
+                    mockName,
+                    this.autoCleared.includes(mockName)
+                );
                 afterAll(() => jest.unmock(modulePath));
             });
         } catch (e) {
