@@ -1,4 +1,4 @@
-# Decorators library for writing jest-based tests
+<h1 align="center">Decorators library for writing jest-based tests</h1>
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/vitalishapovalov/jest-decorated/master/docs/logo.png" alt="@jest-decirated" width="300" />
