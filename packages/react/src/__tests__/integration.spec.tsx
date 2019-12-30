@@ -129,7 +129,7 @@ class CardSpec {
 
     @Act()
     @ComponentProvider("./fixtures/components")
-    toggleComp({ Card }, props: any = {}) {
+    cardComp({ Card }, props: any = {}) {
         return render(<Card {...props} onSelect={props.onSelect || this.onSelect} />, this.container);
     }
 

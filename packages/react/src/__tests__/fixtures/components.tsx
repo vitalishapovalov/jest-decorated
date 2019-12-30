@@ -4,7 +4,9 @@ import { myContext } from "./contexts";
 
 // tslint:disable
 
-export const MyComponent: React.FC<{ foo, bar }> = ({ foo, bar }): JSX.Element => {
+export const MyComponent: React.FC<{ foo, bar, alex }> = ({ foo, bar, alex }): JSX.Element => {
+    if (alex) alex();
+
     if (!foo) return <span>{bar}</span>;
 
     if (foo < 0) {

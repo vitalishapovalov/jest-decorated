@@ -25,7 +25,7 @@ export class ImportsService implements IImportsService {
     }
 
     private resolveLazyModule(lazyModule: LazyModule): unknown {
-        const importedModule = this.importOrGetModule(lazyModule);
+        const importedModule = extractModuleDefault(this.importOrGetModule(lazyModule));
         if (lazyModule.getter) {
             const getter = lazyModule.getter;
             return isCallable(getter)
@@ -34,7 +34,7 @@ export class ImportsService implements IImportsService {
                     ? importedModule[getter]
                     : getter.reduce((obj, key) => obj[key], importedModule);
         }
-        return extractModuleDefault(importedModule);
+        return importedModule;
     }
 
     private importOrGetModule(lazyModule: LazyModule): unknown {
