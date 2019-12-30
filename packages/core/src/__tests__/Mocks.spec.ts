@@ -111,7 +111,7 @@ class MockAndLazyImportSpec2 {
     @Mock("./fixtures/moduleThree")
     moduleThree = () => ({
         default: "MOCKED_DEFAULT",
-    })
+    });
 
     @Mock("./fixtures/moduleFour")
     moduleFour = {
@@ -135,18 +135,15 @@ class MockAndLazyImportSpec2 {
 @Describe()
 class AutoClearedMockAndLazyImportSpec {
 
-    @AutoCleared()
     @Mock("./fixtures/moduleFive")
-    moduleFive() {
-        return {
-            default: jest.fn(),
-        };
-    }
+    moduleFive = {
+        default: jest.fn(() => console.log("CALLED")).mockName("moduleFive"),
+    };
 
     @AutoCleared()
     @Mock("./fixtures/moduleSix")
     moduleSix = {
-        default: jest.fn(),
+        default: jest.fn().mockName("moduleSix"),
     };
 
     @LazyImport("./fixtures/combinedThree")
@@ -154,26 +151,41 @@ class AutoClearedMockAndLazyImportSpec {
 
     @Test()
     first() {
+        expect(this.moduleFive.default).not.toHaveBeenCalled();
+        this.moduleFive.default();
+
         console.log(this.combinedThree);
+
         expect(this.moduleSix.default).not.toHaveBeenCalled();
+
         this.combinedThree.foo.default();
         this.combinedThree.bar.default();
+
         expect(this.moduleSix.default).toHaveBeenCalledTimes(1);
     }
 
     @Test()
     second() {
+        expect(this.moduleFive.default).toHaveBeenCalledTimes(2);
+        this.moduleFive.default();
+
         expect(this.moduleSix.default).not.toHaveBeenCalled();
+
         this.combinedThree.foo.default();
         this.combinedThree.bar.default();
+
         expect(this.moduleSix.default).toHaveBeenCalledTimes(1);
     }
 
     @Test()
     third() {
+        expect(this.moduleFive.default).toHaveBeenCalledTimes(4);
+
         expect(this.moduleSix.default).not.toHaveBeenCalled();
+
         this.combinedThree.foo.default();
         this.combinedThree.bar.default();
+
         expect(this.moduleSix.default).toHaveBeenCalledTimes(1);
     }
 }
