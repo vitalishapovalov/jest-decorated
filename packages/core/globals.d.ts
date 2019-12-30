@@ -3,6 +3,7 @@ declare var AfterEach: typeof import("./dist/types/decorators/AfterEach").AfterE
 declare var AutoCleared: typeof import("./dist/types/decorators/AutoCleared").AutoCleared;
 declare var BeforeAll: typeof import("./dist/types/decorators/BeforeAll").BeforeAll;
 declare var BeforeEach: typeof import("./dist/types/decorators/BeforeEach").BeforeEach;
+declare var BeforeTest: typeof import("./dist/types/decorators/BeforeTest").BeforeTest;
 declare var DataProvider: typeof import("./dist/types/decorators/DataProvider").DataProvider;
 declare var Describe: typeof import("./dist/types/decorators/Describe").Describe;
 declare var It: typeof import("./dist/types/decorators/Test").It;

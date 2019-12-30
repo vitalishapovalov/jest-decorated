@@ -30,8 +30,8 @@ export class DescribeRunner implements IDescribeRunner {
     private constructor(
         private readonly clazz: Class,
         private readonly clazzInstance: object = new clazz(),
-        private readonly hooksService: IHooksService = new HooksService(clazzInstance),
         private readonly testsService: ITestsService = new TestsService(clazzInstance),
+        private readonly hooksService: IHooksService = new HooksService(clazzInstance, testsService),
         private readonly importsService: IImportsService = new ImportsService(clazz),
         private readonly mocksService: IMocksService = new MocksService(clazz, clazzInstance)
     ) {}

@@ -3,6 +3,7 @@ export * from "./AfterEach";
 export * from "./AutoCleared";
 export * from "./BeforeAll";
 export * from "./BeforeEach";
+export * from "./BeforeTest";
 export * from "./DataProvider";
 export * from "./Describe";
 export * from "./LazyImport";

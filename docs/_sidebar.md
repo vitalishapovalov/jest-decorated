@@ -9,6 +9,7 @@
     * [@Spy](core/Spy.md)
     * [@Mock](core/Mock.md)
   * Utilities
+    * [@BeforeTest](core/BeforeTest.md)
     * [@AutoCleared](core/AutoCleared.md)
     * [@DataProvider](core/DataProvider.md)
     * [@WithDataProvider](core/WithDataProvider.md)
@@ -27,4 +28,3 @@
     * [@WithState](react/WithState.md)
 * [Contributing](contributing.md)
 * [License](license.md)
-    

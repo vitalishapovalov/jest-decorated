@@ -1,4 +1,4 @@
-import { AfterAll, AfterEach, BeforeAll, BeforeEach, Describe, It, Test } from "../decorators";
+import { AfterAll, AfterEach, BeforeAll, BeforeEach, BeforeTest, Describe, It, Spy, Test } from "../decorators";
 
 const fn = jest.fn();
 
@@ -121,5 +121,35 @@ class SpecFour extends SpecThree {
         expect(fn).not.toHaveBeenCalled();
         fn();
         expect(this.i).toBe(5);
+    }
+}
+
+@Describe()
+class BeforeTestSpec {
+
+    static myObj = {
+        foo: () => null
+    };
+
+    @Spy(BeforeTestSpec.myObj, "foo", () => "foo")
+    fooSpy;
+
+    @Test()
+    shouldBeFoo() {
+        expect(BeforeTestSpec.myObj.foo()).toBe("foo");
+    }
+
+    @Test()
+    @BeforeTest(inst => inst.fooSpy.mockImplementationOnce(() => "bar"))
+    shouldBeBar() {
+        expect(BeforeTestSpec.myObj.foo()).toBe("bar");
+    }
+
+    @Test()
+    @BeforeTest(function () {
+        this.fooSpy.mockImplementationOnce(() => "foobar")
+    })
+    shouldBeFoobar() {
+        expect(BeforeTestSpec.myObj.foo()).toBe("foobar");
     }
 }

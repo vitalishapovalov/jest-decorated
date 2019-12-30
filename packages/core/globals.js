@@ -4,6 +4,7 @@ const {
   AutoCleared,
   BeforeAll,
   BeforeEach,
+  BeforeTest,
   DataProvider,
   Describe,
   It,
@@ -23,6 +24,7 @@ global.AfterEach = AfterEach;
 global.AutoCleared = AutoCleared;
 global.BeforeAll = BeforeAll;
 global.BeforeEach = BeforeEach;
+global.BeforeTest = BeforeTest;
 global.DataProvider = DataProvider;
 global.Describe = Describe;
 global.It = It;

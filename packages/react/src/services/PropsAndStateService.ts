@@ -145,7 +145,7 @@ export class PropsAndStateService implements IPropsAndStateService {
                 + " "
                 + "and @ComponentProvider() method"
                 + " "
-                + `${chalk.bgWhiteBright.black('"' + componentProvider.name + '"')}".`
+                + `${chalk.bgWhiteBright.black('"' + componentProvider.name + '"')}.`
                 + "\n"
                 + "Advice: check @ComponentProvider() method and props passed to the component."
                 + "\n"
