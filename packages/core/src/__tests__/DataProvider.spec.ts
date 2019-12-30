@@ -21,7 +21,7 @@ class DataProviderSpec {
     private dataProviderThree = () => [
         [3, 3, 6],
         [2, 2, 4],
-    ];
+    ]
 
     @DataProvider()
     string() {

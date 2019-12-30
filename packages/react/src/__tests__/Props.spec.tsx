@@ -49,7 +49,7 @@ class DynamicDefaultPropsSpec {
         return {
             foo: 0,
             bar: 1,
-            alex: jest.fn()
+            alex: jest.fn(),
         };
     }
 
@@ -94,7 +94,7 @@ class PersistentDefaultPropsSpec {
     defaultProps = {
         foo: 0,
         bar: 1,
-        alex: jest.fn()
+        alex: jest.fn(),
     };
 
     @ComponentProvider("./fixtures/components")

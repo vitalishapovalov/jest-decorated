@@ -68,7 +68,7 @@ export class ContextService implements IContextService {
                 return {
                     clazzInstance,
                     testEntity,
-                    args: [{ context: contextValue, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }, ...args]
+                    args: [{ context: contextValue, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }, ...args],
                 };
             },
             0
@@ -104,7 +104,7 @@ export class ContextService implements IContextService {
                 return {
                     clazzInstance,
                     testEntity,
-                    args: [{ context: contextValue, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }, ...args]
+                    args: [{ context: contextValue, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }, ...args],
                 };
             },
             0

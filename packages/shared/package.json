@@ -29,7 +29,7 @@
   "scripts": {
     "build": "rollup -c rollup.config.ts --name jest-decorated/shared",
     "test": "jest --coverage",
-    "lint": "tslint -c tslint.ts 'src/**/*.ts'"
+    "lint": "tslint -c tslint.ts 'src/**/*.ts' --fix"
   },
   "jest": {
     "transform": {

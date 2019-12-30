@@ -31,7 +31,7 @@ export function Spy(
                 obj,
                 prop,
                 accessType: isCallable(accessTypeOrImpl) ? undefined : isCallable(impl),
-                impl: isCallable(accessTypeOrImpl) ? accessTypeOrImpl : impl
+                impl: isCallable(accessTypeOrImpl) ? accessTypeOrImpl : impl,
             });
     };
 }

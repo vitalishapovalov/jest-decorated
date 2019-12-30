@@ -128,7 +128,7 @@ class SpecFour extends SpecThree {
 class BeforeTestSpec {
 
     static myObj = {
-        foo: () => null
+        foo: () => null,
     };
 
     @Spy(BeforeTestSpec.myObj, "foo", () => "foo")
@@ -147,7 +147,7 @@ class BeforeTestSpec {
 
     @Test()
     @BeforeTest(function () {
-        this.fooSpy.mockImplementationOnce(() => "foobar")
+        this.fooSpy.mockImplementationOnce(() => "foobar");
     })
     shouldBeFoobar() {
         expect(BeforeTestSpec.myObj.foo()).toBe("foobar");

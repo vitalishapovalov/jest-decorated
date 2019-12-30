@@ -33,7 +33,7 @@ class MockAndLazyImportSpec2 {
     @Mock("./fixtures/moduleThree")
     moduleThree = () => ({
         default: "MOCKED_DEFAULT",
-    });
+    })
 
     @Mock("./fixtures/moduleFour")
     moduleFour = {

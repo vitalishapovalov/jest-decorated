@@ -62,7 +62,7 @@ export class PropsAndStateService implements IPropsAndStateService {
                     ...(hasPropsAndStateObj
                         ? []
                         : [{ props, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }]),
-                    ...mappedArgs
+                    ...mappedArgs,
                 ],
             };
         };
@@ -76,11 +76,11 @@ export class PropsAndStateService implements IPropsAndStateService {
                     console.error(
                         "@WithState() is failed to run for test entity with name"
                         + " "
-                        + `${chalk.bgWhiteBright.black('"' + String(data.testEntity.name) + '"')}.`
+                        + `${chalk.bgWhiteBright.black("\"" + String(data.testEntity.name) + "\"")}.`
                         + " "
                         + "in @Describe() suite"
                         + " "
-                        + `${chalk.bgWhiteBright.black('"' + describeName + '"')}.`
+                        + `${chalk.bgWhiteBright.black("\"" + describeName + "\"")}.`
                         + "\n"
                         + "Reason: component returned from @ComponentProvider() doesn't have"
                         + " "
@@ -106,7 +106,7 @@ export class PropsAndStateService implements IPropsAndStateService {
                             arg => arg[ComponentService.STATE_PROPS_CONTEXT_ARG]
                                 ? { ...arg as object, state }
                                 : arg
-                        )
+                        ),
                     ],
                 };
             }
@@ -141,11 +141,11 @@ export class PropsAndStateService implements IPropsAndStateService {
                 + " "
                 + "for @Describe() with name"
                 + " "
-                + `${chalk.bgWhiteBright.black('"' + describe.getDescribeName() + '"')}`
+                + `${chalk.bgWhiteBright.black("\"" + describe.getDescribeName() + "\"")}`
                 + " "
                 + "and @ComponentProvider() method"
                 + " "
-                + `${chalk.bgWhiteBright.black('"' + componentProvider.name + '"')}.`
+                + `${chalk.bgWhiteBright.black("\"" + componentProvider.name + "\"")}.`
                 + "\n"
                 + "Advice: check @ComponentProvider() method and props passed to the component."
                 + "\n"

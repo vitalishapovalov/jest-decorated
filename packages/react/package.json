@@ -31,7 +31,7 @@
   "scripts": {
     "build": "rollup -c rollup.config.ts --name jest-decorated/react",
     "test": "jest --coverage",
-    "lint": "tslint -c tslint.ts src/**/*.ts src/**/*.tsx"
+    "lint": "tslint -c tslint.ts src/**/*.ts src/**/*.tsx --fix"
   },
   "dependencies": {
     "@jest-decorated/shared": "^0.0.16",
