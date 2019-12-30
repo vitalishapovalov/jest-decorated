@@ -76,11 +76,11 @@ export class PropsAndStateService implements IPropsAndStateService {
                     console.error(
                         "@WithState() is failed to run for test entity with name"
                         + " "
-                        + `"${chalk.greenBright(String(data.testEntity.name))}".`
+                        + `${chalk.bgWhiteBright.black('"' + String(data.testEntity.name) + '"')}.`
                         + " "
                         + "in @Describe() suite"
                         + " "
-                        + `"${chalk.greenBright(describeName)}".`
+                        + `${chalk.bgWhiteBright.black('"' + describeName + '"')}.`
                         + "\n"
                         + "Reason: component returned from @ComponentProvider() doesn't have"
                         + " "
@@ -137,21 +137,22 @@ export class PropsAndStateService implements IPropsAndStateService {
             // this will be passed to each test as arguments
             return [componentProviderResult, enrichedProps];
         } catch (error) {
-            throw new Error("Error during evaluating @ComponentProvider()"
+            console.error("Error during evaluating @ComponentProvider()"
                 + " "
                 + "for @Describe() with name"
                 + " "
-                + `"${chalk.greenBright(describe.getDescribeName())}"`
+                + `${chalk.bgWhiteBright.black('"' + describe.getDescribeName() + '"')}`
                 + " "
                 + "and @ComponentProvider() method"
                 + " "
-                + `"${chalk.greenBright(componentProvider.name)}".`
+                + `${chalk.bgWhiteBright.black('"' + componentProvider.name + '"')}".`
                 + "\n"
                 + "Advice: check @ComponentProvider() method and props passed to the component."
                 + "\n"
                 + "Error message:"
                 + " "
                 + `${error.message}`);
+            throw error;
         }
     }
 
