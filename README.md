@@ -5,11 +5,21 @@
 
 <br />
 
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
-[![npm version](https://badge.fury.io/js/%40jest-decorated%2Fcore.svg)](https://badge.fury.io/js/%40jest-decorated%2Fcore)
-![license](https://img.shields.io/github/license/vitalishapovalov/jest-decorated.svg)
-[![Build Status](https://travis-ci.org/vitalishapovalov/jest-decorated.svg?branch=master)](https://travis-ci.org/vitalishapovalov/jest-decorated)
-[![Greenkeeper badge](https://badges.greenkeeper.io/vitalishapovalov/jest-decorated.svg)](https://greenkeeper.io/)
+<a href="https://lerna.js.org/">
+<img src="https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg">
+</a>
+<a href="https://badge.fury.io/js/%40jest-decorated%2Fcore">
+<img src="https://badge.fury.io/js/%40jest-decorated%2Fcore.svg">
+</a>
+<a href="https://github.com/vitalishapovalov/jest-decorated/blob/master/LICENSE">
+<img src="https://img.shields.io/github/license/vitalishapovalov/jest-decorated.svg">
+</a>
+<a href="https://travis-ci.org/vitalishapovalov/jest-decorated">
+<img src="https://travis-ci.org/vitalishapovalov/jest-decorated.svg?branch=master">
+</a>
+<a href="https://greenkeeper.io/">
+<img src="https://badges.greenkeeper.io/vitalishapovalov/jest-decorated.svg">
+</a>
 </p>
 
 Wrapper around [jest](https://jestjs.io/) JavaScript testing framework.
