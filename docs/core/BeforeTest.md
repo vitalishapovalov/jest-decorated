@@ -25,15 +25,17 @@ class MySpec {
   
   @Test()
   foo() {
-    expect().toBeTruthy();
+    expect(myObj.myFn()).toBeTruthy();
   }
   
+  // change "mySpy" implementation for "bar" test
+  
   @Test()
-  @BeforeTest(classInstance => {
+  @BeforeTest((classInstance) => {
     classInstance.mySpy.mockImplementationOnce(() => false);
   })
   bar() {
-    expect().toBeFalsy();
+    expect(myObj.myFn()).toBeFalsy();
   }
   
   // or, with 'function'
@@ -43,7 +45,7 @@ class MySpec {
     this.mySpy.mockImplementationOnce(() => false);
   })
   bar() {
-    expect().toBeFalsy();
+    expect(myObj.myFn()).toBeFalsy();
   }
 }
 ```
