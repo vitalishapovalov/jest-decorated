@@ -50,7 +50,7 @@ describe("MyFnSpec", () => {
     
     test("shouldCallLogOnce", () => {
         myFn("bar");
-        expect(consoleLogSpy).toHaveBeenCalledTimes(2);
+        expect(consoleLogSpy).toHaveBeenCalledTimes(1);
     });
 });
 ```
