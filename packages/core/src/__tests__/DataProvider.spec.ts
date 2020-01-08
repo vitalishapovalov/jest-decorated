@@ -1,5 +1,12 @@
 import { DataProvider, Describe, WithDataProvider, Test } from "../decorators";
 
+describe("", () => {
+
+    test("", () => {
+
+    });
+});
+
 @Describe()
 class DataProviderSpec {
 
