@@ -151,7 +151,7 @@ export class TestsService implements ITestsService {
 
     private async processAsync<T>(data: T, processors: OrderedMap<PostProcessor | PreProcessor>): Promise<T> {
         let dataResult = data;
-        for (const processorOrder of Object.keys(processors)) {
+        for (const processorOrder of Object.keys(processors).sort((a, b) => Number(a) - Number(b))) {
             for (const processor of processors[processorOrder]) {
                 dataResult = await processor.call(this.clazzInstance, dataResult);
             }

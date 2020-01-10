@@ -1,12 +1,5 @@
 import { DataProvider, Describe, WithDataProvider, Test } from "../decorators";
 
-describe("", () => {
-
-    test("", () => {
-
-    });
-});
-
 @Describe()
 class DataProviderSpec {
 
@@ -28,7 +21,7 @@ class DataProviderSpec {
     private dataProviderThree = () => [
         [3, 3, 6],
         [2, 2, 4],
-    ]
+    ];
 
     @DataProvider()
     string() {
