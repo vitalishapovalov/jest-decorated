@@ -41,10 +41,10 @@ import { MyComponent } from "../MyComponent";
 
 describe("MyComponentSpec", () => {
     
-    const renderWithDefaultContext = (context) => render(
+    const renderWithDefaultContext = (context, props = {}) => render(
         <MyContext.Provider {...context}>
           <MyContext.Consumer>
-            {value => <MyComponent />}
+            {value => <MyComponent {...props} />}
           </MyContext.Consumer>
         </MyContext.Provider>
     );
@@ -69,7 +69,7 @@ class MyComponentSpec {
     
     @ComponentProvider("../MyComponent")
     myComponent({ MyComponent }, props) {
-        return render(<MyComponent />);
+        return render(<MyComponent {...props} />);
     }
     
     @Test("MyComponent calls onRender once during render")
@@ -91,8 +91,8 @@ import { MyComponent } from "../MyComponent";
 
 describe("MyComponentSpec", () => {
     
-    const shallowWithDefaultContext = (context) => {
-        const component = <MyComponent />;
+    const shallowWithDefaultContext = (context, props = {}) => {
+        const component = <MyComponent {...props} />;
         component.type.contextTypes.first = propTypes.any;
         component.type.contextTypes.last = propTypes.any;
         component.type.contextTypes.onRender = propTypes.any;
@@ -121,11 +121,11 @@ class MyComponentSpec {
     
     @ComponentProvider("../MyComponent")
     myComponent({ MyComponent }, props) {
-        return shallow(<MyComponent />);
+        return shallow(<MyComponent {...props} />);
     }
     
     @Test("MyComponent calls onRender once during render")
-    @WithContext(MyContext, { onRender: jest.fn() })
+    @WithContext(MyContext, { onRender: jest.fn() }, "enzyme")
     behaviourTest({ getByText }, { context }) {
        expect(context.onRender).toHaveBeenCalledTimes(1);
     }

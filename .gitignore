@@ -15,3 +15,6 @@ packages/**/package-lock.json
 
 # Tests
 packages/**/coverage
+
+# Media
+logos/
