@@ -4,7 +4,7 @@ Helper.
 
 Useful, when you have difficult structure of mock object with deeply nested mock functions.
 
-This decorator will `.mockClear()` every function.
+This decorator will `.mockClear()` every function inside your object `afterEach` test.
 
 ## Arguments
 
