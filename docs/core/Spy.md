@@ -56,6 +56,8 @@ class MySpec {
 
 ### Usage as a getter/setter:
 
+From:
+
 ```javascript
 describe("MySpec", () => {
     
@@ -87,6 +89,8 @@ class MySpec {
 ```
 
 ### Usage with implementation:
+
+From:
 
 ```javascript
 describe("MySpec", () => {
