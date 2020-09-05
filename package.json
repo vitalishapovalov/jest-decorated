@@ -18,7 +18,7 @@
     "prepublishOnly": "npm run build && npm run lint && npm run test"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.0.2",
+    "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.2",
     "@types/enzyme": "^3.10.5",
     "@types/jest": "^25.1.0",
