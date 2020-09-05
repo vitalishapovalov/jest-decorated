@@ -1,6 +1,6 @@
 {
   "name": "@jest-decorated/react",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Decorators for writing jest-based tests for react components.",
   "license": "MIT",
   "author": {
@@ -34,7 +34,7 @@
     "lint": "tslint -c tslint.ts src/**/*.ts src/**/*.tsx --fix"
   },
   "dependencies": {
-    "@jest-decorated/shared": "^0.0.18",
+    "@jest-decorated/shared": "^0.0.19",
     "@js-utilities/typecheck": "^0.1.4"
   },
   "jest": {

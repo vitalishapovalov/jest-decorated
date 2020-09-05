@@ -42,11 +42,6 @@
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.9.7"
   },
-  "greenkeeper": {
-    "ignore": [
-      "lerna"
-    ]
-  },
   "dependencies": {
     "@jest-decorated/shared": "file:packages/shared",
     "@jest-decorated/core": "file:packages/core",
