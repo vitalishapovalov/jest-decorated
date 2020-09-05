@@ -17,9 +17,6 @@
 <a href="https://travis-ci.org/vitalishapovalov/jest-decorated">
 <img src="https://travis-ci.org/vitalishapovalov/jest-decorated.svg?branch=master">
 </a>
-<a href="https://greenkeeper.io/">
-<img src="https://badges.greenkeeper.io/vitalishapovalov/jest-decorated.svg">
-</a>
 </p>
 
 Wrapper around [jest](https://jestjs.io/) JavaScript testing framework.
