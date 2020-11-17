@@ -8,9 +8,9 @@ Mock will become accessible inside class methods via `this.{annotatedPropertyNam
 
 ## Arguments
 
-`pathToModule (String)`: Absolute or related path to the module to import.
+`pathToModule (String)`: Absolute or relative path to the imported module.
 
-`getter?: ((importedModule: any) => any) | string | string[]`: Optional. If you need to import only part of the module, or deeply-nested component. If not set - `default` export will be extracted, if it's the only export of the module.
+`getter?: ((importedModule: any) => any) | string | string[]`: Optional. If you need to import only part of the module, or deeply-nested component. If not set - `default` export will be extracted, if it's the only export of imported module.
 
 ## Example
 
