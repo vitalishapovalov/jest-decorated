@@ -55,7 +55,8 @@ class MyComponentSpec {
     
     @ComponentProvider()
     myComponent(props) {
-        return shallow(<MyComponent />);
+        // don't forget to pass the props to the component!
+        return shallow(<MyComponent {...props} />);
     }
     
     @It()
@@ -99,8 +100,8 @@ import { shallow } from "enzyme";
 class MyComponentSpec {
     
     @ComponentProvider("../MyComponent")
-    myComponent(MyComponent, { props }) {
-        return shallow(<MyComponent />);
+    myComponent(MyComponent, props) {
+        return shallow(<MyComponent {...props} />);
     }
     
     // ...
@@ -157,7 +158,7 @@ class MyComponentSpec {
     @Act()
     @ComponentProvider("../MyComponent")
     myComponent(MyComponent, props) {
-        return render(<MyComponent />, this.container);
+        return render(<MyComponent {...props} />, this.container);
     }
     
     @It("should have correct behaviour")
@@ -203,7 +204,7 @@ class MyComponentSpec {
     
     @ComponentProvider("../MyComponent")
     myComponent({ MyComponent }, props) {
-        return render(<MyComponent />);
+        return render(<MyComponent {...props} />);
     }
     
     @It("should have correct behaviour")
@@ -278,7 +279,7 @@ class MyComponentSpec {
     
     @Act() // or @ActAsync(), if you need an async act:
     @ComponentProvider("../MyComponent")
-    myComponent(MyComponent, { props }) {
+    myComponent(MyComponent, props) {
         return render(<MyComponent {...props} />, this.container);
     }
 }
