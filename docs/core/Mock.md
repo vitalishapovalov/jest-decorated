@@ -4,7 +4,7 @@ The same as `jest.doMock()`.
 
 Will register mocks right in the start of the `@Describe()` suite (before hooks or `@LazyImport`).
 
-Will register `afterAll` hook and do `jest.umock` module inside.
+Will register `afterAll` hook and do `jest.unmock` module inside.
 
 Mock will become accessible inside class methods via `this.{annotatedPropertyName}`.
 
