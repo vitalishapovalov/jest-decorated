@@ -1,6 +1,6 @@
 # @DefaultProps
 
-Another approach to provide default props for your [@ComponentProvider](react/ComponentProvider.md).
+Another approach to provide the default props for your [@ComponentProvider](react/ComponentProvider.md).
 
 Props can be [persistent](#persistent-default-props) or [clean for each test](#clean-default-props-for-each-test).
 
@@ -67,7 +67,7 @@ class MyComponentSpec {
 
 ### Usage with [@WithProps](react/WithProps.md):
 
-When using with `@WithProps`, props from `@WithProps` will override props from the `@DefaultProps`:
+When using with `@WithProps`, props from `@WithProps` decorator will be merged (and override) with props from the `@DefaultProps`:
 
 From:
 
