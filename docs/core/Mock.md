@@ -124,7 +124,7 @@ class MySpec {
 
 ### With @AutoCleared:
 
-If used with `@AutoCleared`, mock will be cleared `afterEach` test (will try to `.mockClear()` all of the `jest.fn()` inside mock, if it's an object, or just clear it, if it is as `jest.fn()`).
+If used with `@AutoCleared`, mock will be cleared `afterEach` test (will try to `.mockClear()` all of the `jest.fn()` inside mock, if it's an object, or just clear it, if it's a `jest.fn()`).
 
 From:
 
