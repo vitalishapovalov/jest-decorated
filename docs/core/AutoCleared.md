@@ -42,7 +42,7 @@ class MyProcessorSpec {
     
     @Test()
     shouldCallDeepNestedFn() {
-        // all fn inside 'mockedObj' are '.mockClear()'ed
+        // both nestedFn and deepNestedFn inside the 'mockedObj' are '.mockClear()'ed
         
         this.myProcessor.processDeep(); // deepNestedFn is called
         
