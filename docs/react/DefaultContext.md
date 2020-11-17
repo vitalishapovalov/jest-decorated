@@ -83,7 +83,7 @@ class MyComponentSpec {
     
     @ComponentProvider("../MyComponent")
     myComponent({ MyComponent }, props) {
-        return render(<MyComponent />);
+        return render(<MyComponent {...props} />);
     }
     
     @Test("MyComponent composes full name from first, last")
@@ -147,7 +147,7 @@ class MyComponentSpec {
     
     @ComponentProvider("../MyComponent")
     myComponent({ MyComponent }, props) {
-        return shallow(<MyComponent />);
+        return shallow(<MyComponent {...props} />);
     }
     
     @Test("MyComponent composes full name from first, last")
@@ -200,7 +200,7 @@ class MyComponentSpec {
     
     @ComponentProvider("../MyComponent")
     myComponent({ MyComponent }, props) {
-        return render(<MyComponent />);
+        return render(<MyComponent {...props} />);
     }
     
     @Test("MyComponent composes full name from first, last")
@@ -229,7 +229,7 @@ class MyComponentSpec {
 
 ### Clean context for each test:
 
-Opposite to persistent context. To have a new instance of the context for each text, context value should be defined as a function:
+Opposite to the persistent context. To have a new instance of the context for each text, context value should be defined as a function:
 
 ```javascript
 @Describe()
