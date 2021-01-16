@@ -4,6 +4,8 @@ The same as `jest.doMock()`.
 
 Will register mocks right in the start of the `@Describe()` suite (before hooks or `@LazyImport`).
 
+`WARNING!` If at least one module that you're importing inside the test suite file is using the `@Mock`'ed module, it won't be mocked. Your module will use real, non-mocked instance of that `@Mock`'ed module. Soultion is to also import the top-level module via `@LazyImport` annotation.
+
 Will register `afterAll` hook and do `jest.unmock` module inside.
 
 Mock will become accessible inside class methods via `this.{annotatedPropertyName}`.
