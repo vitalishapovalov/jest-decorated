@@ -56,10 +56,10 @@ export class TestRunner implements ITestRunner {
                     testEntity,
                     args,
                 });
-                const testResult = await preProcessorResult
+                await preProcessorResult
                     .clazzInstance[preProcessorResult.testEntity.name]
                     .apply(preProcessorResult.clazzInstance, preProcessorResult.args);
-                await testsService.runPostProcessors(testResult);
+                await testsService.runPostProcessors(preProcessorResult);
             },
             testEntity.timeout
         );

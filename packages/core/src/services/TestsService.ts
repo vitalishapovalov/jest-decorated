@@ -1,48 +1,7 @@
-import { isObject, isCallable } from "@js-utilities/typecheck";
+import { isCallable } from "@js-utilities/typecheck";
 import { ITestsService, OrderedMap, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
 
 export class TestsService implements ITestsService {
-
-    private static readonly NOT = "not" as const;
-
-    private static readonly MATCHERS: readonly string[] = [
-        "toBe",
-        "toHaveBeenCalled",
-        "toHaveBeenCalledTimes",
-        "toHaveBeenCalledWith",
-        "toHaveBeenLastCalledWith",
-        "toHaveBeenNthCalledWith",
-        "toHaveReturned",
-        "toHaveReturnedTimes",
-        "toHaveReturnedWith",
-        "toHaveLastReturnedWith",
-        "toHaveNthReturnedWith",
-        "toHaveLength",
-        "toHaveProperty",
-        "toBeCloseTo",
-        "toBeDefined",
-        "toBeFalsy",
-        "toBeGreaterThan",
-        "toBeGreaterThanOrEqual",
-        "toBeLessThan",
-        "toBeLessThanOrEqual",
-        "toBeInstanceOf",
-        "toBeNull",
-        "toBeTruthy",
-        "toBeUndefined",
-        "toBeNaN",
-        "toContain",
-        "toContainEqual",
-        "toEqual",
-        "toMatch",
-        "toMatchObject",
-        "toMatchSnapshot",
-        "toMatchInlineSnapshot",
-        "toStrictEqual",
-        "toThrow",
-        "toThrowErrorMatchingSnapshot",
-        "toThrowErrorMatchingInlineSnapshot",
-    ];
 
     private readonly preProcessors: OrderedMap<PreProcessor> = {};
 
@@ -54,7 +13,6 @@ export class TestsService implements ITestsService {
 
     public constructor(private readonly clazzInstance: object) {
         this.registerPromisePreProcessor();
-        this.registerExpectPostProcessor();
     }
 
     public mergeInDataProviders(testsService: ITestsService): void {
@@ -122,31 +80,6 @@ export class TestsService implements ITestsService {
             } as PreProcessorData),
             1
         );
-    }
-
-    private registerExpectPostProcessor(): void {
-        this.registerPostProcessor(
-            async (testResult: unknown) => {
-                if (!isObject(testResult)) return;
-                this.invokeMatchers(testResult);
-            },
-            1
-        );
-    }
-
-    private invokeMatchers(testResult: object, not: boolean = false): void {
-        for (const matcher of Object.keys(testResult)) {
-            if (TestsService.NOT === matcher && isObject(testResult[matcher])) {
-                this.invokeMatchers(testResult[matcher], true);
-                continue;
-            }
-            if (!TestsService.MATCHERS.includes(matcher)) {
-                continue;
-            }
-            const [expectVal, ...matcherValues] = testResult[matcher];
-            const expectValue = not ? expect(expectVal).not : expect(expectVal);
-            expectValue[matcher](...matcherValues);
-        }
     }
 
     private async processAsync<T>(data: T, processors: OrderedMap<PostProcessor | PreProcessor>): Promise<T> {

@@ -4,10 +4,10 @@ import { Class, ExtendedTest, TestDecorator, TestEntity, TestType } from "@jest-
 import { DescribeRunner } from "../runners";
 
 /* tslint:disable-next-line:variable-name */
-export const Test: ExtendedTest = createTest(TestType.DEFAULT);
+export const Test: ExtendedTest = createTest(TestType.DEFAULT) as ExtendedTest;
 
 /* tslint:disable-next-line:variable-name */
-export const It: ExtendedTest = createTest(TestType.DEFAULT);
+export const It: ExtendedTest = createTest(TestType.DEFAULT) as ExtendedTest;
 
 Test.only = createTest(TestType.ONLY);
 
