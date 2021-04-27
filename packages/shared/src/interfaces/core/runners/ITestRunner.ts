@@ -9,7 +9,7 @@ export interface ITestRunner {
     beforeTestsJestRegistration(
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
-    ): void;
+    ): void | Promise<void>;
 
     registerTestsInJest(
         describeRunner: IDescribeRunner,
@@ -19,5 +19,5 @@ export interface ITestRunner {
     afterTestsJestRegistration(
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
-    ): void;
+    ): void | Promise<void>;
 }

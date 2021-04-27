@@ -81,15 +81,15 @@ export class DescribeRunner implements IDescribeRunner {
             this.updateDescribe(parentDescribeService);
         }
         describe(this.describeName, () => {
-            beforeAll(() => {
-                this.testRunner.beforeTestsJestRegistration(this, parentDescribeService);
+            beforeAll(async () => {
+                await this.testRunner.beforeTestsJestRegistration(this, parentDescribeService);
             });
             this.mocksService.registerMocksInClass();
             this.mocksService.registerAutoClearedInClass();
             this.hooksService.registerHooksInJest();
             this.testRunner.registerTestsInJest(this, parentDescribeService);
-            afterAll(() => {
-                this.testRunner.afterTestsJestRegistration(this, parentDescribeService);
+            afterAll(async () => {
+                await this.testRunner.afterTestsJestRegistration(this, parentDescribeService);
             });
         });
     }
