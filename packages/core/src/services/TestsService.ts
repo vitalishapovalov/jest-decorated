@@ -1,5 +1,6 @@
+import type { ITestsService, OrderedMap, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
+import { TestEntity } from "@jest-decorated/shared";
 import { isCallable } from "@js-utilities/typecheck";
-import { ITestsService, OrderedMap, TestEntity, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
 
 export class TestsService implements ITestsService {
 

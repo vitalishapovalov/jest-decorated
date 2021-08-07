@@ -1,4 +1,4 @@
-import { Hook } from "@shared/types";
+import type { Hook } from "@shared/types";
 
 export interface IHooksService {
 

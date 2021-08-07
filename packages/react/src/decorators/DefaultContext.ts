@@ -1,4 +1,4 @@
-import { Class, ComponentContext } from "@jest-decorated/shared";
+import type { Class, ComponentContext } from "@jest-decorated/shared";
 
 import { ReactExtension } from "../extensions";
 

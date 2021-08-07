@@ -1,4 +1,5 @@
-import { IHooksService, Hook, PreProcessorData, ITestsService } from "@jest-decorated/shared";
+import type { IHooksService, PreProcessorData, ITestsService } from "@jest-decorated/shared";
+import { Hook } from "@jest-decorated/shared";
 import { isCallable } from "@js-utilities/typecheck";
 
 export class HooksService implements IHooksService {

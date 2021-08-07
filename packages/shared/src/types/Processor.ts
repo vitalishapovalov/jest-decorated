@@ -1,4 +1,4 @@
-import { TestEntity } from "../entities";
+import type { TestEntity } from "../entities";
 
 export type PreProcessorData = {
     clazzInstance: object;
@@ -6,10 +6,6 @@ export type PreProcessorData = {
     args: unknown[];
 };
 
-export interface PreProcessor {
-    (preProcessorData: PreProcessorData): Promise<PreProcessorData>;
-}
+export type PreProcessor = (preProcessorData: PreProcessorData) => Promise<PreProcessorData>;
 
-export interface PostProcessor {
-    (testResult: unknown): Promise<void>;
-}
+export type PostProcessor = (testResult: unknown) => Promise<void>;

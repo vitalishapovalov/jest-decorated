@@ -1,4 +1,4 @@
-import { Class, IComponentService, IContextService, IPropsAndStateService, IReactExtension } from "@jest-decorated/shared";
+import type { Class, IComponentService, IContextService, IPropsAndStateService, IReactExtension } from "@jest-decorated/shared";
 
 import { ComponentService, ContextService, PropsAndStateService } from "../services";
 

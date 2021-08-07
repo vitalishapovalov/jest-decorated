@@ -1,5 +1,6 @@
+import type { Class, ExtendedTest, TestDecorator } from "@jest-decorated/shared";
+import { TestEntity, TestType } from "@jest-decorated/shared";
 import { isUndefined, isNumber } from "@js-utilities/typecheck";
-import { Class, ExtendedTest, TestDecorator, TestEntity, TestType } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 

@@ -1,5 +1,6 @@
+import type { Class, IImportsService, LazyModule } from "@jest-decorated/shared";
+import { resolveModule, extractModuleDefault } from "@jest-decorated/shared";
 import { isCallable, isString } from "@js-utilities/typecheck";
-import { Class, IImportsService, LazyModule, resolveModule, extractModuleDefault } from "@jest-decorated/shared";
 
 export class ImportsService implements IImportsService {
 

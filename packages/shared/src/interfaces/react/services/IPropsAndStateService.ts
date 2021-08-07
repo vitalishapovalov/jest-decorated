@@ -1,5 +1,5 @@
-import { PreProcessor } from "@shared/types";
-import { IDescribeRunner } from "@shared/interfaces";
+import type { PreProcessor } from "@shared/types";
+import type { IDescribeRunner } from "@shared/interfaces";
 
 export interface IPropsAndStateService {
 

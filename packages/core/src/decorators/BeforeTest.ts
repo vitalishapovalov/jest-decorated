@@ -1,4 +1,4 @@
-import { Class } from "@jest-decorated/shared";
+import type { Class } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 

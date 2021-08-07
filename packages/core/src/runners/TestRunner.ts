@@ -1,6 +1,6 @@
+import type { IDescribeRunner, ITestRunner, TestEntity } from "@jest-decorated/shared";
+import { TestType } from "@jest-decorated/shared";
 import { isCallable } from "@js-utilities/typecheck";
-import { IDescribeRunner, ITestRunner, TestEntity } from "@jest-decorated/shared";
-import { TestType } from "@jest-decorated/shared/dist/types/types/TestType";
 
 export class TestRunner implements ITestRunner {
 

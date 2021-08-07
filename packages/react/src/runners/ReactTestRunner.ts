@@ -1,4 +1,4 @@
-import { IDescribeRunner, ITestRunner, IReactExtension } from "@jest-decorated/shared";
+import type { IDescribeRunner, ITestRunner, IReactExtension } from "@jest-decorated/shared";
 
 import { ReactExtension } from "../extensions";
 

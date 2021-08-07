@@ -18,33 +18,32 @@
     "prepublishOnly": "npm run build && npm run lint && npm run test"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.0.2",
-    "@types/enzyme": "^3.10.5",
-    "@types/jest": "^26.0.13",
-    "@types/node": "^14.6.4",
-    "chalk": "^4.1.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@types/enzyme": "^3.10.9",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.4.13",
+    "chalk": "^4.1.2",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.4",
-    "jest": "^26.4.2",
+    "jest": "^27.0.6",
     "jest-environment-enzyme": "^7.1.2",
     "jest-enzyme": "^7.1.2",
-    "lerna": "^3.22.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "rollup": "^2.26.10",
+    "lerna": "^4.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "rollup": "^2.56.0",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.3",
     "rollup-plugin-sourcemaps": "^0.6.2",
     "rollup-plugin-typescript2": "^0.29.0",
-    "ts-jest": "^26.3.0",
+    "ts-jest": "^27.0.4",
     "tslint": "^5.18.0",
     "tslint-config-airbnb": "^5.11.1",
-    "typescript": "^3.9.7"
+    "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@jest-decorated/shared": "file:packages/shared",
     "@jest-decorated/core": "file:packages/core",
-    "@jest-decorated/react": "file:packages/react"
+    "@jest-decorated/react": "file:packages/react",
+    "@jest-decorated/shared": "file:packages/shared"
   }
 }

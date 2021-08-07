@@ -1,13 +1,13 @@
-import { MountRendererProps, ShallowRendererProps } from "enzyme";
-import { isCallable, isObject, isString } from "@js-utilities/typecheck";
-import {
+import type { MountRendererProps, ShallowRendererProps } from "enzyme";
+import type {
     ComponentContext,
     IContextService,
     IReactExtension,
     ITestsService,
-    resolveModule,
     TestEntity,
 } from "@jest-decorated/shared";
+import { isCallable, isObject, isString } from "@js-utilities/typecheck";
+import { resolveModule } from "@jest-decorated/shared";
 
 import { ComponentService } from "./ComponentService";
 
@@ -145,7 +145,7 @@ export class ContextService implements IContextService {
 
         componentAsAny.type.contextTypes = {};
         if ("_currentValue" in contextType) {
-            for (const key of Object.keys((contextType as { _currentValue: object })._currentValue)) {
+            for (const key of Object.keys((contextType as { _currentValue?: object })._currentValue)) {
                 componentAsAny.type.contextTypes[key] = propTypes.any.isRequired;
             }
         }

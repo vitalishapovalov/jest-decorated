@@ -1,5 +1,5 @@
+import type { Class } from "@jest-decorated/shared";
 import { isUndefined } from "@js-utilities/typecheck";
-import { Class } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 

@@ -1,5 +1,5 @@
+import type { Class, IDescribeRunner } from "@jest-decorated/shared";
 import { isCallable, isObject } from "@js-utilities/typecheck";
-import { Class, IDescribeRunner } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 

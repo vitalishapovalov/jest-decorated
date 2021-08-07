@@ -1,11 +1,5 @@
-import {
-    Class,
-    ComponentProvider,
-    IComponentService,
-    resolveModule,
-    extractModuleDefault,
-    IReactExtension,
-} from "@jest-decorated/shared";
+import type { Class, ComponentProvider, IComponentService, IReactExtension } from "@jest-decorated/shared";
+import { resolveModule, extractModuleDefault } from "@jest-decorated/shared";
 
 export class ComponentService implements IComponentService {
 

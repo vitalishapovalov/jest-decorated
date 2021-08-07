@@ -1,4 +1,4 @@
-import { Class, ITestRunnerConstructor } from "@jest-decorated/shared";
+import type { Class, ITestRunnerConstructor } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 

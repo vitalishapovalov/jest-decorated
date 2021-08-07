@@ -1,13 +1,13 @@
-import chalk from "chalk";
-import { ReactWrapper } from "enzyme";
-import { isCallable, isObject, isString, isUndefined } from "@js-utilities/typecheck";
-import {
+import type { ReactWrapper } from "enzyme";
+import type {
     IComponentService,
     IDescribeRunner,
     IPropsAndStateService,
     PreProcessor,
     PreProcessorData,
 } from "@jest-decorated/shared";
+import chalk from "chalk";
+import { isCallable, isObject, isString, isUndefined } from "@js-utilities/typecheck";
 
 import { ComponentService } from "./ComponentService";
 
@@ -93,7 +93,7 @@ export class PropsAndStateService implements IPropsAndStateService {
                     return data;
                 }
                 let wrapper: ReactWrapper;
-                await new Promise((resolve) => {
+                await new Promise((resolve: (...args: any[]) => any) => {
                     wrapper = (data.args[0] as ReactWrapper).setState(state, resolve);
                 });
                 // we're sure that args are an array here, because of the props pre-processor

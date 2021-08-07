@@ -1,5 +1,5 @@
+import type { Class, ComponentProvider } from "@jest-decorated/shared";
 import { isObject, isString } from "@js-utilities/typecheck";
-import { Class, ComponentProvider } from "@jest-decorated/shared";
 
 import { ReactExtension } from "../extensions";
 

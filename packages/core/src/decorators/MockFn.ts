@@ -1,5 +1,5 @@
+import type { Class, MockFn } from "@jest-decorated/shared";
 import { isCallable } from "@js-utilities/typecheck";
-import { Class, MockFn } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 

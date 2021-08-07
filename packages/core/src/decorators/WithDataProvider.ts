@@ -1,5 +1,6 @@
+import type { Class } from "@jest-decorated/shared";
+import { TestEntity } from "@jest-decorated/shared";
 import { isArray } from "@js-utilities/typecheck";
-import { Class, TestEntity } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 

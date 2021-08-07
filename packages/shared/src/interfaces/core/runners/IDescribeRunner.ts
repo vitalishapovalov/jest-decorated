@@ -1,6 +1,6 @@
-import { Class } from "@shared/types";
-import { ITestRunner } from ".";
-import { IHooksService, IImportsService, IMocksService, ITestsService } from "../services";
+import type { Class } from "@shared/types";
+import type { ITestRunner } from ".";
+import type { IHooksService, IImportsService, IMocksService, ITestsService } from "../services";
 
 export interface IDescribeRunner {
 

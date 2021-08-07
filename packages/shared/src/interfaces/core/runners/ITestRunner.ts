@@ -1,4 +1,4 @@
-import { IDescribeRunner } from "./IDescribeRunner";
+import type { IDescribeRunner } from "./IDescribeRunner";
 
 export interface ITestRunnerConstructor {
     new(currentTestRunner: ITestRunner): ITestRunner;

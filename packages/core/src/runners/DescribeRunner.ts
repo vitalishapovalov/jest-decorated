@@ -1,4 +1,4 @@
-import {
+import type {
     Class,
     ITestRunner,
     IHooksService,

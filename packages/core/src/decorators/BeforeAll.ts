@@ -1,4 +1,5 @@
-import { Class, Hook } from "@jest-decorated/shared";
+import type { Class } from "@jest-decorated/shared";
+import { Hook } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../runners";
 

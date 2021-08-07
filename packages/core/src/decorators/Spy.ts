@@ -1,4 +1,4 @@
-import { Class, Spy } from "@jest-decorated/shared";
+import type { Class, Spy } from "@jest-decorated/shared";
 import { isCallable, isString } from "@js-utilities/typecheck";
 
 import { DescribeRunner } from "../runners";

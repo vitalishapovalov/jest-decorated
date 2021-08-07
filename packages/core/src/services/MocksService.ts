@@ -1,5 +1,6 @@
+import type { IMocksService, Class, Mock, MockFn, Spy } from "@jest-decorated/shared";
+import { resolveModule } from "@jest-decorated/shared";
 import { isCallable, isObject } from "@js-utilities/typecheck";
-import { IMocksService, Class, Mock, MockFn, Spy, resolveModule } from "@jest-decorated/shared";
 
 export class MocksService implements IMocksService {
 

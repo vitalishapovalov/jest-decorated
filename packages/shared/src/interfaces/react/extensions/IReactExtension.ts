@@ -1,4 +1,4 @@
-import { IComponentService, IContextService, IPropsAndStateService } from "../services";
+import type { IComponentService, IContextService, IPropsAndStateService } from "../services";
 
 export interface IReactExtension {
 
