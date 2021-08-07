@@ -1,6 +1,7 @@
 module.exports = {
     "extends": "tslint-config-airbnb",
     "rules": {
+        "no-duplicate-imports": false,
         "max-line-length": [true, 160],
         "quotemark": [true, "double"],
         "ter-indent": [true, 4, { "SwitchCase": 1 }],
