@@ -24,5 +24,7 @@ export interface IDescribeRunner {
 
     setTestRunner(testRunner: ITestRunner): void;
 
+    updateDescribe(describeRunner: IDescribeRunner): void;
+
     registerDescribeInJest(parentDescribeRunner?: IDescribeRunner): void;
 }

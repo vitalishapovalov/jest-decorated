@@ -15,6 +15,11 @@ export function Describe(describeName?: string) {
 
         describeRunner
             .setDescribeName(isUndefined(describeName) ? clazz.name : describeName);
+
+        if (parentDescribeRunner) {
+            describeRunner.updateDescribe(parentDescribeRunner);
+        }
+
         describeRunner
             .registerDescribeInJest(parentDescribeRunner);
     };

@@ -28,28 +28,16 @@
   "sideEffects": false,
   "scripts": {
     "build": "rollup -c rollup.config.ts --name jest-decorated/core",
-    "test": "jest --coverage",
+    "testWithConfig": "jest --coverage -c",
+    "test:default": "npm run testWithConfig -- ./configs/jest.config.default.js",
+    "test:jasmine2": "npm run testWithConfig -- ./configs/jest.config.jasmine2.js",
+    "test:circus": "npm run testWithConfig -- ./configs/jest.config.jest-circus.js",
+    "test": "npm run test:default && npm run test:jasmine2 && npm run test:circus",
     "lint": "tslint -c tslint.ts 'src/**/*.ts' --fix"
   },
   "dependencies": {
     "@jest-decorated/shared": "^0.0.23",
     "@js-utilities/typecheck": "^0.1.4"
-  },
-  "jest": {
-    "transform": {
-      ".ts": "ts-jest"
-    },
-    "testEnvironment": "node",
-    "testRegex": "/__tests__/.*.spec.(ts|js)$",
-    "moduleFileExtensions": [
-      "js",
-      "ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/__tests__/",
-      "/dist/"
-    ]
   },
   "gitHead": "f378eafcd17a7593ffabe1daedaf2d1068fb5553"
 }

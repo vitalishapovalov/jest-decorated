@@ -15,32 +15,53 @@ export class ReactTestRunner implements ITestRunner {
 
     public constructor(private readonly defaultTestsRunner: ITestRunner) {}
 
-    public beforeTestsJestRegistration(
+    public registerMocks(
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
-        ReactTestRunner.createComponentContainers(parentDescribeRunner);
-        ReactTestRunner.createComponentContainers(describeRunner);
-        this.defaultTestsRunner.beforeTestsJestRegistration(describeRunner);
+        this.defaultTestsRunner.registerMocks(describeRunner, parentDescribeRunner);
+    }
+
+    public registerAutoCleared(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        this.defaultTestsRunner.registerAutoCleared(describeRunner, parentDescribeRunner);
+    }
+
+    public registerLazyModules(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        this.defaultTestsRunner.registerLazyModules(describeRunner, parentDescribeRunner);
+    }
+
+    public registerMockFnsAndSpies(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        this.defaultTestsRunner.registerMockFnsAndSpies(describeRunner, parentDescribeRunner);
+    }
+
+    public registerHooks(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        this.defaultTestsRunner.registerHooks(describeRunner, parentDescribeRunner);
     }
 
     public registerTestsInJest(
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        ReactTestRunner.createComponentContainers(parentDescribeRunner);
+        ReactTestRunner.createComponentContainers(describeRunner);
         this.registerComponentPreProcessors(describeRunner, parentDescribeRunner);
         ReactTestRunner
             .getReactExtension(describeRunner)
             .getComponentService()
             .createActWrappers(describeRunner.getClassInstance());
         this.defaultTestsRunner.registerTestsInJest(describeRunner, parentDescribeRunner);
-    }
-
-    public afterTestsJestRegistration(
-        describeRunner: IDescribeRunner,
-        parentDescribeRunner?: IDescribeRunner
-    ): void {
-        this.defaultTestsRunner.afterTestsJestRegistration(describeRunner, parentDescribeRunner);
     }
 
     private registerComponentPreProcessors(

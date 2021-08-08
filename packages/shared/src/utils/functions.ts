@@ -7,7 +7,7 @@ export const resolveModule = (
     registrar: (modulePath: string) => any = require
 ): any => {
     const isRelativePath = module.startsWith(".");
-    const testPath = (jasmine as any).testPath;
+    const testPath = expect.getState().testPath;
 
     if (isRelativePath) {
         return registrar(path.join(testPath, "/../", module));
@@ -16,7 +16,7 @@ export const resolveModule = (
     try {
         return registrar(module);
     } catch {
-        const { INIT_CWD, PWD } = (jasmine as any).process.env;
+        const { INIT_CWD, PWD } = process.env;
         const pathWithNodeModules = (nodeModulesRoot: string): string => nodeModulesRoot
             + "/"
             + NODE_MODULES

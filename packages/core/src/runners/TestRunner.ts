@@ -14,12 +14,39 @@ export class TestRunner implements ITestRunner {
             : description;
     }
 
-    public beforeTestsJestRegistration(
+    public registerMocks(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        describeRunner.getMocksService().registerMocksInClass();
+    }
+
+    public registerAutoCleared(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        describeRunner.getMocksService().registerAutoClearedInClass();
+    }
+
+    public registerLazyModules(
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
         describeRunner.getImportsService().registerLazyModulesInClass();
+    }
+
+    public registerMockFnsAndSpies(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
         describeRunner.getMocksService().registerMockFnsAndSpiesInClass();
+    }
+
+    public registerHooks(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        describeRunner.getHooksService().registerHooksInJest();
     }
 
     public registerTestsInJest(
@@ -30,11 +57,6 @@ export class TestRunner implements ITestRunner {
             this.registerTestInJest(testEntity, describeRunner);
         }
     }
-
-    public afterTestsJestRegistration(
-        describeRunner: IDescribeRunner,
-        parentDescribeRunner?: IDescribeRunner
-    ): void {}
 
     protected registerTestInJest(testEntity: TestEntity, describeRunner: IDescribeRunner): void {
         const clazzInstance = describeRunner.getClassInstance();
