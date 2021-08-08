@@ -18,6 +18,6 @@ export function LazyImport(path: string, getter?: ((importedModule: any) => any)
 
         describeRunner
             .getImportsService()
-            .registerLazyModule({ name: propName, path, getter });
+            .registerLazyModule({ path, getter, name: propName });
     };
 }

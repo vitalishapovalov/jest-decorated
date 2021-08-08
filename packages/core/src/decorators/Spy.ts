@@ -32,9 +32,9 @@ export function Spy(
         describeRunner
             .getMocksService()
             .registerSpy({
-                name: propName,
                 obj,
                 prop,
+                name: propName,
                 accessType: isCallable(accessTypeOrImpl) ? undefined : isCallable(impl),
                 impl: isCallable(accessTypeOrImpl) ? accessTypeOrImpl : impl,
             });
