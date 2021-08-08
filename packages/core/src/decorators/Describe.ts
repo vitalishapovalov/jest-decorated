@@ -34,5 +34,5 @@ function createDescribe(describeType: DescribeType): DescribeDecorator {
             describeRunner
                 .registerDescribeInJest(parentDescribeRunner);
         };
-    }
+    };
 }
