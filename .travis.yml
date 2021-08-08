@@ -13,5 +13,5 @@ install:
   - npm run bootstrap
 
 script:
-  - npm test
   - npm run build
+  - npm test
