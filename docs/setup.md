@@ -50,7 +50,7 @@ class MyFnSpec {
 
 ### Direct import
 
-If solutions above doesn't serves your needs, you can use direct import:
+If solutions above doesn't serve your needs, you can use direct import:
 
 ```javascript
 // myFn.spec.ts
