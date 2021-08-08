@@ -5,7 +5,6 @@
   "version": "0.0.23",
   "command": {
     "publish": {
-      "allowBranch": "master",
       "ignoreChanges": [
         "*.md",
         "__tests__"
