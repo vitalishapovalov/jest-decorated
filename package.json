@@ -25,6 +25,7 @@
     "@types/node": "^16.4.13",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.3",
     "chalk": "^4.1.2",
+    "debug": "^4.3.2",
     "enzyme": "^3.11.0",
     "jest": "^27.0.6",
     "lerna": "^4.0.0",
@@ -43,7 +44,6 @@
   "dependencies": {
     "@jest-decorated/core": "file:packages/core",
     "@jest-decorated/react": "file:packages/react",
-    "@jest-decorated/shared": "file:packages/shared",
-    "debug": "^4.3.2"
+    "@jest-decorated/shared": "file:packages/shared"
   }
 }
