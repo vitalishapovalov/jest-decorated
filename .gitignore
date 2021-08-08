@@ -15,6 +15,7 @@ packages/**/package-lock.json
 
 # Tests
 packages/**/coverage
+lerna-debug.log
 
 # Media
 logos/
