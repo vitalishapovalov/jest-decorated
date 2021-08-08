@@ -7,6 +7,8 @@ import type {
     IImportsService,
     IMocksService,
 } from "@jest-decorated/shared";
+import { DescribeType } from "@jest-decorated/shared";
+
 import { TestRunner } from "./TestRunner";
 import { HooksService, TestsService, ImportsService, MocksService } from "../services";
 
@@ -26,6 +28,7 @@ export class DescribeRunner implements IDescribeRunner {
     private testRunner: ITestRunner = new TestRunner();
 
     private describeName: string;
+    private describeType: DescribeType;
 
     private constructor(
         private readonly clazz: Class,
@@ -42,6 +45,14 @@ export class DescribeRunner implements IDescribeRunner {
 
     public setDescribeName(describeName: string): void {
         this.describeName = describeName;
+    }
+
+    public getDescribeType(): DescribeType {
+        return this.describeType;
+    }
+
+    public setDescribeType(describeType: DescribeType): void {
+        this.describeType = describeType;
     }
 
     public getClass(): Class {
@@ -84,7 +95,7 @@ export class DescribeRunner implements IDescribeRunner {
     }
 
     public registerDescribeInJest(parentDescribeService?: IDescribeRunner): void {
-        describe(this.describeName, () => {
+        this.getCurrentDescribeFunction()(this.describeName, () => {
             this.testRunner.registerMocks(this, parentDescribeService);
             this.testRunner.registerAutoCleared(this, parentDescribeService);
             this.testRunner.registerLazyModules(this, parentDescribeService);
@@ -92,5 +103,17 @@ export class DescribeRunner implements IDescribeRunner {
             this.testRunner.registerHooks(this, parentDescribeService);
             this.testRunner.registerTestsInJest(this, parentDescribeService);
         });
+    }
+
+    protected getCurrentDescribeFunction(): typeof describe {
+        switch (this.describeType) {
+            case DescribeType.ONLY:
+                return describe.only;
+            case DescribeType.SKIP:
+                return describe.skip;
+            case DescribeType.DEFAULT:
+            default:
+                return describe;
+        }
     }
 }
