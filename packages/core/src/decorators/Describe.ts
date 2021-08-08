@@ -4,6 +4,7 @@ import { isUndefined } from "@js-utilities/typecheck";
 
 import { DescribeRunner } from "../runners";
 
+/* tslint:disable-next-line:variable-name */
 export const Describe: ExtendedDescribe = createDescribe(DescribeType.DEFAULT) as ExtendedDescribe;
 
 Describe.only = createDescribe(DescribeType.ONLY);
