@@ -1,6 +1,7 @@
 __tests__
 .rpt2_cache
 coverage
+configs
 src
 node_modules
 tsconfig.json
