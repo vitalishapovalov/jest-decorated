@@ -5,7 +5,7 @@ module.exports = {
     },
     testEnvironment: "jsdom",
     setupFilesAfterEnv: [
-        "<rootDir>/src/__tests__/env.ts"
+        "<rootDir>/configs/env.js"
     ],
     testRegex: "/__tests__/.*.spec.(ts|js|tsx|jsx)$",
     moduleFileExtensions: [
