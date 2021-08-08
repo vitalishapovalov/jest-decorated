@@ -3,4 +3,5 @@ export const enum TestType {
     ONLY = "only",
     SKIP = "skip",
     TODO = "todo",
+    CONCURRENT = "concurrent",
 }

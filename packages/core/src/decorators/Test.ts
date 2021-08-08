@@ -16,11 +16,15 @@ Test.skip = createTest(TestType.SKIP);
 
 Test.todo = createTest(TestType.TODO);
 
+Test.concurrent = createTest(TestType.CONCURRENT);
+
 It.only = Test.only;
 
 It.skip = Test.skip;
 
 It.todo = Test.todo;
+
+It.concurrent = Test.concurrent;
 
 function createTest(testType: TestType): TestDecorator {
     return (testNameOrTimeout, timeout) => {

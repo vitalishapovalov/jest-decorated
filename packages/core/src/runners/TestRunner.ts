@@ -126,6 +126,8 @@ export class TestRunner implements ITestRunner {
                 return test.skip;
             case TestType.TODO:
                 return test.todo;
+            case TestType.CONCURRENT:
+                return test.concurrent;
             case TestType.DEFAULT:
             default:
                 return test;

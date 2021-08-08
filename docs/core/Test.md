@@ -116,7 +116,7 @@ class MySpec {
 }
 ```
 
-## only, skip, todo:
+## only, skip, todo, concurrent:
 
 From:
 
@@ -130,6 +130,10 @@ describe("MySpec", () => {
     });
     
     test.only("should return false", () => {
+        expect(myFn()).toBeFalsy();
+    });
+
+    test.concurrent("should be executed concurrently", () => {
         expect(myFn()).toBeFalsy();
     });
 });
@@ -150,6 +154,11 @@ class MySpec {
     }
     
     @Test.only("should return false")
+    myFnTest() {
+        expect(myFn()).toBeFalsy();
+    }
+
+    @Test.concurrent("should be executed concurrently")
     myFnTest() {
         expect(myFn()).toBeFalsy();
     }
