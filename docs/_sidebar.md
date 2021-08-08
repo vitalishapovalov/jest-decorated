@@ -1,5 +1,6 @@
 * [Install](install.md)
 * [Setup](setup.md)
+* [Debug](debug.md)
 * Decorators
   * Jest core
     * [@Describe](core/Describe.md)

@@ -1,8 +1,11 @@
 import type { Class, IComponentService, IContextService, IPropsAndStateService, IReactExtension } from "@jest-decorated/shared";
+import debug from "debug";
 
 import { ComponentService, ContextService, PropsAndStateService } from "../services";
 
 export class ReactExtension implements IReactExtension {
+
+    private static readonly log = debug("jest-decorated:react:ReactExtension");
 
     private static readonly REACT_EXT_REGISTRY: WeakMap<Class, IReactExtension> = new WeakMap();
 
@@ -21,7 +24,9 @@ export class ReactExtension implements IReactExtension {
         private readonly componentService: IComponentService = new ComponentService(clazz),
         private readonly propsAndStateService: IPropsAndStateService = new PropsAndStateService(componentService),
         private readonly contextService: IContextService = new ContextService()
-    ) {}
+    ) {
+        ReactExtension.log("New instance created");
+    }
 
     public getComponentService(): IComponentService {
         return this.componentService;

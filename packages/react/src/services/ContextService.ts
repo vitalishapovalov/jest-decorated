@@ -6,6 +6,7 @@ import type {
     ITestsService,
     TestEntity,
 } from "@jest-decorated/shared";
+import debug from "debug";
 import { isCallable, isObject, isString } from "@js-utilities/typecheck";
 import { resolveModule } from "@jest-decorated/shared";
 
@@ -13,21 +14,30 @@ import { ComponentService } from "./ComponentService";
 
 export class ContextService implements IContextService {
 
+    private static readonly log = debug("jest-decorated:react:ContextService");
+
     public readonly defaultContext: Partial<ComponentContext> = {};
 
     private readonly withContextRegistry: Map<PropertyKey, ComponentContext> = new Map();
 
+    public constructor() {
+        ContextService.log("New instance crated");
+    }
+
     public registerDefaultContext(defaultContext: ComponentContext): void {
+        ContextService.log(`Registering default context. Context: ${defaultContext}`);
         this.defaultContext.value = defaultContext.value;
         this.defaultContext.contextType = defaultContext.contextType;
         this.defaultContext.lib = defaultContext.lib;
     }
 
     public registerWithContext(methodName: PropertyKey, context: ComponentContext): void {
+        ContextService.log(`Registering with context. Method name: ${String(methodName)}; context: ${context}`);
         this.withContextRegistry.set(methodName, context);
     }
 
     public registerContextProcessor(testsService: ITestsService): void {
+        ContextService.log("Registering context processor...");
         // no context at all
         if (!this.defaultContext.contextType && !this.withContextRegistry.size) {
             return;
@@ -37,21 +47,25 @@ export class ContextService implements IContextService {
         switch (expectedLib) {
             case "react-dom":
                 this.registerReactDOMContext(testsService);
-                return;
+                break;
             case "enzyme":
                 this.registerEnzymeContext(testsService);
-                return;
+                break;
         }
+        ContextService.log("Registering context processor DONE");
     }
 
     public inheritDefaultContext(parentReactExtension?: IReactExtension): void {
+        ContextService.log("Inheriting default context...");
         const parentDefaultContext = parentReactExtension?.getContextService().defaultContext;
         if (!this.defaultContext.contextType && parentDefaultContext?.contextType) {
             this.registerDefaultContext(parentDefaultContext);
         }
+        ContextService.log("Inheriting default context DONE");
     }
 
     private registerReactDOMContext(testsService: ITestsService): void {
+        ContextService.log("Registering react-dom context");
         testsService.registerPreProcessor(
             ({ clazzInstance, testEntity, args }) => {
                 const reactDOM = resolveModule("react-dom");
@@ -76,6 +90,7 @@ export class ContextService implements IContextService {
     }
 
     private registerEnzymeContext(testsService: ITestsService): void {
+        ContextService.log("Registering enzyme context");
         testsService.registerPreProcessor(
             ({ clazzInstance, testEntity, args }) => {
                 const enzyme = resolveModule("enzyme");
@@ -123,6 +138,7 @@ export class ContextService implements IContextService {
         contextValue: object,
         testEntity: TestEntity
     ): React.ElementType {
+        ContextService.log("Prepare react element with context");
         const react = resolveModule("react");
         const context = this.withContextRegistry.get(testEntity.name)?.contextType
             || this.defaultContext.contextType;
@@ -138,6 +154,7 @@ export class ContextService implements IContextService {
         contextValue: object,
         testEntity: TestEntity
     ): object {
+        ContextService.log("Prepare enzyme context");
         const propTypes = resolveModule("prop-types");
         const componentAsAny = component as any;
         const contextType = this.withContextRegistry.get(testEntity.name)?.contextType
@@ -159,6 +176,7 @@ export class ContextService implements IContextService {
         clazzInstance: object,
         defaultContext: Partial<ComponentContext> = this.defaultContext
     ): object | undefined {
+        ContextService.log("Create and get default context");
         if (!defaultContext.contextType || !defaultContext.value) {
             return;
         }

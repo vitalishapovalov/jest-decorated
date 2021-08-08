@@ -1,8 +1,11 @@
 import type { IDescribeRunner, ITestRunner, TestEntity } from "@jest-decorated/shared";
+import debug from "debug";
 import { TestType } from "@jest-decorated/shared";
 import { isCallable } from "@js-utilities/typecheck";
 
 export class TestRunner implements ITestRunner {
+
+    private static readonly log = debug("jest-decorated:core:TestRunner");
 
     public static resolveDescription(
         description: string | ((...args: unknown[]) => string),
@@ -18,6 +21,7 @@ export class TestRunner implements ITestRunner {
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        TestRunner.log("Registering mocks");
         describeRunner.getMocksService().registerMocksInClass();
     }
 
@@ -25,6 +29,7 @@ export class TestRunner implements ITestRunner {
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        TestRunner.log("Registering auto cleared");
         describeRunner.getMocksService().registerAutoClearedInClass();
     }
 
@@ -32,6 +37,7 @@ export class TestRunner implements ITestRunner {
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        TestRunner.log("Registering lazy modules");
         describeRunner.getImportsService().registerLazyModulesInClass();
     }
 
@@ -39,6 +45,7 @@ export class TestRunner implements ITestRunner {
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        TestRunner.log("Registering mock functions and spies");
         describeRunner.getMocksService().registerMockFnsAndSpiesInClass();
     }
 
@@ -46,6 +53,7 @@ export class TestRunner implements ITestRunner {
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        TestRunner.log("Registering hooks");
         describeRunner.getHooksService().registerHooksInJest();
     }
 
@@ -53,6 +61,7 @@ export class TestRunner implements ITestRunner {
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        TestRunner.log("Registering tests");
         for (const testEntity of describeRunner.getTestsService().getTests()) {
             this.registerTestInJest(testEntity, describeRunner);
         }

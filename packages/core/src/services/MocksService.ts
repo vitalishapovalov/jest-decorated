@@ -1,13 +1,18 @@
 import type { IMocksService, Class, Mock, MockFn, Spy } from "@jest-decorated/shared";
+import debug from "debug";
 import { resolveModule } from "@jest-decorated/shared";
 import { isCallable, isObject } from "@js-utilities/typecheck";
 
 export class MocksService implements IMocksService {
 
+    private static readonly log = debug("jest-decorated:core:ImportsService");
+
     public constructor(
         private readonly clazz: Class,
         private readonly clazzInstance: object
-    ) {}
+    ) {
+        MocksService.log("New instance crated");
+    }
 
     private readonly mocks: Map<string, Mock> = new Map();
 
@@ -18,18 +23,22 @@ export class MocksService implements IMocksService {
     private readonly autoCleared: string[] = [];
 
     public registerMockFn(mockFn: MockFn): void {
+        MocksService.log(`Registering mock function. MockFn: ${mockFn}`);
         this.mockFns.set(mockFn.name, mockFn);
     }
 
     public registerSpy(spy: Spy): void {
+        MocksService.log(`Registering spy. Spy: ${spy}`);
         this.spies.set(spy.name, spy);
     }
 
     public registerMock(mock: Mock): void {
+        MocksService.log(`Registering mock. Mock: ${mock}`);
         this.mocks.set(mock.mockName, mock);
     }
 
     public registerAutoCleared(methodName: string): void {
+        MocksService.log(`Registering auto cleared. Method name: ${methodName}`);
         this.autoCleared.push(methodName);
     }
 
@@ -46,6 +55,7 @@ export class MocksService implements IMocksService {
     }
 
     public mergeInAll(mocksService: IMocksService): void {
+        MocksService.log(`Merging in. Merged mocks service: ${String(mocksService)}`);
         const { mocks, mockFns, spies } = mocksService.getMocks();
         if (mocks) {
             for (const mock of mocks.values()) {
@@ -65,21 +75,26 @@ export class MocksService implements IMocksService {
     }
 
     public registerMockFnsAndSpiesInClass(): void {
+        MocksService.log("Registering mock function and spies in class...");
         for (const mockFn of this.mockFns.values()) {
             this.registerMockFnInClass(mockFn);
         }
         for (const spy of this.spies.values()) {
             this.registerSpyInClass(spy);
         }
+        MocksService.log("Registering mock function and spies in class DONE");
     }
 
     public registerMocksInClass(): void {
+        MocksService.log("Registering mocks in class...");
         for (const mock of this.mocks.keys()) {
             this.registerMockInClass(mock);
         }
+        MocksService.log("Registering mocks in class DONE");
     }
 
     public registerAutoClearedInClass(): void {
+        MocksService.log("Registering auto cleared in class...");
         for (const autoClearedName of this.autoCleared) {
             if (this.mocks.has(autoClearedName)) {
                 // name will be registered as a Mock and auto cleared there
@@ -87,9 +102,11 @@ export class MocksService implements IMocksService {
             }
             this.registerAutoClearedValueInClass(this.clazzInstance[autoClearedName], autoClearedName);
         }
+        MocksService.log("Registering auto cleared in class DONE");
     }
 
     private registerMockFnInClass(mockFnConfig: MockFn): void {
+        MocksService.log(`Registering mock function in class. Mock function config: ${mockFnConfig}`);
         const mockFn = jest
             .fn(this.resolveMockFnImpl(mockFnConfig))
             .mockName(mockFnConfig.name);
@@ -97,6 +114,7 @@ export class MocksService implements IMocksService {
     }
 
     private registerSpyInClass(spyConfig: Spy): void {
+        MocksService.log(`Registering mock function in class. Spy config: ${spyConfig}`);
         const spy = Boolean(spyConfig.accessType)
             ? jest.spyOn(spyConfig.obj, spyConfig.prop as jest.NonFunctionPropertyNames<object>, spyConfig.accessType as any)
             : jest.spyOn(spyConfig.obj, spyConfig.prop as jest.NonFunctionPropertyNames<object>);
@@ -110,6 +128,7 @@ export class MocksService implements IMocksService {
     }
 
     private registerMockInClass(mockName: string): void {
+        MocksService.log(`Registering mock function in class. Mock name: ${mockName}`);
         const { mock, impl, options } = this.mocks.get(mockName);
         let modulePath: string;
         let requiredMock: any;
@@ -135,6 +154,7 @@ export class MocksService implements IMocksService {
         name: string,
         isAutoCleared = true
     ): void {
+        MocksService.log(`Registering auto cleared value in class. Name: ${name}`);
         if (isAutoCleared) {
             afterEach(() => {
                 // for some reason, this is being called after each test,

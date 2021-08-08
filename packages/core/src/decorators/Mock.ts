@@ -1,11 +1,16 @@
 import type { Class, IDescribeRunner } from "@jest-decorated/shared";
+import debug from "debug";
 import { isCallable, isObject } from "@js-utilities/typecheck";
 
 import { DescribeRunner } from "../runners";
 
+const log = debug("jest-decorated:core:decorators:Mock");
+
 export function Mock(mock: string, impl?: (() => any) | object, options?: jest.MockOptions) {
     return function MockDecoratorFn(proto: object, methodName: string) {
         const describeRunner = DescribeRunner.getDescribeRunner(proto.constructor as Class);
+
+        log(`Registering Mock. Method name: ${methodName}; Class name: ${proto.constructor.name}; Mock: ${mock}; Options: ${options}`);
 
         if (impl && (!isCallable(impl) && !isObject(impl))) {
             throw new SyntaxError(`@Mock only accepts function or object as second argument, instead passed ${impl}`);

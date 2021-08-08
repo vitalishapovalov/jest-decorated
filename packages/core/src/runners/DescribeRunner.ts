@@ -7,12 +7,15 @@ import type {
     IImportsService,
     IMocksService,
 } from "@jest-decorated/shared";
+import debug from "debug";
 import { DescribeType } from "@jest-decorated/shared";
 
 import { TestRunner } from "./TestRunner";
 import { HooksService, TestsService, ImportsService, MocksService } from "../services";
 
 export class DescribeRunner implements IDescribeRunner {
+
+    private static readonly log = debug("jest-decorated:core:DescribeRunner");
 
     private static readonly DESCRIBE_REGISTRY: WeakMap<Class, IDescribeRunner> = new WeakMap();
 
@@ -37,13 +40,16 @@ export class DescribeRunner implements IDescribeRunner {
         private readonly hooksService: IHooksService = new HooksService(clazzInstance, testsService),
         private readonly importsService: IImportsService = new ImportsService(clazz),
         private readonly mocksService: IMocksService = new MocksService(clazz, clazzInstance)
-    ) {}
+    ) {
+        DescribeRunner.log(`New instance created for clazz: ${clazz.name}`);
+    }
 
     public getDescribeName(): string {
         return this.describeName;
     }
 
     public setDescribeName(describeName: string): void {
+        DescribeRunner.log(`Setting describe name: ${describeName}`);
         this.describeName = describeName;
     }
 
@@ -52,6 +58,7 @@ export class DescribeRunner implements IDescribeRunner {
     }
 
     public setDescribeType(describeType: DescribeType): void {
+        DescribeRunner.log(`Setting describe type: ${describeType}`);
         this.describeType = describeType;
     }
 
@@ -84,10 +91,12 @@ export class DescribeRunner implements IDescribeRunner {
     }
 
     public setTestRunner(testRunner: ITestRunner): void {
+        DescribeRunner.log(`Setting test runner: ${String(testRunner)}`);
         this.testRunner = testRunner;
     }
 
     public updateDescribe(describeRunner: IDescribeRunner): void {
+        DescribeRunner.log(`Updating describe. Update describe name: ${describeRunner.getDescribeName()}`);
         this.mocksService.mergeInAll(describeRunner.getMocksService());
         this.hooksService.mergeInAll(describeRunner.getHooksService());
         this.testsService.mergeInDataProviders(describeRunner.getTestsService());
@@ -95,6 +104,7 @@ export class DescribeRunner implements IDescribeRunner {
     }
 
     public registerDescribeInJest(parentDescribeService?: IDescribeRunner): void {
+        DescribeRunner.log(`Registering jest describe. Describe type: ${this.describeType}; Parent describe: ${String(parentDescribeService)}`);
         this.getCurrentDescribeFunction()(this.describeName, () => {
             this.testRunner.registerMocks(this, parentDescribeService);
             this.testRunner.registerAutoCleared(this, parentDescribeService);

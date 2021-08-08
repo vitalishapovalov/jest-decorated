@@ -1,8 +1,11 @@
 import type { ITestsService, OrderedMap, PreProcessor, PostProcessor, PreProcessorData } from "@jest-decorated/shared";
+import debug from "debug";
 import { TestEntity } from "@jest-decorated/shared";
 import { isCallable } from "@js-utilities/typecheck";
 
 export class TestsService implements ITestsService {
+
+    private static readonly log = debug("jest-decorated:core:TestsService");
 
     private readonly preProcessors: OrderedMap<PreProcessor> = {};
 
@@ -13,16 +16,20 @@ export class TestsService implements ITestsService {
     private readonly dataProviders: Map<PropertyKey, unknown[] | (() => unknown[])> = new Map();
 
     public constructor(private readonly clazzInstance: object) {
+        TestsService.log("New instance crated");
         this.registerPromisePreProcessor();
     }
 
     public mergeInDataProviders(testsService: ITestsService): void {
+        TestsService.log("Merging in data providers...");
         for (const dataProvider of testsService.getDataProviders()) {
             this.registerDataProvider(dataProvider, () => testsService.getDataProvider(dataProvider));
         }
+        TestsService.log("Merging in data providers DONE");
     }
 
     public registerTest(testEntity: TestEntity): void {
+        TestsService.log(`Registering test entity. TestEntity: ${String(TestEntity)}`);
         if (this.tests.some(({ name }) => name === testEntity.name)) {
             this
                 .getTest(testEntity.name)
@@ -33,6 +40,7 @@ export class TestsService implements ITestsService {
     }
 
     public registerDataProvider(dataProviderName: PropertyKey, data: () => unknown[]): void {
+        TestsService.log(`Registering data provider. Data provider name: ${String(dataProviderName)}`);
         this.dataProviders.set(dataProviderName, data);
     }
 
@@ -54,23 +62,31 @@ export class TestsService implements ITestsService {
     }
 
     public registerPreProcessor(preProcessor: PreProcessor, order: number): void {
+        TestsService.log(`Registering pre-processor. Processor: ${String(preProcessor)}; Order: ${order}`);
         const currPreProcessors = this.preProcessors[order] || [];
         currPreProcessors.push(preProcessor);
         this.preProcessors[order] = currPreProcessors;
     }
 
     public registerPostProcessor(postProcessor: PostProcessor, order: number): void {
+        TestsService.log(`Registering post-processor. Processor: ${String(postProcessor)}; Order: ${order}`);
         const currPostProcessors = this.postProcessors[order] || [];
         currPostProcessors.push(postProcessor);
         this.postProcessors[order] = currPostProcessors;
     }
 
     public runPreProcessors(data: PreProcessorData): Promise<PreProcessorData> {
-        return this.processAsync(data, this.preProcessors);
+        TestsService.log("Running pre-processors...");
+        const result = this.processAsync(data, this.preProcessors);
+        TestsService.log("Running pre-processors DONE");
+        return result;
     }
 
     public runPostProcessors(data: unknown): Promise<void> {
-        return this.processAsync(data, this.postProcessors) as Promise<void>;
+        TestsService.log("Running post-processors...");
+        const result = this.processAsync(data, this.postProcessors) as Promise<void>;
+        TestsService.log("Running post-processors DONE");
+        return result;
     }
 
     private registerPromisePreProcessor(): void {

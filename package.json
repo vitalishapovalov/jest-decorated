@@ -43,6 +43,7 @@
   "dependencies": {
     "@jest-decorated/core": "file:packages/core",
     "@jest-decorated/react": "file:packages/react",
-    "@jest-decorated/shared": "file:packages/shared"
+    "@jest-decorated/shared": "file:packages/shared",
+    "debug": "^4.3.2"
   }
 }
