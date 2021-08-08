@@ -1,4 +1,4 @@
-import { LazyModule } from "@shared/types";
+import type { LazyModule } from "@shared/types";
 
 export interface IImportsService {
 

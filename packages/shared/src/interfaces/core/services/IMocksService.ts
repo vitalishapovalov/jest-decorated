@@ -1,4 +1,4 @@
-import { Mock, MockFn, Spy } from "@shared/types";
+import type { Mock, MockFn, Spy } from "@shared/types";
 
 export interface IMocksService {
 

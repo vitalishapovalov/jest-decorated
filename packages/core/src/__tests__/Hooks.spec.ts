@@ -100,24 +100,24 @@ class SpecFour extends SpecThree {
     @Test.todo("todo test")
     todo;
 
-    i = 0;
+    override i = 0;
 
     @Test()
-    first() {
+    override first() {
         expect(fn).not.toHaveBeenCalled();
         fn();
         expect(this.i).toBe(1);
     }
 
     @Test()
-    second() {
+    override second() {
         expect(fn).not.toHaveBeenCalled();
         fn();
         expect(this.i).toBe(3);
     }
 
     @Test()
-    third() {
+    override third() {
         expect(fn).not.toHaveBeenCalled();
         fn();
         expect(this.i).toBe(5);

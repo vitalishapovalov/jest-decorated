@@ -1,5 +1,5 @@
-import { ComponentContext } from "@shared/types";
-import { ITestsService, IReactExtension } from "@shared/interfaces";
+import type { ComponentContext } from "@shared/types";
+import type { ITestsService, IReactExtension } from "@shared/interfaces";
 
 export interface IContextService {
 

@@ -56,6 +56,14 @@ cd packages/core
 npm run build
 ```
 
+## Bumping version (optional)
+
+According to [this doc](https://github.com/lerna/lerna/tree/main/commands/version):
+
+```bash
+lerna version 
+```
+
 ## Publishing
 
 Simply

@@ -77,7 +77,7 @@ class MyComponentSpec {
 class TestExtendsSpec extends MyComponentSpec {
 
     @ComponentProvider("./fixtures/components")
-    myComponent({ MyComponent }, { foo = 0, bar = 1 } = {}) {
+    override myComponent({ MyComponent }, { foo = 0, bar = 1 } = {}) {
         return this.shallow(
             <MyComponent foo={foo} bar={bar} />
         );

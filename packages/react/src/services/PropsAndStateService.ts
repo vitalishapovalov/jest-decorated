@@ -1,25 +1,31 @@
-import chalk from "chalk";
-import { ReactWrapper } from "enzyme";
-import { isCallable, isObject, isString, isUndefined } from "@js-utilities/typecheck";
-import {
+import type { ReactWrapper } from "enzyme";
+import type {
     IComponentService,
     IDescribeRunner,
     IPropsAndStateService,
     PreProcessor,
     PreProcessorData,
 } from "@jest-decorated/shared";
+import debug from "debug";
+import chalk from "chalk";
+import { isCallable, isObject, isString, isUndefined } from "@js-utilities/typecheck";
 
 import { ComponentService } from "./ComponentService";
 
 export class PropsAndStateService implements IPropsAndStateService {
 
+    private static readonly log = debug("jest-decorated:react:PropsAndStateService");
+
     private readonly withStateRegistry: Map<string, object> = new Map();
 
     private readonly withPropsRegistry: Map<string, object> = new Map();
 
-    public constructor(private readonly componentService: IComponentService) {}
+    public constructor(private readonly componentService: IComponentService) {
+        PropsAndStateService.log("New instance crated");
+    }
 
     public registerWithProps(methodName: string, data: object): void {
+        PropsAndStateService.log(`Registering with props. Method name: ${methodName}; Data: ${data}`);
         this.withPropsRegistry.set(methodName, data);
     }
 
@@ -28,6 +34,7 @@ export class PropsAndStateService implements IPropsAndStateService {
     }
 
     public registerWithState(methodName: string, data: object): void {
+        PropsAndStateService.log(`Registering with state. Method name: ${methodName}; Data: ${data}`);
         this.withStateRegistry.set(methodName, data);
     }
 
@@ -36,7 +43,9 @@ export class PropsAndStateService implements IPropsAndStateService {
     }
 
     public createComponentWithPropsPreProcessor(describeRunner: IDescribeRunner): PreProcessor {
+        PropsAndStateService.log(`Creating component with props pre-processor. Describe runner: ${describeRunner}`);
         return async (data: PreProcessorData): Promise<PreProcessorData> => {
+            PropsAndStateService.log("component with props pre-processor executing...");
             const propsDataProvider = this.getWithProps(data.testEntity.name as string);
             const defaultProps = this.createAndGetDefaultProps(describeRunner.getClassInstance());
 
@@ -55,7 +64,7 @@ export class PropsAndStateService implements IPropsAndStateService {
                         : arg
                 )
                 : data.args;
-            return {
+            const result = {
                 ...data,
                 args: [
                     component,
@@ -65,11 +74,15 @@ export class PropsAndStateService implements IPropsAndStateService {
                     ...mappedArgs,
                 ],
             };
+            PropsAndStateService.log("component with props pre-processor executing DONE");
+            return result;
         };
     }
 
     public createWithStatePreProcessor(describeName: string): PreProcessor {
+        PropsAndStateService.log(`Creating withState pre-processor. Describe name: ${describeName}`);
         return async (data: PreProcessorData): Promise<PreProcessorData> => {
+            PropsAndStateService.log("withState pre-processor executing...");
             const state = this.getWithState(data.testEntity.name as string);
             if (state && !isUndefined(data.args[0])) {
                 if (!data.args[0] || !isCallable((data.args[0] as ReactWrapper).setState)) {
@@ -93,7 +106,7 @@ export class PropsAndStateService implements IPropsAndStateService {
                     return data;
                 }
                 let wrapper: ReactWrapper;
-                await new Promise((resolve) => {
+                await new Promise((resolve: (...args: any[]) => any) => {
                     wrapper = (data.args[0] as ReactWrapper).setState(state, resolve);
                 });
                 // we're sure that args are an array here, because of the props pre-processor
@@ -110,6 +123,7 @@ export class PropsAndStateService implements IPropsAndStateService {
                     ],
                 };
             }
+            PropsAndStateService.log("withState pre-processor executing DONE");
             return data;
         };
     }
@@ -119,6 +133,7 @@ export class PropsAndStateService implements IPropsAndStateService {
         props: object | object[],
         defaultProps?: object
     ): Promise<[unknown, object]> {
+        PropsAndStateService.log("Getting component provider result with props...");
         const componentProvider = this.componentService.getComponentProvider();
         const clazzInstance = describe.getClassInstance();
         // enrich with default props, if possible
@@ -134,6 +149,7 @@ export class PropsAndStateService implements IPropsAndStateService {
             const componentProviderResult = componentProvider.isAct
                 ? await this.componentService.runWithAct(componentProviderResultFn, [], componentProvider.isAsyncAct)
                 : await componentProviderResultFn();
+            PropsAndStateService.log("Getting component provider result with props DONE");
             // this will be passed to each test as arguments
             return [componentProviderResult, enrichedProps];
         } catch (error) {
@@ -160,6 +176,7 @@ export class PropsAndStateService implements IPropsAndStateService {
         clazzInstance: object,
         defaultProps: unknown = this.componentService.componentProvider.defaultProps
     ): object {
+        PropsAndStateService.log("Create and get default props");
         if (!defaultProps) {
             return {};
         }

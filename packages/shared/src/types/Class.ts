@@ -1,3 +1,3 @@
-export interface Class {
+export type Class = {
     new (...args: any[]): {};
-}
+};

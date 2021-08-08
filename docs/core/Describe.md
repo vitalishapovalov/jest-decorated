@@ -29,6 +29,47 @@ class MySpec {
 }
 ```
 
+### only, skip:
+
+From:
+
+```javascript
+describe.skip("MySpec", () => {
+    // ...
+});
+```
+```javascript
+describe.only("MySpec", () => {
+  // ...
+});
+```
+```javascript
+describe.skip("TODO: implement", () => {
+    // ...
+});
+```
+
+To:
+
+```javascript
+@Describe.skip()
+class MySpec {
+    // ...
+}
+```
+```javascript
+@Describe.only()
+class MySpec {
+  // ...
+}
+```
+```javascript
+@Describe.skip("TODO: implement")
+class MySpec {
+  // ...
+}
+```
+
 ### With describe name passed as an argument:
 
 From:

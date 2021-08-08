@@ -1,6 +1,9 @@
-import { Class, ComponentContext } from "@jest-decorated/shared";
+import type { Class, ComponentContext } from "@jest-decorated/shared";
+import debug from "debug";
 
 import { ReactExtension } from "../extensions";
+
+const log = debug("jest-decorated:react:decorators:WithContext");
 
 export function WithContext(
     contextTypeOrValue: ComponentContext["contextType"] | object,
@@ -12,6 +15,8 @@ export function WithContext(
         const firstArg$$typeof = (contextTypeOrValue as any).$$typeof;
         const firstArgIsContextType = firstArg$$typeof === Symbol.for("react.context")
             || firstArg$$typeof === 0xeace;
+
+        log(`Registering WithContext. Method name: ${String(methodName)}; Class name: ${proto.constructor.name}; Context type or value: ${contextTypeOrValue}; value: ${value}; Lib: ${lib}`);
 
         reactExtension
             .getContextService()

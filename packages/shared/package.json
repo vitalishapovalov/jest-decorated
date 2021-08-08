@@ -1,6 +1,6 @@
 {
   "name": "@jest-decorated/shared",
-  "version": "0.0.23",
+  "version": "0.1.0-beta.2",
   "description": "Types, interfaces and utils of jest-decorated lib.",
   "license": "MIT",
   "author": {
@@ -48,7 +48,7 @@
       "functions.ts",
       "constants.ts"
     ],
-    "moduleNameMappe": {
+    "moduleNameMapper": {
       "@shared/entities": [
         "<rootDir>/src/entities/index.ts"
       ],

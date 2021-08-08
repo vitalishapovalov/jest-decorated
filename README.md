@@ -170,7 +170,7 @@ Support for different libs and frameworks. Currently, only [React](https://vital
 
 ## Decorators
 
-Read [docs](https://vitalishapovalov.github.io/jest-decorated).
+Read [docs](https://vitalishapovalov.github.io/jest-decorated/#/react/index).
 
 ## Contributing
 

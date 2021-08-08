@@ -1,7 +1,11 @@
-import { IHooksService, Hook, PreProcessorData, ITestsService } from "@jest-decorated/shared";
+import type { IHooksService, PreProcessorData, ITestsService } from "@jest-decorated/shared";
+import debug from "debug";
+import { Hook } from "@jest-decorated/shared";
 import { isCallable } from "@js-utilities/typecheck";
 
 export class HooksService implements IHooksService {
+
+    private static readonly log = debug("jest-decorated:core:HooksService");
 
     public readonly beforeTestHooks: Map<PropertyKey, (clazzInstance?: any) => any> = new Map();
 
@@ -15,27 +19,33 @@ export class HooksService implements IHooksService {
         private readonly clazzInstance: object,
         private readonly testsService: ITestsService
     ) {
+        HooksService.log("New instance crated");
         this.registerBeforeTestHooksPreprocessor();
     }
 
     public registerHook(hook: Hook, name: PropertyKey | (() => any)): void {
+        HooksService.log(`Registering hook. Hook: ${hook}; Name: ${String(name)}`);
         this.hooks.get(hook).push(name);
     }
 
     public registerBeforeTestHook(name: PropertyKey, impl: (clazzInstance?: any) => any): void {
+        HooksService.log(`Registering before test hook. Property name: ${String(name)}`);
         this.beforeTestHooks.set(name, impl);
     }
 
     public mergeInAll(hooksService: IHooksService): void {
+        HooksService.log(`Merging in hooks from the service: ${String(hooksService)}`);
         for (const [hook, names] of hooksService.hooks.entries()) {
             names.forEach(name => this.registerHook(hook, name));
         }
     }
 
     public registerHooksInJest(): void {
+        HooksService.log("Registering hooks in jest...");
         for (const [hook, names] of this.hooks.entries()) {
             names.forEach(name => this.registerHookInJest(hook, name));
         }
+        HooksService.log("Registering hooks in jest DONE");
     }
 
     private registerBeforeTestHooksPreprocessor(): void {
@@ -52,6 +62,7 @@ export class HooksService implements IHooksService {
     }
 
     private registerHookInJest(hook: Hook, hookValue: PropertyKey | (() => any)): void {
+        HooksService.log(`Registering hook in jest. Hook: ${hook}; hookValue: ${String(hookValue)}`);
         const handler = async () => isCallable(hookValue)
             ? await hookValue()
             : await this.clazzInstance[hookValue].call(this.clazzInstance);

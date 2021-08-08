@@ -1,8 +1,8 @@
 export type ComponentProvider = {
     name: PropertyKey;
     source: string;
-    defaultProps?: { [key: string]: any; }
-        | (() => { [key: string]: any; });
+    defaultProps?: Record<string, any>
+        | (() => Record<string, any>);
     isAct?: boolean;
     isAsyncAct?: boolean;
 };

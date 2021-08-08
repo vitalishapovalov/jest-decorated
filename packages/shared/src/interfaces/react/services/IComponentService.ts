@@ -1,5 +1,5 @@
-import { ComponentProvider } from "@shared/types";
-import { IReactExtension } from "@shared/interfaces";
+import type { ComponentProvider } from "@shared/types";
+import type { IReactExtension } from "@shared/interfaces";
 
 export interface IComponentService {
 

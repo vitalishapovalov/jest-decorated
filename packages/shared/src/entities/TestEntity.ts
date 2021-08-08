@@ -1,6 +1,10 @@
+import debug from "debug";
+
 import { TestType } from "@shared/types";
 
 export class TestEntity {
+
+    private static readonly log = debug("jest-decorated:shared:TestEntity");
 
     public static createWithNameAndDataProviders(
         name: PropertyKey,
@@ -23,7 +27,9 @@ export class TestEntity {
         public readonly name: PropertyKey,
         public description: string | ((...args: unknown[]) => string),
         public timeout?: number
-    ) {}
+    ) {
+        TestEntity.log(`New instance created. Name: ${String(name)}; description: ${description}; timeout: ${timeout}`);
+    }
 
     public registerDataProvider(dataProvider: PropertyKey): void {
         this.dataProviders.push(dataProvider);
@@ -68,5 +74,9 @@ export class TestEntity {
             this.timeout = testEntity.timeout;
         }
         return this;
+    }
+
+    public toString(): string {
+        return `Test entity: name=${String(this.name)}; description=${this.description}; timeout=${this.timeout}; testType=${this.testType}; metadata=${JSON.stringify(this.metadata)}; dataProviders=${this.dataProviders}`;
     }
 }

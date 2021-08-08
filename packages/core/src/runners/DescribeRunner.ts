@@ -1,4 +1,4 @@
-import {
+import type {
     Class,
     ITestRunner,
     IHooksService,
@@ -7,10 +7,15 @@ import {
     IImportsService,
     IMocksService,
 } from "@jest-decorated/shared";
+import debug from "debug";
+import { DescribeType } from "@jest-decorated/shared";
+
 import { TestRunner } from "./TestRunner";
 import { HooksService, TestsService, ImportsService, MocksService } from "../services";
 
 export class DescribeRunner implements IDescribeRunner {
+
+    private static readonly log = debug("jest-decorated:core:DescribeRunner");
 
     private static readonly DESCRIBE_REGISTRY: WeakMap<Class, IDescribeRunner> = new WeakMap();
 
@@ -26,6 +31,7 @@ export class DescribeRunner implements IDescribeRunner {
     private testRunner: ITestRunner = new TestRunner();
 
     private describeName: string;
+    private describeType: DescribeType;
 
     private constructor(
         private readonly clazz: Class,
@@ -34,14 +40,26 @@ export class DescribeRunner implements IDescribeRunner {
         private readonly hooksService: IHooksService = new HooksService(clazzInstance, testsService),
         private readonly importsService: IImportsService = new ImportsService(clazz),
         private readonly mocksService: IMocksService = new MocksService(clazz, clazzInstance)
-    ) {}
+    ) {
+        DescribeRunner.log(`New instance created for clazz: ${clazz.name}`);
+    }
 
     public getDescribeName(): string {
         return this.describeName;
     }
 
     public setDescribeName(describeName: string): void {
+        DescribeRunner.log(`Setting describe name: ${describeName}`);
         this.describeName = describeName;
+    }
+
+    public getDescribeType(): DescribeType {
+        return this.describeType;
+    }
+
+    public setDescribeType(describeType: DescribeType): void {
+        DescribeRunner.log(`Setting describe type: ${describeType}`);
+        this.describeType = describeType;
     }
 
     public getClass(): Class {
@@ -73,31 +91,39 @@ export class DescribeRunner implements IDescribeRunner {
     }
 
     public setTestRunner(testRunner: ITestRunner): void {
+        DescribeRunner.log(`Setting test runner: ${String(testRunner)}`);
         this.testRunner = testRunner;
     }
 
-    public registerDescribeInJest(parentDescribeService?: IDescribeRunner): void {
-        if (parentDescribeService) {
-            this.updateDescribe(parentDescribeService);
-        }
-        describe(this.describeName, () => {
-            beforeAll(async () => {
-                await this.testRunner.beforeTestsJestRegistration(this, parentDescribeService);
-            });
-            this.mocksService.registerMocksInClass();
-            this.mocksService.registerAutoClearedInClass();
-            this.hooksService.registerHooksInJest();
-            this.testRunner.registerTestsInJest(this, parentDescribeService);
-            afterAll(async () => {
-                await this.testRunner.afterTestsJestRegistration(this, parentDescribeService);
-            });
-        });
-    }
-
-    private updateDescribe(describeRunner: IDescribeRunner): void {
+    public updateDescribe(describeRunner: IDescribeRunner): void {
+        DescribeRunner.log(`Updating describe. Update describe name: ${describeRunner.getDescribeName()}`);
         this.mocksService.mergeInAll(describeRunner.getMocksService());
         this.hooksService.mergeInAll(describeRunner.getHooksService());
         this.testsService.mergeInDataProviders(describeRunner.getTestsService());
         this.setTestRunner(describeRunner.getTestRunner());
+    }
+
+    public registerDescribeInJest(parentDescribeService?: IDescribeRunner): void {
+        DescribeRunner.log(`Registering jest describe. Describe type: ${this.describeType}; Parent describe: ${String(parentDescribeService)}`);
+        this.getCurrentDescribeFunction()(this.describeName, () => {
+            this.testRunner.registerMocks(this, parentDescribeService);
+            this.testRunner.registerAutoCleared(this, parentDescribeService);
+            this.testRunner.registerLazyModules(this, parentDescribeService);
+            this.testRunner.registerMockFnsAndSpies(this, parentDescribeService);
+            this.testRunner.registerHooks(this, parentDescribeService);
+            this.testRunner.registerTestsInJest(this, parentDescribeService);
+        });
+    }
+
+    protected getCurrentDescribeFunction(): typeof describe {
+        switch (this.describeType) {
+            case DescribeType.ONLY:
+                return describe.only;
+            case DescribeType.SKIP:
+                return describe.skip;
+            case DescribeType.DEFAULT:
+            default:
+                return describe;
+        }
     }
 }

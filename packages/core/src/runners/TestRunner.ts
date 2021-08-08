@@ -1,8 +1,11 @@
+import type { IDescribeRunner, ITestRunner, TestEntity } from "@jest-decorated/shared";
+import debug from "debug";
+import { TestType } from "@jest-decorated/shared";
 import { isCallable } from "@js-utilities/typecheck";
-import { IDescribeRunner, ITestRunner, TestEntity } from "@jest-decorated/shared";
-import { TestType } from "@jest-decorated/shared/dist/types/types/TestType";
 
 export class TestRunner implements ITestRunner {
+
+    private static readonly log = debug("jest-decorated:core:TestRunner");
 
     public static resolveDescription(
         description: string | ((...args: unknown[]) => string),
@@ -14,27 +17,55 @@ export class TestRunner implements ITestRunner {
             : description;
     }
 
-    public beforeTestsJestRegistration(
+    public registerMocks(
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        TestRunner.log("Registering mocks");
+        describeRunner.getMocksService().registerMocksInClass();
+    }
+
+    public registerAutoCleared(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        TestRunner.log("Registering auto cleared");
+        describeRunner.getMocksService().registerAutoClearedInClass();
+    }
+
+    public registerLazyModules(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        TestRunner.log("Registering lazy modules");
         describeRunner.getImportsService().registerLazyModulesInClass();
+    }
+
+    public registerMockFnsAndSpies(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        TestRunner.log("Registering mock functions and spies");
         describeRunner.getMocksService().registerMockFnsAndSpiesInClass();
+    }
+
+    public registerHooks(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        TestRunner.log("Registering hooks");
+        describeRunner.getHooksService().registerHooksInJest();
     }
 
     public registerTestsInJest(
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void {
+        TestRunner.log("Registering tests");
         for (const testEntity of describeRunner.getTestsService().getTests()) {
             this.registerTestInJest(testEntity, describeRunner);
         }
     }
-
-    public afterTestsJestRegistration(
-        describeRunner: IDescribeRunner,
-        parentDescribeRunner?: IDescribeRunner
-    ): void {}
 
     protected registerTestInJest(testEntity: TestEntity, describeRunner: IDescribeRunner): void {
         const clazzInstance = describeRunner.getClassInstance();
@@ -104,6 +135,8 @@ export class TestRunner implements ITestRunner {
                 return test.skip;
             case TestType.TODO:
                 return test.todo;
+            case TestType.CONCURRENT:
+                return test.concurrent;
             case TestType.DEFAULT:
             default:
                 return test;

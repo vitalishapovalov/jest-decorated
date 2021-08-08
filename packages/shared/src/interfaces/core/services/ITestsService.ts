@@ -1,5 +1,5 @@
-import { PostProcessor, PreProcessor, PreProcessorData } from "@shared/types";
-import { TestEntity } from "@shared/entities";
+import type { PostProcessor, PreProcessor, PreProcessorData } from "@shared/types";
+import type { TestEntity } from "@shared/entities";
 
 export interface ITestsService {
 
