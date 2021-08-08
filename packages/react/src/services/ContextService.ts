@@ -145,7 +145,7 @@ export class ContextService implements IContextService {
         return react.createElement(
             context.Provider,
             { value: contextValue },
-            react.createElement(context.Consumer, null, (_contextVal) => component)
+            react.createElement(context.Consumer, null, contextVal => component)
         );
     }
 
