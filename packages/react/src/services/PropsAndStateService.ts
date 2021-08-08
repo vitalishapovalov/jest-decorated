@@ -56,10 +56,10 @@ export class PropsAndStateService implements IPropsAndStateService {
             // If context has been registered, object with props and state
             // will be accessible and we just need to update it.
             // Otherwise - create and register object with props and state.
-            const hasPropsAndStateObj = data.args.some(arg => arg[ComponentService.STATE_PROPS_CONTEXT_ARG]);
+            const hasPropsAndStateObj = data.args.some((arg) => arg[ComponentService.STATE_PROPS_CONTEXT_ARG]);
             const mappedArgs = hasPropsAndStateObj
                 ? data.args.map(
-                    arg => arg[ComponentService.STATE_PROPS_CONTEXT_ARG]
+                    (arg) => arg[ComponentService.STATE_PROPS_CONTEXT_ARG]
                         ? { ...arg as object, props, [ComponentService.STATE_PROPS_CONTEXT_ARG]: true }
                         : arg
                 )
