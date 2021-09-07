@@ -8,4 +8,4 @@ export type PreProcessorData = {
 
 export type PreProcessor = (preProcessorData: PreProcessorData) => Promise<PreProcessorData>;
 
-export type PostProcessor = (testResult: unknown) => Promise<void>;
+export type PostProcessor = (testResult: unknown, testError?: Error) => Promise<void>;

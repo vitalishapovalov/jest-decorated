@@ -23,5 +23,5 @@ export interface ITestsService {
 
     runPreProcessors(data: PreProcessorData): Promise<PreProcessorData>;
 
-    runPostProcessors(preProcessorResult: unknown): Promise<void>;
+    runPostProcessors(preProcessorResult: unknown, testError?: Error): Promise<void>;
 }
