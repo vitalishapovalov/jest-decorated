@@ -87,10 +87,22 @@ export class TestRunner implements ITestRunner {
                     testEntity,
                     args,
                 });
-                await preProcessorResult
-                    .clazzInstance[preProcessorResult.testEntity.name]
-                    .apply(preProcessorResult.clazzInstance, preProcessorResult.args);
-                await testsService.runPostProcessors(preProcessorResult);
+                let testError: Error;
+                try {
+                    await preProcessorResult
+                        .clazzInstance[preProcessorResult.testEntity.name]
+                        .apply(preProcessorResult.clazzInstance, preProcessorResult.args);
+                } catch (e) {
+                    testError = e;
+                }
+                try {
+                    await testsService.runPostProcessors(preProcessorResult, testError);
+                } catch (e) {
+                    console.error("Failed to execute postProcessor: ", e);
+                }
+                if (testError) {
+                    throw testError;
+                }
             },
             testEntity.timeout
         );

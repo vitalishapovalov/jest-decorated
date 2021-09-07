@@ -82,9 +82,9 @@ export class TestsService implements ITestsService {
         return result;
     }
 
-    public runPostProcessors(data: unknown): Promise<void> {
+    public runPostProcessors(data: unknown, error?: Error): Promise<void> {
         TestsService.log("Running post-processors...");
-        const result = this.processAsync(data, this.postProcessors) as Promise<void>;
+        const result = this.processAsync(data, this.postProcessors, error) as Promise<void>;
         TestsService.log("Running post-processors DONE");
         return result;
     }
@@ -99,11 +99,11 @@ export class TestsService implements ITestsService {
         );
     }
 
-    private async processAsync<T>(data: T, processors: OrderedMap<PostProcessor | PreProcessor>): Promise<T> {
+    private async processAsync<T>(data: T, processors: OrderedMap<PostProcessor | PreProcessor>, errorData?: Error): Promise<T> {
         let dataResult = data;
         for (const processorOrder of Object.keys(processors).sort((a, b) => Number(a) - Number(b))) {
             for (const processor of processors[processorOrder]) {
-                dataResult = await processor.call(this.clazzInstance, dataResult);
+                dataResult = await processor.call(this.clazzInstance, dataResult, errorData);
             }
         }
         return dataResult;
