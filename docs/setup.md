@@ -48,7 +48,7 @@ class MyFnSpec {
 }
 ```
 
-### Direct import
+## Direct import
 
 If solutions above doesn't serve your needs, you can use direct import:
 
@@ -62,5 +62,20 @@ import { ReactTestRunner } from "@jest-decorated/react";
 @RunWith(ReactTestRunner)
 class MyFnSpec {
   // ...
+}
+```
+
+# TypeScript
+
+When using with TypeScript, make sure your setup file (in `setupFilesAfterEnv` section) is a `.ts` and not a `.js` to include the necessary types.
+
+You will also need to include your setup file and the test folder in your `tsconfig.json` if you haven't already:
+
+```json
+{
+  "include": [
+    "./jest-setup.ts",
+    "./__tests__"
+  ]
 }
 ```

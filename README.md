@@ -164,6 +164,21 @@ class MyFnSpec {
 }
 ```
 
+## TypeScript
+
+When using with TypeScript, make sure your setup file (in `setupFilesAfterEnv` section) is a `.ts` and not a `.js` to include the necessary types.
+
+You will also need to include your setup file and the test folder in your `tsconfig.json` if you haven't already:
+
+```json
+{
+  "include": [
+    "./jest-setup.ts",
+    "./__tests__"
+  ]
+}
+```
+
 ## Extensions
 
 Support for different libs and frameworks. Currently, only [React](https://vitalishapovalov.github.io/jest-decorated/react) is strongly supported.
