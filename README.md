@@ -1,7 +1,7 @@
 <h1 align="center">Decorators library for writing jest-based tests</h1>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/vitalishapovalov/jest-decorated/master/docs/logo.png" alt="@jest-decirated" width="300" />
+<img src="https://raw.githubusercontent.com/vitalishapovalov/jest-decorated/master/docs/logo.png" alt="@jest-decorated" width="300" />
 
 <br />
 
@@ -16,6 +16,9 @@
 </a>
 <a href="https://travis-ci.org/vitalishapovalov/jest-decorated">
 <img src="https://travis-ci.org/vitalishapovalov/jest-decorated.svg?branch=master">
+</a>
+<a href="https://github.com/vitalishapovalov/jest-decorated/actions">
+  <img src="https://github.com/vitalishapovalov/jest-decorated/actions/workflows/nodejs.yml/badge.svg">
 </a>
 </p>
 
