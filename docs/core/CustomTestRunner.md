@@ -11,8 +11,6 @@ So, let's start. First thing you need to know - your Test Runner class must impl
 - `TestRunner` class: the class can be found in the `@jest-decorated/core` package. This is the preferred option and will be used in further examples. The initial implementation, which does nothing, and simply executes the default methods of the runner:
 
 ```javascript
-
-
 import { TestRunner } from "@jest-decorated/core";
 
 export class MyTestRunner extends TestRunner {}

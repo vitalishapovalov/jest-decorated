@@ -18,7 +18,7 @@ export class MyTestRunner extends TestRunner {
     
     // we'll use this method in our @Decorators to access/register test class-specific data
     // we'll create a new registry instance on the first invocation
-    public static getRegistry(clazz: Class): VimeoRecorderExtension {
+    public static getRegistry(clazz: Class): Map {
         let classSpecificRegistry = MyTestRunner.GLOBAL_REGISTRY.get(clazz);
         if (!classSpecificRegistry) {
             classSpecificRegistry = new Map();
