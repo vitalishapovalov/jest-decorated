@@ -10,7 +10,9 @@ So, let's start. First thing you need to know - your Test Runner class must impl
 
 - `TestRunner` class: the class can be found in the `@jest-decorated/core` package. This is the preferred option and will be used in further examples. The initial implementation, which does nothing, and simply executes the default methods of the runner:
 
-```typescript
+```javascript
+
+
 import { TestRunner } from "@jest-decorated/core";
 
 export class MyTestRunner extends TestRunner {}
@@ -19,7 +21,7 @@ export class MyTestRunner extends TestRunner {}
 - `ITestRunner` interface: the interface can be found in the `@jest-decorated/shared` package, which comes by default with any `jest-decorated` package.
 Wrong implementation could lead to unexpected behaviour, only use this when you need to disable the default behaviour of runner. The initial implementation, which does nothing, and simply executes the default methods of the runner:
 
-```typescript
+```javascript
 import type { IDescribeRunner, ITestRunner } from "@jest-decorated/shared";
 
 // all of the TestRunner's methods will be executed inside the describe() callback function
@@ -59,7 +61,7 @@ export class MyTestRunner implements ITestRunner {
 
 Now, when we have our own `MyTestRunner`, we can start doing things before/after our test are executed. Also, we can access all metadata of the `jest-decorated` and `jest`.
 
-```typescript
+```javascript
 import type { IDescribeRunner } from "@jest-decorated/shared";
 import { TestRunner } from "@jest-decorated/core";
 
@@ -104,7 +106,7 @@ Some functions are applied before the test has started execution (`PreProcessor`
 
 Let's implement a simple processors, that will measure the test's execution time (yeah, it's pretty mich useless, but it's a good example to show processors functionality):
 
-```typescript
+```javascript
 import type { IDescribeRunner, PreProcessorData } from "@jest-decorated/shared";
 import { TestRunner } from "@jest-decorated/core";
 
@@ -154,7 +156,7 @@ export class MyTestRunner extends TestRunner {
 
 If we, for example, want to register some global `beforeAll/afterAll` or `beforeEach/afterEach`, we can do it in this way:
 
-```typescript
+```javascript
 import type { IDescribeRunner } from "@jest-decorated/shared";
 import { TestRunner } from "@jest-decorated/core";
 import rimraf from "rimraf";
@@ -182,7 +184,7 @@ export class MyTestRunner extends TestRunner {
 
 Now, when we have everything we need in our `MyTestRunner` class, we can start using it:
 
-```typescript
+```javascript
 // my-test.spec.ts
 import { MyTestRunner } from "./MyTestRunner.ts";
 

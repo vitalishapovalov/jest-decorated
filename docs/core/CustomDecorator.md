@@ -6,7 +6,7 @@ When you already have [your own Test Runner](core/CustomTestRunner.md), you can 
 
 First, we need to update our Test Runner. We need it ho have a global, class-specific registry, to be able to register our own metadata:
 
-```typescript
+```javascript
 import type { Class } from "@jest-decorated/shared";
 import { TestRunner } from "@jest-decorated/core";
 
@@ -38,7 +38,7 @@ In the future, there could be more environments to come (e.g. `MacOS`), so we wa
 
 Let's implement it:
 
-```typescript
+```javascript
 // RunOnPlatform.ts
 
 import type { Class } from "@jest-decorated/shared";
@@ -56,7 +56,7 @@ export function RunOnPlatform(platform: Platform) {
 }
 ```
 
-```typescript
+```javascript
 // MyTestRunner.ts
 
 import type { Class } from "@jest-decorated/shared";
@@ -87,7 +87,7 @@ export class MyTestRunner extends TestRunner {
 
 And now, we can start using it:
 
-```typescript
+```javascript
 // my-spec.test.ts
 
 import { MyTestRunner } from "./MyTestRunner.ts";
@@ -116,7 +116,7 @@ Imagine that we have `playwright` + `jest-playwright`, and we want to capture th
 
 Let's implement it:
 
-```typescript
+```javascript
 // CaptureScreenshot.ts
 
 import type { Class } from "@jest-decorated/shared";
@@ -132,7 +132,7 @@ export function CaptureScreenshot(target: object, propertyKey: PropertyKey) {
 }
 ```
 
-```typescript
+```javascript
 // MyTestRunner.ts
 
 import type { Class, PreProcessorData } from "@jest-decorated/shared";
@@ -171,7 +171,7 @@ export class MyTestRunner extends TestRunner {
 
 And now, we can start using it:
 
-```typescript
+```javascript
 // my-spec.test.ts
 
 import { MyTestRunner } from "./MyTestRunner.ts";
