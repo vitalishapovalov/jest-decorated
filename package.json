@@ -15,7 +15,7 @@
     "build": "lerna run build",
     "lint": "lerna run lint",
     "cleanBuild": "npm run clean && npm run bootstrap && npm run build",
-    "prepublishOnly": "npm run build && npm run lint && npm run test"
+    "prepublishOnly": "npm run build && npm run test"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.0",
