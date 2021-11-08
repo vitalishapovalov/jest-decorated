@@ -27,5 +27,8 @@
     * [@WithContext](react/WithContext.md) 
     * [@WithProps](react/WithProps.md) 
     * [@WithState](react/WithState.md)
+* Guides
+  * [Writing custom Test Runner](core/CustomTestRunner.md)
+  * [Writing custom @Decorators](core/CustomDecorator.md)
 * [Contributing](contributing.md)
 * [License](license.md)

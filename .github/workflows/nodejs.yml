@@ -10,8 +10,8 @@ jobs:
     strategy:
       matrix:
         # windows-latest is temp removed
-        os: [ubuntu-16.04, ubuntu-18.04, macos-latest]
-        node-version: [10.x, 12.x]
+        os: [ubuntu-18.04, ubuntu-20.04, macos-latest]
+        node-version: [14.x, 16.x]
 
     steps:
     - uses: actions/checkout@v1

@@ -173,7 +173,7 @@ You will also need to include your setup file and the test folder in your `tscon
 ```json
 {
   "include": [
-    "./jest-setup.ts",
+    "./testSetup.ts",
     "./__tests__"
   ]
 }
