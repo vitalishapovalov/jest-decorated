@@ -43,7 +43,7 @@ Our decorator will accept only one argument `(platform: NodeJS.Platform)`.
 
 Let's implement it:
 
-```typescript
+```javascript
 // RunOnPlatform.ts
 
 import type { IDescribeRunner, CustomDecoratorCallbackMetadata } from "@jest-decorated/shared";
@@ -107,7 +107,7 @@ Our decorator will accept only one argument `(screenshotNameSuffix: string)`.
 
 Let's implement it:
 
-```typescript
+```javascript
 // CaptureScreenshot.ts
 
 import type { CustomDecoratorPostProcessorMetadata } from "@jest-decorated/shared";
