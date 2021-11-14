@@ -1,6 +1,12 @@
 import type { Class, DescribeType } from "@shared/types";
 import type { ITestRunner } from ".";
-import type { IHooksService, IImportsService, IMocksService, ITestsService } from "../services";
+import type {
+    ICustomDecoratorsService,
+    IHooksService,
+    IImportsService,
+    IMocksService,
+    ITestsService,
+} from "../services";
 
 export interface IDescribeRunner {
 
@@ -23,6 +29,8 @@ export interface IDescribeRunner {
     getImportsService(): IImportsService;
 
     getMocksService(): IMocksService;
+
+    getCustomDecoratorsService(): ICustomDecoratorsService;
 
     getTestRunner(): ITestRunner;
 

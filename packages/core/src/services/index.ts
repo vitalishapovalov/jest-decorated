@@ -1,3 +1,4 @@
+export * from "./CustomDecoratorsService";
 export * from "./HooksService";
 export * from "./ImportsService";
 export * from "./MocksService";

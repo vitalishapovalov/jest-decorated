@@ -71,6 +71,14 @@ export class ReactTestRunner implements ITestRunner {
         ReactTestRunner.log("Registering tests in jest DONE");
     }
 
+    public registerCustomDecoratorsPre(describeRunner: IDescribeRunner, parentDescribeRunner?: IDescribeRunner) {
+        this.defaultTestsRunner.registerCustomDecoratorsPre(describeRunner, parentDescribeRunner);
+    }
+
+    public registerCustomDecoratorsPost(describeRunner: IDescribeRunner, parentDescribeRunner?: IDescribeRunner) {
+        this.defaultTestsRunner.registerCustomDecoratorsPost(describeRunner, parentDescribeRunner);
+    }
+
     private registerComponentPreProcessors(
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner

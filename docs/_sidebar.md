@@ -28,7 +28,8 @@
     * [@WithProps](react/WithProps.md) 
     * [@WithState](react/WithState.md)
 * Guides
-  * [Writing custom Test Runner](core/CustomTestRunner.md)
   * [Writing custom @Decorators](core/CustomDecorator.md)
+  * [Writing custom Test Runner](core/CustomTestRunner.md)
+  * [Writing custom @Decorators with Test Runner](core/CustomDecoratorTestRunner.md)
 * [Contributing](contributing.md)
 * [License](license.md)

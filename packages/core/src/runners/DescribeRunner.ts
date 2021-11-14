@@ -1,17 +1,22 @@
 import type {
     Class,
-    ITestRunner,
-    IHooksService,
-    ITestsService,
+    CustomDecorator,
+    CustomDecoratorCallbacks,
+    CustomDecoratorDefaultArgs,
+    ICustomDecoratorsService,
     IDescribeRunner,
+    IHooksService,
     IImportsService,
     IMocksService,
+    ITestRunner,
+    ITestsService,
 } from "@jest-decorated/shared";
 import debug from "debug";
-import { DescribeType } from "@jest-decorated/shared";
+import { isUndefined } from "@js-utilities/typecheck";
+import { DescribeType, CustomDecoratorType } from "@jest-decorated/shared";
 
 import { TestRunner } from "./TestRunner";
-import { HooksService, TestsService, ImportsService, MocksService } from "../services";
+import { CustomDecoratorsService, HooksService, ImportsService, MocksService, TestsService } from "../services";
 
 export class DescribeRunner implements IDescribeRunner {
 
@@ -28,6 +33,24 @@ export class DescribeRunner implements IDescribeRunner {
         return describeService;
     }
 
+    public static createCustomDecorator<Args extends CustomDecoratorDefaultArgs = []>(
+        callbacks: CustomDecoratorCallbacks<Args>
+    ): CustomDecorator<Args> {
+        return (...args: Args) => function (target: object | Class, propertyKey?: PropertyKey) {
+            const isClass = isUndefined(propertyKey);
+            const describeRunner = DescribeRunner.getDescribeRunner(
+                (isClass ? target : target.constructor) as Class
+            );
+            describeRunner.getCustomDecoratorsService().registerCustomDecorator(
+                isClass ? CustomDecoratorType.CLASS : CustomDecoratorType.METHOD,
+                callbacks,
+                args,
+                describeRunner,
+                propertyKey
+            );
+        };
+    }
+
     private testRunner: ITestRunner = new TestRunner();
 
     private describeName: string;
@@ -39,7 +62,8 @@ export class DescribeRunner implements IDescribeRunner {
         private readonly testsService: ITestsService = new TestsService(clazzInstance),
         private readonly hooksService: IHooksService = new HooksService(clazzInstance, testsService),
         private readonly importsService: IImportsService = new ImportsService(clazz),
-        private readonly mocksService: IMocksService = new MocksService(clazz, clazzInstance)
+        private readonly mocksService: IMocksService = new MocksService(clazz, clazzInstance),
+        private readonly customDecoratorsService: ICustomDecoratorsService = new CustomDecoratorsService(testsService)
     ) {
         DescribeRunner.log(`New instance created for clazz: ${clazz.name}`);
     }
@@ -86,6 +110,10 @@ export class DescribeRunner implements IDescribeRunner {
         return this.mocksService;
     }
 
+    public getCustomDecoratorsService(): ICustomDecoratorsService {
+        return this.customDecoratorsService;
+    }
+
     public getTestRunner(): ITestRunner {
         return this.testRunner;
     }
@@ -106,12 +134,14 @@ export class DescribeRunner implements IDescribeRunner {
     public registerDescribeInJest(parentDescribeService?: IDescribeRunner): void {
         DescribeRunner.log(`Registering jest describe. Describe type: ${this.describeType}; Parent describe: ${String(parentDescribeService)}`);
         this.getCurrentDescribeFunction()(this.describeName, () => {
+            this.testRunner.registerCustomDecoratorsPre(this, parentDescribeService);
             this.testRunner.registerMocks(this, parentDescribeService);
             this.testRunner.registerAutoCleared(this, parentDescribeService);
             this.testRunner.registerLazyModules(this, parentDescribeService);
             this.testRunner.registerMockFnsAndSpies(this, parentDescribeService);
             this.testRunner.registerHooks(this, parentDescribeService);
             this.testRunner.registerTestsInJest(this, parentDescribeService);
+            this.testRunner.registerCustomDecoratorsPost(this, parentDescribeService);
         });
     }
 

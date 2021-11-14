@@ -1,88 +1,69 @@
-# Custom Decorator
+# Custom Decorators
 
-When you already have [your own Test Runner](core/CustomTestRunner.md), you can go further and write your own @Decorators.
+You're able to register your own `@Decorators` with the public `DescribeRunner.createCustomDecorator()` static method.
 
-## Creating own registry
-
-First, we need to update our Test Runner. We need it ho have a global, class-specific registry, to be able to register our own metadata:
+Interface:
 
 ```javascript
-import type { Class } from "@jest-decorated/shared";
-import { TestRunner } from "@jest-decorated/core";
+import { CustomDecoratorCallbackMetadata, CustomDecoratorPreProcessorMetadata, CustomDecoratorPostProcessorMetadata } from "@jest-decorated/shared";
 
-export class MyTestRunner extends TestRunner {
-
-    // we'll use the test class as the key in a WeakMap (Weak - because we only want metadata to exist while the test class exists)
-    // and a Map as the value (Map will hold our test class-specific data)
-    private static readonly GLOBAL_REGISTRY = new WeakMap<Class, Map>();
-    
-    // we'll use this method in our @Decorators to access/register test class-specific data
-    // we'll create a new registry instance on the first invocation
-    public static getRegistry(clazz: Class): Map {
-        let classSpecificRegistry = MyTestRunner.GLOBAL_REGISTRY.get(clazz);
-        if (!classSpecificRegistry) {
-            classSpecificRegistry = new Map();
-            MyTestRunner.GLOBAL_REGISTRY.set(clazz, classSpecificRegistry);
-        }
-        return classSpecificRegistry;
+class DescribeRunner {
+  
+  public static createCustomDecorator<Args extends any[] = []>(
+    callbacks: {
+      // will be executed before the tests, hooks, etc. are registered in jest
+      beforeTestsRegistration?(metadata: CustomDecoratorCallbackMetadata<Args>): void;
+      
+      // will be executed when all of tests, hooks, etc. are already registered in jest
+      afterTestsRegistration?(metadata: CustomDecoratorCallbackMetadata<Args>): void;
+      
+      // PreProcessor:
+      // - will be executed for each test, if the resulting decorator will be used as a ClassDeorator
+      // - will be executed only for the matched test, if the resulting decorator will be used as a MethodDeorator
+      preProcessor?(metadata: CustomDecoratorPreProcessorMetadata<Args>): Promise<PreProcessorData> | PreProcessorData | void;
+      
+      // PostProcessor:
+      // - will be executed for each test, if the resulting decorator will be used as a ClassDeorator
+      // - will be executed only for the matched test, if the resulting decorator will be used as a MethodDeorator
+      postProcessor?(metadata: CustomDecoratorPostProcessorMetadata<Args>): void;
     }
+  ): (...args: T) => (target: object | Class, propertyKey?: PropertyKey, propertyDescriptor?: PropertyDescriptor) => any;
+
 }
 ```
-
-Now, we're ready to start writing our own `@Decorators`.
 
 ## @RunOnPlatform - run some tests only on specific platforms
 
-Imagine that we want some of our tests to be executed only on `Windows`.
-In the future, there could be more environments to come (e.g. `MacOS`), so we want our decorator to be generic.
+Imagine that we want some of our tests to be executed only on `Windows` (win32).
+In the future, there could be more environments to come (e.g. `MacOS` (darwin)), so we want our decorator to be generic.
+
+We want to be able to use our decorator on both Test Suites and Tests.
+
+Our decorator will accept only one argument `(platform: NodeJS.Platform)`.
 
 Let's implement it:
 
-```javascript
+```typescript
 // RunOnPlatform.ts
 
-import type { Class } from "@jest-decorated/shared";
-import { MyTestRunner } from "./MyTestRunner.ts";
+import type { IDescribeRunner, CustomDecoratorCallbackMetadata } from "@jest-decorated/shared";
+import { DescribeRunner } from "@jest-decorated/core";
 
-export function RunOnPlatform(platform: Platform) {
-    return function(target: object, propertyKey: PropertyKey) {
-        const myRegistry: Map = MyTestRunner.getRegistry(target.constructor as Class);
-        const existingValues = myRegistry.get("RunOnPlatform");
-        myRegistry.set("RunOnPlatform", {
-            ...existingValues,
-            [propertyKey]: platform,
-        });
-    };
-}
-```
-
-```javascript
-// MyTestRunner.ts
-
-import type { Class } from "@jest-decorated/shared";
-import { TestRunner } from "@jest-decorated/core";
-
-export class MyTestRunner extends TestRunner {
-
-    // registry implementation from the first step here
-
-    public override registerTestsInJest(describeRunner: IDescribeRunner, parentDescribeRunner?: IDescribeRunner): void {
-        this.registerRunOnPlatform(describeRunner);
-        super.registerTestsInJest(describeRunner, parentDescribeRunner);
-    }
-    
-    private registerRunOnPlatform(describeRunner: IDescribeRunner): void {
-        const currentRegistry = MyTestRunner.getRegistry(describeRunner.getClass());
-        const runOnPlatformRegisteredTests = currentRegistry.get("RunOnPlatform");
-        for (const testEntity of describeRunner.getTestsService().getTests()) {
-            const testSupportedPlatform = runOnPlatformRegisteredTests[testEntity.name];
-            if (testSupportedPlatform && testSupportedPlatform !== process.platform) {
-                testEntity.setTestType("skip");
+export const RunOnPlatform = DescribeRunner.createCustomDecorator<[platform: NodeJS.Platform]>({
+    // we want to modify tests before they are registered in jest
+    beforeTestsRegistration({ args: [platform], describeRunner, methodName }: CustomDecoratorCallbackMetadata<[platform: NodeJS.Platform]>): void {
+        const isUsedAsClassDecorator = !methodName;
+        for (const registeredTest of describeRunner.getTestsService().getTests()) {
+            // when used as a ClassDecorator - we want to skip all of the tests, in case of non-matching platform
+            // when used as a MethodDecorator - we want to skip only matched tests, in case of non-matching platform
+            const isMatchedTest = registeredTest.name === methodName;
+            const isWrongPlatform = process.platform !== platform;
+            if ((isUsedAsClassDecorator || isMatchedTest) && isWrongPlatform) {
+                registeredTest.setTestType("skip");
             }
         }
     }
-    
-}
+});
 ```
 
 And now, we can start using it:
@@ -90,23 +71,31 @@ And now, we can start using it:
 ```javascript
 // my-spec.test.ts
 
-import { MyTestRunner } from "./MyTestRunner.ts";
 import { RunOnPlatform } from "./RunOnPlatform.ts";
 
 @Describe()
-@RunWith(MyTestRunner)
-class MySpec {
+class MySpecUsedAsMethod {
     
+    @Test()
     @RunOnPlatform("win32")
     myWindowsSpecificTest() {
-        // test impl
+        // windows-specific test
     }
 
+    @Test()
     @RunOnPlatform("darwin")
     myMacOSSpecificTest() {
-        // test impl
+        // mac-specific test
     }
     
+}
+
+@Describe()
+@RunOnPlatform("win32")
+class MySpecUsedAsClass {
+
+  // windows-specific tests
+
 }
 ```
 
@@ -114,59 +103,34 @@ class MySpec {
 
 Imagine that we have `playwright` + `jest-playwright`, and we want to capture the screenshot of the page at the end, for some specific tests only.
 
+Our decorator will accept only one argument `(screenshotNameSuffix: string)`.
+
 Let's implement it:
 
-```javascript
+```typescript
 // CaptureScreenshot.ts
 
-import type { Class } from "@jest-decorated/shared";
-import { MyTestRunner } from "./MyTestRunner.ts";
+import type { CustomDecoratorPostProcessorMetadata } from "@jest-decorated/shared";
+import { DescribeRunner } from "@jest-decorated/core";
 
-export function CaptureScreenshot(target: object, propertyKey: PropertyKey) {
-    const myRegistry: Map = MyTestRunner.getRegistry(target.constructor as Class);
-    const existingValues = myRegistry.get("CaptureScreenshot");
-    myRegistry.set("CaptureScreenshot", [
-        ...existingValues,
-        propertyKey
-    ]);
-}
-```
-
-```javascript
-// MyTestRunner.ts
-
-import type { Class, PreProcessorData } from "@jest-decorated/shared";
-import { TestRunner } from "@jest-decorated/core";
-
-export class MyTestRunner extends TestRunner {
-
-    // registry implementation from the first step here
-
-    public override registerTestsInJest(describeRunner: IDescribeRunner, parentDescribeRunner?: IDescribeRunner): void {
-        this.registerCaptureScreenshotPostProcessor(describeRunner);
-        super.registerTestsInJest(describeRunner, parentDescribeRunner);
+export const CaptureScreenshot = DescribeRunner.createCustomDecorator<[screenshotNameSuffix: string]>({
+    // we'll register a post-processor, to be able to capture all of the TestSuite's test results, or only the selected one
+    postProcessor({ testError, testResult, methodName }: CustomDecoratorPostProcessorMetadata<[screenshotNameSuffix: string]>): void {
+        // we don't want to capture screenshots of the failed tests
+        if (testError) {
+            return;
+        }
+        // when used as a ClassDecorator - we want to capture screenshots for all of the tests
+        // when used as a MethodDecorator - we want to capture screenshots only for matched tests
+        const isUsedAsClassDecorator = !methodName;
+        const isMatchedTest = testResult?.testEntity.name === methodName;
+        if (isUsedAsClassDecorator || isMatchedTest) {
+            page.screenshot({
+                path: `captured_screenshots/${testResult.testEntity.description}-${screenshotNameSuffix}.png`
+            });
+        }
     }
-    
-    private registerCaptureScreenshotPostProcessor(describeRunner: IDescribeRunner): void {
-        const currentRegistry = MyTestRunner.getRegistry(describeRunner.getClass());
-        const captureScreenshotTests = currentRegistry.get("CaptureScreenshot");
-
-        describeRunner.getTestsService().registerPostProcessor(
-            (preProcessorData: PreProcessorData, testError?: Error) => {
-                if (testError) {
-                    return;
-                }
-                if (captureScreenshotTests.includes(preProcessorData.testEntity.name)) {
-                    page.screenshot({
-                        path: `captured_screenshots/${preProcessorData.testEntity.description}.png`
-                    });
-                }
-            },
-            0
-        );
-    }
-    
-}
+});
 ```
 
 And now, we can start using it:
@@ -174,17 +138,24 @@ And now, we can start using it:
 ```javascript
 // my-spec.test.ts
 
-import { MyTestRunner } from "./MyTestRunner.ts";
 import { CaptureScreenshot } from "./CaptureScreenshot.ts";
 
 @Describe()
-@RunWith(MyTestRunner)
-class MySpec {
-    
-    @CaptureScreenshot
+class MySpecUsedAsMethod {
+
+    @Test()
+    @CaptureScreenshot("result")
     myUiTest() {
         // test impl
     }
     
+}
+
+@Describe()
+@CaptureScreenshot("result")
+class MySpecUsedAsClass {
+
+  // tests
+
 }
 ```

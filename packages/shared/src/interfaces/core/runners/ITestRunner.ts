@@ -35,4 +35,15 @@ export interface ITestRunner {
         describeRunner: IDescribeRunner,
         parentDescribeRunner?: IDescribeRunner
     ): void;
+
+    registerCustomDecoratorsPre(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void;
+
+    registerCustomDecoratorsPost(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void;
+
 }

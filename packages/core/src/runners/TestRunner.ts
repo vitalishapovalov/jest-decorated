@@ -67,6 +67,22 @@ export class TestRunner implements ITestRunner {
         }
     }
 
+    public registerCustomDecoratorsPre(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        TestRunner.log("Registering custom decorators pre");
+        describeRunner.getCustomDecoratorsService().runBeforeTestsRegistrationDecoratorsCallbacks();
+    }
+
+    public registerCustomDecoratorsPost(
+        describeRunner: IDescribeRunner,
+        parentDescribeRunner?: IDescribeRunner
+    ): void {
+        TestRunner.log("Registering custom decorators post");
+        describeRunner.getCustomDecoratorsService().runAfterTestsRegistrationDecoratorsCallbacks();
+    }
+
     protected registerTestInJest(testEntity: TestEntity, describeRunner: IDescribeRunner): void {
         const clazzInstance = describeRunner.getClassInstance();
         const testsService = describeRunner.getTestsService();

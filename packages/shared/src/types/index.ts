@@ -1,6 +1,7 @@
 export * from "./Class";
 export * from "./ComponentContext";
 export * from "./ComponentProvider";
+export * from "./CustomDecorators";
 export * from "./DescribeDecorator";
 export * from "./DescribeType";
 export * from "./ExtendedDescribe";

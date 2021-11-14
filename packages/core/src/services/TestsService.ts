@@ -29,7 +29,7 @@ export class TestsService implements ITestsService {
     }
 
     public registerTest(testEntity: TestEntity): void {
-        TestsService.log(`Registering test entity. TestEntity: ${String(TestEntity)}`);
+        TestsService.log(`Registering test entity. TestEntity: ${testEntity.toString()}`);
         if (this.tests.some(({ name }) => name === testEntity.name)) {
             this
                 .getTest(testEntity.name)
@@ -62,14 +62,14 @@ export class TestsService implements ITestsService {
     }
 
     public registerPreProcessor(preProcessor: PreProcessor, order: number): void {
-        TestsService.log(`Registering pre-processor. Processor: ${String(preProcessor)}; Order: ${order}`);
+        TestsService.log(`Registering pre-processor. Processor: ${String(preProcessor.name)}; Order: ${order}`);
         const currPreProcessors = this.preProcessors[order] || [];
         currPreProcessors.push(preProcessor);
         this.preProcessors[order] = currPreProcessors;
     }
 
     public registerPostProcessor(postProcessor: PostProcessor, order: number): void {
-        TestsService.log(`Registering post-processor. Processor: ${String(postProcessor)}; Order: ${order}`);
+        TestsService.log(`Registering post-processor. Processor: ${String(postProcessor.name)}; Order: ${order}`);
         const currPostProcessors = this.postProcessors[order] || [];
         currPostProcessors.push(postProcessor);
         this.postProcessors[order] = currPostProcessors;
