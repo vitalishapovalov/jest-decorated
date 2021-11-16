@@ -2,7 +2,7 @@ import { CustomDecoratorCallbackMetadata } from "@jest-decorated/shared";
 
 import { DescribeRunner } from "../../runners";
 
-export const RunOnPlatform = DescribeRunner.createCustomDecorator<[platform: NodeJS.Platform]>({
+export const RunOnPlatform = DescribeRunner.createCustomDecorator<[platform: NodeJS.Platform]>(class {
     beforeTestsRegistration({ args: [platform], describeRunner, methodName }: CustomDecoratorCallbackMetadata<[platform: NodeJS.Platform]>) {
         const isUsedAsClassDecorator = !methodName;
         const isWrongPlatform = process.platform !== platform;

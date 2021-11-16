@@ -26,15 +26,24 @@ export type CustomDecoratorPostProcessorMetadata<Args> = CustomDecoratorCallback
     testError?: Error;
 };
 
-export type CustomDecoratorCallbacks<Args = CustomDecoratorDefaultArgs> = {
+export type CustomDecoratorHandler<Args = CustomDecoratorDefaultArgs> = {
     beforeTestsRegistration?(metadata: CustomDecoratorCallbackMetadata<Args>): void;
     afterTestsRegistration?(metadata: CustomDecoratorCallbackMetadata<Args>): void;
-    preProcessor?(metadata: CustomDecoratorPreProcessorMetadata<Args>): PreProcessorData | void;
-    postProcessor?(metadata: CustomDecoratorPostProcessorMetadata<Args>): void;
+    preProcessor?(metadata: CustomDecoratorPreProcessorMetadata<Args>): PreProcessorData | Promise<PreProcessorData>;
+    postProcessor?(metadata: CustomDecoratorPostProcessorMetadata<Args>): void | Promise<void>;
 };
 
+export interface CustomDecoratorHandlerConstructor<Args = CustomDecoratorDefaultArgs> {
+    new (
+        args: Args,
+        target: Class,
+        propertyKey?: PropertyKey,
+        propertyDescriptor?: PropertyDescriptor
+    ): CustomDecoratorHandler<Args>;
+}
+
 export type CustomDecoratorConfig = {
-    callbacks: CustomDecoratorCallbacks;
+    handler: CustomDecoratorHandler;
     args: CustomDecoratorDefaultArgs;
     describeRunner: IDescribeRunner;
 };

@@ -5,12 +5,20 @@ You're able to register your own `@Decorators` with the public `DescribeRunner.c
 Interface:
 
 ```javascript
-import { CustomDecoratorCallbackMetadata, CustomDecoratorPreProcessorMetadata, CustomDecoratorPostProcessorMetadata } from "@jest-decorated/shared";
+import { CustomDecoratorHandler, CustomDecoratorCallbackMetadata, CustomDecoratorPreProcessorMetadata, CustomDecoratorPostProcessorMetadata } from "@jest-decorated/shared";
 
 class DescribeRunner {
   
   public static createCustomDecorator<Args extends any[] = []>(
-    callbacks: {
+    customDecoratorHandlerConstructor: {
+      // constructor will be called during the decorator execution
+      new (
+        args: Args,
+        target: Class,
+        propertyKey?: PropertyKey,
+      propertyDescriptor?: PropertyDescriptor
+      ): CustomDecoratorHandler<Args>;
+      
       // will be executed before the tests, hooks, etc. are registered in jest
       beforeTestsRegistration?(metadata: CustomDecoratorCallbackMetadata<Args>): void;
       
@@ -20,12 +28,12 @@ class DescribeRunner {
       // PreProcessor:
       // - will be executed for each test, if the resulting decorator will be used as a ClassDeorator
       // - will be executed only for the matched test, if the resulting decorator will be used as a MethodDeorator
-      preProcessor?(metadata: CustomDecoratorPreProcessorMetadata<Args>): Promise<PreProcessorData> | PreProcessorData | void;
+      preProcessor?(metadata: CustomDecoratorPreProcessorMetadata<Args>): PreProcessorData | Promise<PreProcessorData>;
       
       // PostProcessor:
       // - will be executed for each test, if the resulting decorator will be used as a ClassDeorator
       // - will be executed only for the matched test, if the resulting decorator will be used as a MethodDeorator
-      postProcessor?(metadata: CustomDecoratorPostProcessorMetadata<Args>): void;
+      postProcessor?(metadata: CustomDecoratorPostProcessorMetadata<Args>): void | Promise<void>;
     }
   ): (...args: T) => (target: object | Class, propertyKey?: PropertyKey, propertyDescriptor?: PropertyDescriptor) => any;
 
@@ -49,7 +57,7 @@ Let's implement it:
 import type { IDescribeRunner, CustomDecoratorCallbackMetadata } from "@jest-decorated/shared";
 import { DescribeRunner } from "@jest-decorated/core";
 
-export const RunOnPlatform = DescribeRunner.createCustomDecorator<[platform: NodeJS.Platform]>({
+export const RunOnPlatform = DescribeRunner.createCustomDecorator<[platform: NodeJS.Platform]>(class {
     // we want to modify tests before they are registered in jest
     beforeTestsRegistration({ args: [platform], describeRunner, methodName }: CustomDecoratorCallbackMetadata<[platform: NodeJS.Platform]>): void {
         const isUsedAsClassDecorator = !methodName;
@@ -113,7 +121,7 @@ Let's implement it:
 import type { CustomDecoratorPostProcessorMetadata } from "@jest-decorated/shared";
 import { DescribeRunner } from "@jest-decorated/core";
 
-export const CaptureScreenshot = DescribeRunner.createCustomDecorator<[screenshotNameSuffix: string]>({
+export const CaptureScreenshot = DescribeRunner.createCustomDecorator<[screenshotNameSuffix: string]>(class {
     // we'll register a post-processor, to be able to capture all of the TestSuite's test results, or only the selected one
     postProcessor({ testError, testResult, methodName }: CustomDecoratorPostProcessorMetadata<[screenshotNameSuffix: string]>): void {
         // we don't want to capture screenshots of the failed tests

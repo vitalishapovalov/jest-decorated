@@ -1,7 +1,7 @@
 import type {
     Class,
     CustomDecorator,
-    CustomDecoratorCallbacks,
+    CustomDecoratorHandlerConstructor,
     CustomDecoratorDefaultArgs,
     ICustomDecoratorsService,
     IDescribeRunner,
@@ -34,16 +34,16 @@ export class DescribeRunner implements IDescribeRunner {
     }
 
     public static createCustomDecorator<Args extends CustomDecoratorDefaultArgs = []>(
-        callbacks: CustomDecoratorCallbacks<Args>
+        customDecoratorHandlerConstructor: CustomDecoratorHandlerConstructor<Args>
     ): CustomDecorator<Args> {
-        return (...args: Args) => function (target: object | Class, propertyKey?: PropertyKey) {
+        return (...args: Args) => function (target: object | Class, propertyKey?: PropertyKey, propertyDescriptor?: PropertyDescriptor) {
             const isClass = isUndefined(propertyKey);
-            const describeRunner = DescribeRunner.getDescribeRunner(
-                (isClass ? target : target.constructor) as Class
-            );
+            const clazz = (isClass ? target : target.constructor) as Class;
+            const customDecoratorHandlerInstance = new customDecoratorHandlerConstructor(args, clazz, propertyKey, propertyDescriptor);
+            const describeRunner = DescribeRunner.getDescribeRunner(clazz);
             describeRunner.getCustomDecoratorsService().registerCustomDecorator(
                 isClass ? CustomDecoratorType.CLASS : CustomDecoratorType.METHOD,
-                callbacks,
+                customDecoratorHandlerInstance,
                 args,
                 describeRunner,
                 propertyKey

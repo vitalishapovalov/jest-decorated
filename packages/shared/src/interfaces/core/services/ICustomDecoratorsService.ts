@@ -1,11 +1,11 @@
-import type { CustomDecoratorCallbacks, CustomDecoratorDefaultArgs, CustomDecoratorType } from "@shared/types";
+import type { CustomDecoratorHandler, CustomDecoratorDefaultArgs, CustomDecoratorType } from "@shared/types";
 import type { IDescribeRunner } from "@shared/interfaces";
 
 export interface ICustomDecoratorsService {
 
     registerCustomDecorator(
         decoratorType: CustomDecoratorType,
-        callbacks: CustomDecoratorCallbacks,
+        callbacks: CustomDecoratorHandler,
         args: CustomDecoratorDefaultArgs,
         describeRunner: IDescribeRunner,
         propertyKey?: PropertyKey
