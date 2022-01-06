@@ -127,6 +127,7 @@ export class DescribeRunner implements IDescribeRunner {
         DescribeRunner.log(`Updating describe. Update describe name: ${describeRunner.getDescribeName()}`);
         this.mocksService.mergeInAll(describeRunner.getMocksService());
         this.hooksService.mergeInAll(describeRunner.getHooksService());
+        this.customDecoratorsService.mergeInAll(describeRunner.getCustomDecoratorsService());
         this.testsService.mergeInDataProviders(describeRunner.getTestsService());
         this.setTestRunner(describeRunner.getTestRunner());
     }

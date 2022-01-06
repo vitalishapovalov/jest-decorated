@@ -54,6 +54,27 @@ export class CustomDecoratorsService implements ICustomDecoratorsService {
         this.executeMethodCallback("afterTestsRegistration");
     }
 
+    public getCustomDecorators(): {
+        classDecorators: CustomDecoratorConfig[];
+        methodDecorators: Map<PropertyKey, CustomDecoratorConfig[]>;
+    } {
+        return {
+            classDecorators: [...this.classDecorators],
+            methodDecorators: new Map(this.methodDecorators),
+        };
+    }
+
+    public mergeInAll(customDecoratorsService: ICustomDecoratorsService): void {
+        CustomDecoratorsService.log(`Merging in custom decorators from the service: ${String(customDecoratorsService)}`);
+        const { classDecorators, methodDecorators } = customDecoratorsService.getCustomDecorators();
+        for (const customDecorator of classDecorators) {
+            this.classDecorators.push(customDecorator);
+        }
+        for (const [propertyKey, customDecorator] of methodDecorators) {
+            this.methodDecorators.set(propertyKey, customDecorator);
+        }
+    }
+
     private async customDecoratorPreProcessor(preProcessorData: PreProcessorData): Promise<PreProcessorData> {
         this.executeClassCallback("preProcessor", { preProcessorData });
         return await this.executeMethodCallback(
