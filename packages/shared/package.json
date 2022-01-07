@@ -1,6 +1,6 @@
 {
   "name": "@jest-decorated/shared",
-  "version": "0.1.5-beta.2",
+  "version": "0.1.5",
   "description": "Types, interfaces and utils of jest-decorated lib.",
   "license": "MIT",
   "author": {
