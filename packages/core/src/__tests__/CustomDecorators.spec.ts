@@ -69,8 +69,30 @@ class CustomDecoratorsSpec3 {
 
 }
 
+class CustomDecoratorsSpec41 {
+    @BeforeEach()
+    @RunOnPlatform("win32")
+    win32BeforeEach() {
+        counter.win32++;
+    }
+}
+
 @Describe()
-class CustomDecoratorsSpec4 {
+class CustomDecoratorsSpec42 extends CustomDecoratorsSpec41 {
+    @BeforeEach()
+    @RunOnPlatform("darwin")
+    darwinBeforeEach() {
+        counter.darwin++;
+    }
+
+    @Test()
+    suiteTest() {
+        expect(true).toBeTruthy();
+    }
+}
+
+@Describe()
+class CustomDecoratorsSpec5 {
 
     @Test()
     finalTest() {
@@ -79,7 +101,7 @@ class CustomDecoratorsSpec4 {
         } else {
             expect(counter).toStrictEqual({
                 ...initialCounter,
-                [process.platform]: 4,
+                [process.platform]: 5,
             });
         }
     }

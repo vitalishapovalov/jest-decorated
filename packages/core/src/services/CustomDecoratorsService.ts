@@ -15,8 +15,8 @@ export class CustomDecoratorsService implements ICustomDecoratorsService {
 
     private static readonly log = debug("jest-decorated:core:CustomDecoratorService");
 
-    private readonly classDecorators: CustomDecoratorConfig[] = [];
-    private readonly methodDecorators: Map<PropertyKey, CustomDecoratorConfig[]> = new Map();
+    public readonly classDecorators: CustomDecoratorConfig[] = [];
+    public readonly methodDecorators: Map<PropertyKey, CustomDecoratorConfig[]> = new Map();
 
     public constructor(
        private readonly testsService: ITestsService
@@ -52,6 +52,28 @@ export class CustomDecoratorsService implements ICustomDecoratorsService {
     public runAfterTestsRegistrationDecoratorsCallbacks(): void {
         this.executeClassCallback("afterTestsRegistration");
         this.executeMethodCallback("afterTestsRegistration");
+    }
+
+    public mergeInAll(
+        customDecoratorsService: ICustomDecoratorsService,
+        describeRunner: IDescribeRunner
+    ): void {
+        CustomDecoratorsService.log(`Merging in custom decorators from the service: ${String(customDecoratorsService)}`);
+        this.classDecorators.push(...customDecoratorsService.classDecorators.map(customDecorator => ({
+            ...customDecorator,
+            describeRunner,
+        })));
+        for (const [propertyKey, customDecorators] of customDecoratorsService.methodDecorators) {
+            const customDecoratorsWithUpdatedDescribe = customDecorators.map(customDecorator => ({
+                ...customDecorator,
+                describeRunner,
+            }));
+            if (this.methodDecorators.has(propertyKey)) {
+                this.methodDecorators.get(propertyKey).push(...customDecoratorsWithUpdatedDescribe);
+            } else {
+                this.methodDecorators.set(propertyKey, customDecoratorsWithUpdatedDescribe);
+            }
+        }
     }
 
     private async customDecoratorPreProcessor(preProcessorData: PreProcessorData): Promise<PreProcessorData> {
