@@ -5,7 +5,7 @@ import { isCallable, isObject } from "@js-utilities/typecheck";
 
 export class MocksService implements IMocksService {
 
-    private static readonly log = debug("jest-decorated:core:ImportsService");
+    private static readonly log = debug("jest-decorated:core:MocksService");
 
     public constructor(
         private readonly clazz: Class,

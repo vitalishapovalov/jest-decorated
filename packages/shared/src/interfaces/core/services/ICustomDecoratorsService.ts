@@ -8,12 +8,13 @@ import type { IDescribeRunner } from "@shared/interfaces";
 
 export interface ICustomDecoratorsService {
 
-    getCustomDecorators(): {
-        classDecorators: CustomDecoratorConfig[];
-        methodDecorators: Map<PropertyKey, CustomDecoratorConfig[]>;
-    };
+    readonly classDecorators: CustomDecoratorConfig[];
+    readonly methodDecorators: Map<PropertyKey, CustomDecoratorConfig[]>;
 
-    mergeInAll(customDecoratorsService: ICustomDecoratorsService): void;
+    mergeInAll(
+        customDecoratorsService: ICustomDecoratorsService,
+        describeRunner: IDescribeRunner
+    ): void;
 
     registerCustomDecorator(
         decoratorType: CustomDecoratorType,
