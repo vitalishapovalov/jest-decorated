@@ -52,6 +52,7 @@ export class DescribeRunner implements IDescribeRunner {
     }
 
     private testRunner: ITestRunner = new TestRunner();
+    private isCustomTestRunnerSet: boolean = false;
 
     private describeName: string;
     private describeType: DescribeType;
@@ -118,9 +119,14 @@ export class DescribeRunner implements IDescribeRunner {
         return this.testRunner;
     }
 
-    public setTestRunner(testRunner: ITestRunner): void {
-        DescribeRunner.log(`Setting test runner: ${String(testRunner)}`);
-        this.testRunner = testRunner;
+    public hasCustomTestRunner(): boolean {
+        return this.isCustomTestRunnerSet;
+    }
+
+    public setCustomTestRunner(customTestRunner: ITestRunner): void {
+        DescribeRunner.log(`Setting test runner: ${String(customTestRunner)}; constructor name: ${customTestRunner?.constructor?.name}`);
+        this.testRunner = customTestRunner;
+        this.isCustomTestRunnerSet = true;
     }
 
     public updateDescribe(describeRunner: IDescribeRunner): void {
@@ -129,7 +135,7 @@ export class DescribeRunner implements IDescribeRunner {
         this.hooksService.mergeInAll(describeRunner.getHooksService());
         this.customDecoratorsService.mergeInAll(describeRunner.getCustomDecoratorsService(), this);
         this.testsService.mergeInDataProviders(describeRunner.getTestsService());
-        this.setTestRunner(describeRunner.getTestRunner());
+        this.mergeInTestRunner(describeRunner);
     }
 
     public registerDescribeInJest(parentDescribeService?: IDescribeRunner): void {
@@ -155,6 +161,16 @@ export class DescribeRunner implements IDescribeRunner {
             case DescribeType.DEFAULT:
             default:
                 return describe;
+        }
+    }
+
+    protected mergeInTestRunner(describeRunner: IDescribeRunner): void {
+        if (describeRunner.hasCustomTestRunner() && !this.isCustomTestRunnerSet) {
+            const testRunner = describeRunner.getTestRunner();
+            DescribeRunner.log(`Merging inherited test runner: ${String(testRunner)}; constructor name: ${testRunner?.constructor?.name}`);
+            this.setCustomTestRunner(describeRunner.getTestRunner());
+        } else {
+            DescribeRunner.log("Not merging inherited test runner");
         }
     }
 }

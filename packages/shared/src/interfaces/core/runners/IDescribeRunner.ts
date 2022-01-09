@@ -18,6 +18,10 @@ export interface IDescribeRunner {
 
     setDescribeType(describeType: DescribeType): void;
 
+    setCustomTestRunner(customTestRunner: ITestRunner): void;
+
+    hasCustomTestRunner(): boolean;
+
     getClass(): Class;
 
     getClassInstance(): object;
@@ -33,8 +37,6 @@ export interface IDescribeRunner {
     getCustomDecoratorsService(): ICustomDecoratorsService;
 
     getTestRunner(): ITestRunner;
-
-    setTestRunner(testRunner: ITestRunner): void;
 
     updateDescribe(describeRunner: IDescribeRunner): void;
 
