@@ -11,6 +11,6 @@ export function RunWith(testRunner: ITestRunnerConstructor) {
 
         log(`Registering RunWith. Class name: ${clazz.name}; Test runner class name: ${testRunner.name}`);
 
-        describeRunner.setTestRunner(new testRunner(describeRunner.getTestRunner()));
+        describeRunner.setCustomTestRunner(new testRunner(describeRunner.getTestRunner()));
     };
 }

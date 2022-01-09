@@ -1,6 +1,6 @@
 import { IDescribeRunner } from "@jest-decorated/shared";
 
-import { Describe, RunWith, Test } from "../decorators";
+import { Describe, RunWith, Test, BeforeAll } from "../decorators";
 import { TestRunner } from "../runners";
 
 const fn = jest.fn();
@@ -43,8 +43,48 @@ class ExtendedTestRunner extends TestRunner {
 class RunWithSpec {
 
     @Test()
-    first() {
-        expect(fn).toHaveBeenCalledTimes(6);
+    test() {
+        expect(fn).toHaveBeenCalled();
+    }
+}
+
+class RunWithExtendedSpec1 {
+
+    fn = jest.fn();
+
+    @BeforeAll()
+    hook() {
+        this.fn();
+    }
+}
+
+@Describe()
+@RunWith(ExtendedTestRunner)
+class RunWithSpecExtendedTest1 extends RunWithExtendedSpec1 {
+
+    @Test()
+    test() {
+        expect(this.fn).toHaveBeenCalledTimes(1);
+    }
+}
+
+@RunWith(ExtendedTestRunner)
+class RunWithExtendedSpec2 {
+
+    fn = jest.fn();
+
+    @BeforeAll()
+    hook() {
+        this.fn();
+    }
+}
+
+@Describe()
+class RunWithSpecExtendedTest2 extends RunWithExtendedSpec2 {
+
+    @Test()
+    test() {
+        expect(this.fn).toHaveBeenCalledTimes(1);
     }
 }
 
@@ -52,7 +92,7 @@ class RunWithSpec {
 class RunWithSpecTest {
 
     @Test()
-    first() {
-        expect(fn).toHaveBeenCalledTimes(6);
+    test() {
+        expect(fn).toHaveBeenCalledTimes(18);
     }
 }
