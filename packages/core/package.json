@@ -1,6 +1,6 @@
 {
   "name": "@jest-decorated/core",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Decorators for writing jest-based tests",
   "license": "MIT",
   "author": {
@@ -36,7 +36,7 @@
     "lint": "tslint -c tslint.ts 'src/**/*.ts' --fix"
   },
   "dependencies": {
-    "@jest-decorated/shared": "^0.1.6",
+    "@jest-decorated/shared": "^0.1.7",
     "@js-utilities/typecheck": "^0.1.6"
   },
   "gitHead": "f378eafcd17a7593ffabe1daedaf2d1068fb5553"
