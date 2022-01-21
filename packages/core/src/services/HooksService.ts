@@ -53,7 +53,7 @@ export class HooksService implements IHooksService {
             async (preProcessorData: PreProcessorData) => {
                 const testName = preProcessorData.testEntity.name;
                 if (this.beforeTestHooks.has(testName)) {
-                    this.beforeTestHooks.get(testName).call(this.clazzInstance, this.clazzInstance);
+                    await this.beforeTestHooks.get(testName).call(this.clazzInstance, this.clazzInstance);
                 }
                 return preProcessorData;
             },
