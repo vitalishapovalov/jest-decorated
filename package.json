@@ -22,7 +22,7 @@
     "@testing-library/react": "^12.1.2",
     "@types/enzyme": "^3.10.10",
     "@types/jest": "^27.0.2",
-    "@types/node": "^16.11.6",
+    "@types/node": "^18.8.4",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.5",
     "chalk": "^4.1.2",
     "debug": "^4.3.2",
